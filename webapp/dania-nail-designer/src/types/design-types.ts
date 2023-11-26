@@ -1,9 +1,9 @@
-import { NailBase, NailShape } from "../constants/design-constants";
+import { DesignElements, NailBase, NailShape } from "../constants/design-constants";
 
 
 export interface Design {
-  left?: HandDesign;
-  right?: HandDesign;
+  left: HandDesign;
+  right: HandDesign;
 } 
 
 export interface HandDesign {
@@ -19,7 +19,7 @@ export interface HandDesign {
 export interface Finger {
   name: 'Thumb' | 'Index' | 'Middle' | 'Ring' | 'Pinky';
   ornaments: Set<'Gem' | 'Cluster' | 'Charm' | 'Foil' | 'Chain'>;
-  designElems: Array<DesignProperties>;
+  designElems: Array<NailDesignOption>;
   bgColor: string | null;
 }
 
@@ -29,3 +29,7 @@ export interface DesignProperties {
   id: string;
   timeEst?: number; // mins?
 }
+
+export type NailBaseOption = keyof typeof NailBase;
+export type NailShapeOption = keyof typeof NailShape;
+export type NailDesignOption = typeof DesignElements[number];

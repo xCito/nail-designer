@@ -5,7 +5,7 @@ import { DesignProviderValue } from "../types/other-types";
 import { designReducer } from "./DesignReducer";
 
 const defaultDesign: Design = getDefaultDesign();
-const DesignContext = createContext<DesignProviderValue>({nailDesign: defaultDesign, dispatch: () => void 0});
+export const DesignContext = createContext<DesignProviderValue>({nailDesign: defaultDesign, dispatch: () => void 0});
 
 export function DesignProvider({children}: {children?: ReactNode}) {
   const [nailDesign, dispatch] = useReducer(designReducer, defaultDesign);

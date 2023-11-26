@@ -6,14 +6,14 @@ export const NailShape = {
   Almond: 'Almond',
   Stilletto: 'Stilletto',
   // Almondetto: 'Almondetto'
-}
+} as const;
 
 export const NailBase = {
   BaseGel: 'Base Gel',
   HardGel: 'Hard Gel',
   PolyGel: 'PolyGel',
   AcryGel: 'AcryGel',
-}
+} as const;
 
 export const DesignElements = [
   { id: "French",           complexity: 3, name: "French"},
