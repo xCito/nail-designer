@@ -22,14 +22,14 @@ html, body, #root {
     height: 50px;
     flex-grow: 0;
     flex-basis: 0;
-    transition: all 1s;
+    transition: all 0.3s;
     overflow: hidden;
 }
 
 .design-section.open {
     height: 100%;
     flex-grow: 1;
-    transition: all 1s;
+    transition: all 0.3s;
     /* overflow: auto; */
     /* max-height: calc(620px); */
 }
@@ -58,6 +58,7 @@ html, body, #root {
     gap: 1em;
     justify-content: center;
     justify-items: center;
+    transition: width 0.4s 0.3s;
 }
 
 .base-options-grid.col-3 {
@@ -68,24 +69,28 @@ html, body, #root {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid rgb(0, 133, 140); */
-    box-shadow: 1px 1px 5px 1px rgb(192, 192, 192);
+    box-shadow: 1px 1px 5px 0px rgb(192, 192, 192);
     height: 100px;
     width: 100%;
     border-radius: 8px;
+
+    transition: box-shadow 0.15s, background-color 0.2s;
 }
 
 .base-option:hover {
-    border:1px solid rgb(255, 95, 121);
+    box-shadow: 1px 1px 5px 0px rgb(255, 95, 121);
 }
 .base-option.active {
-    border-color: pink;
     background-color: rgba(255, 162, 162, 0.335);
-    box-shadow: -1px -1px 10px 0 rgb(255, 122, 122) inset;
 }
 .base-option:active {
     background-color: rgba(255, 162, 162, 0.65);
+    box-shadow: 1px 1px 5px 0px rgb(255, 95, 121);
 }
+
+
+
+
 
 .hand {
     height: 100px;
@@ -115,3 +120,32 @@ html, body, #root {
     border-bottom: 200px solid blue;
     border-color: rgb(255, 200, 190);
 } */
+
+.shape-menu {
+  display: grid;
+  grid-template-columns: 100% 0px;
+  transition: grid-template-columns 0.3s;
+  overflow-x: hidden;
+}
+
+.shape-menu.selected {
+  grid-template-columns: 50% 50%;
+  transition: grid-template-columns 0.3s;
+}
+
+.shape-list {
+  gap: 1em;
+}
+.shape-list .base-option {
+  height: auto;
+  padding: 0.6em;
+}
+
+.w-0 {
+  width: 0;
+  overflow: hidden;
+}
+
+.dashed {
+  border-style: dashed !important;
+}

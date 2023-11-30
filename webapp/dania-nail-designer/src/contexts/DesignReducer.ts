@@ -16,11 +16,17 @@ export function designReducer(prevState: Design, action: DesignAction) {
       newState.right.shape = action.shape;
       return newState;
     }
+    case 'SET_LENGTH': {
+      const newState = structuredClone(prevState);
+      newState.left.length = action.length;
+      newState.right.length = action.length;
+      return newState;
+    }
     case 'ADD_DESIGN': {
       const newState: Design = structuredClone(prevState);
       const { design } = action;
 
-      for (let fingerIndex of FingerIndices) {
+      for (const fingerIndex of FingerIndices) {
         const leftHand: Finger = newState.left[fingerIndex];
         const rightHand: Finger = newState.right[fingerIndex];
 
@@ -37,7 +43,7 @@ export function designReducer(prevState: Design, action: DesignAction) {
       const newState: Design = structuredClone(prevState);
       const { design } = action;
 
-      for (let fingerIndex of FingerIndices) {
+      for (const fingerIndex of FingerIndices) {
         const leftHand: Finger = newState.left[fingerIndex];
         const rightHand: Finger = newState.right[fingerIndex];
 

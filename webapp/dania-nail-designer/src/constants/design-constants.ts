@@ -1,12 +1,33 @@
-import { Design } from "../types/design-types";
+import { Design, NailShapeOption } from "../types/design-types";
 
-export const NailShape = {
-  Oval: 'Oval',
-  Coffin: 'Coffin',
-  Almond: 'Almond',
-  Stilletto: 'Stilletto',
-  // Almondetto: 'Almondetto'
+
+
+export const NailShape2 = {
+  Tapered: [
+    {id: 'coffin', label: 'Coffin'},
+    {id: 'ballerina', label: 'Ballerina'},
+  ],
+  Rounded: [
+    {id: 'oval', label: 'Oval'},
+    {id: 'round', label: 'Round'},
+  ],
+  Pointy: [
+    {id: 'stiletto', label: 'Stiletto'},
+    {id: 'almondetto', label: 'Almondetto'},
+    {id: 'almond', label: 'Almond'},
+    {id: 'kitten', label: 'Kitten'},
+  ],
+  Square: [
+    {id: 'square', label: 'Square'},
+  ]
 } as const;
+
+export const NailShape = Object.values(NailShape2)
+  .flat()
+  .reduce((obj, shape) => {
+    obj[shape.id] = shape.label;
+    return obj;
+  }, {} as Record<NailShapeOption, string> );
 
 export const NailBase = {
   BaseGel: 'Base Gel',
@@ -14,6 +35,17 @@ export const NailBase = {
   PolyGel: 'PolyGel',
   AcryGel: 'AcryGel',
 } as const;
+
+export const NailLength = {
+  x_short: 'X Short',
+  short: 'Short',
+  medium: 'Medium',
+  long: 'Long',
+  x_long: 'X Long',
+  xx_long: '2X Long',
+} as const;
+
+
 
 export const DesignElements = [
   { id: "French",           complexity: 3, name: "French"},
@@ -41,7 +73,8 @@ export function getDefaultDesign(): Design {
   return {
     left: {
       base: 'BaseGel',
-      shape: 'Stilletto',
+      shape: 'stiletto',
+      length: 'medium',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),
@@ -75,7 +108,8 @@ export function getDefaultDesign(): Design {
     },
     right: {
       base: 'BaseGel',
-      shape: 'Stilletto',
+      shape: 'stiletto',
+      length: 'medium',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),

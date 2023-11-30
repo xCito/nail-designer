@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { NailBase } from "../constants/design-constants"
-import { NailBaseOption } from "../types/design-types";
+import { NailBase } from "../../constants/design-constants"
+import { NailBaseOption } from "../../types/design-types";
 
 const baseOptions = Object.entries(NailBase).map(o => {
     return {label: o[1], value: o[0] as NailBaseOption}

@@ -1,4 +1,4 @@
-import { DesignElements, NailBase, NailShape } from "../constants/design-constants";
+import { DesignElements, NailBase, NailLength, NailShape2 } from "../constants/design-constants";
 
 
 export interface Design {
@@ -7,8 +7,9 @@ export interface Design {
 } 
 
 export interface HandDesign {
-  shape: keyof typeof NailShape;
-  base: keyof typeof NailBase;
+  shape: NailShapeOption;
+  base: NailBaseOption;
+  length: NailLengthOption;
   f1: Finger;
   f2: Finger;
   f3: Finger;
@@ -30,6 +31,8 @@ export interface DesignProperties {
   timeEst?: number; // mins?
 }
 
+export type NailLengthOption = keyof typeof NailLength;
 export type NailBaseOption = keyof typeof NailBase;
-export type NailShapeOption = keyof typeof NailShape;
+export type NailShapeTypeOption = keyof typeof NailShape2;
+export type NailShapeOption = typeof NailShape2[NailShapeTypeOption][number]['id'];
 export type NailDesignOption = typeof DesignElements[number];
