@@ -1,4 +1,4 @@
-import { DesignElements, NailBase, NailLength, NailShape2 } from "../constants/design-constants";
+import { DesignElements, NailBase, NailLength, NailShape } from "../constants/design-constants";
 
 
 export interface Design {
@@ -31,8 +31,14 @@ export interface DesignProperties {
   timeEst?: number; // mins?
 }
 
+export type NailLengthTypeOption = typeof NailLength[keyof typeof NailLength]['type'];
+export type NailLengthOptionVal = typeof NailLength[keyof typeof NailLength];
 export type NailLengthOption = keyof typeof NailLength;
+
+export type NailShapeTypeOption = typeof NailShape[keyof typeof NailShape]['type'];
+export type NailShapeOptionVal = typeof NailShape[keyof typeof NailShape];
+export type NailShapeOption = keyof typeof NailShape;
+
 export type NailBaseOption = keyof typeof NailBase;
-export type NailShapeTypeOption = keyof typeof NailShape2;
-export type NailShapeOption = typeof NailShape2[NailShapeTypeOption][number]['id'];
+
 export type NailDesignOption = typeof DesignElements[number];

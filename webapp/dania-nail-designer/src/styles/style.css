@@ -70,11 +70,11 @@ html, body, #root {
     justify-content: center;
     align-items: center;
     box-shadow: 1px 1px 5px 0px rgb(192, 192, 192);
-    height: 100px;
+    height: 70px;
     width: 100%;
     border-radius: 8px;
 
-    transition: box-shadow 0.15s, background-color 0.2s;
+    transition: all 0.3s;
 }
 
 .base-option:hover {
@@ -87,17 +87,34 @@ html, body, #root {
     background-color: rgba(255, 162, 162, 0.65);
     box-shadow: 1px 1px 5px 0px rgb(255, 95, 121);
 }
+.base-option.disabled {
+    pointer-events: none;
+    color: gray;
+    background-color: rgba(0,0,0,5%);
+}
 
 
 
-
+.hands {
+    top: 0;
+    background-color: antiquewhite;
+    box-shadow: 0px 0px 15px 10px antiquewhite;
+    transition: all 0.3s;
+    height: 40px;
+}
+.hands.xx_short { height: 50px }
+.hands.x_short { height: 60px }
+.hands.short { height: 70px }
+.hands.medium { height: 80px }
+.hands.long { height: 90px }
+.hands.x_long { height: 100px }
+.hands.xx_long { height: 110px }
 
 .hand {
-    height: 100px;
-    /* border: 1px solid black; */
-    column-gap: 1em;   
-    background-color: antiquewhite;
+    column-gap: 0.1em;   
 }
+
+
 
 .finger {
     border-bottom: 100px solid red;
@@ -123,17 +140,23 @@ html, body, #root {
 
 .shape-menu {
   display: grid;
-  grid-template-columns: 100% 0px;
-  transition: grid-template-columns 0.3s;
+  grid-template-rows: min-content 1%;
+  transition: grid-template-rows 1s;
   overflow-x: hidden;
 }
 
 .shape-menu.selected {
-  grid-template-columns: 50% 50%;
-  transition: grid-template-columns 0.3s;
+  grid-template-rows: min-content calc(100% - 335px);
+  transition: grid-template-rows 1s;
 }
 
+.shape-menu.selected .base-option {
+    height: 40px;
+    transition: height 0.3s;
+}
 .shape-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1em;
 }
 .shape-list .base-option {
@@ -148,4 +171,42 @@ html, body, #root {
 
 .dashed {
   border-style: dashed !important;
+}
+
+
+.floating-total {
+    color: black;
+    position: fixed;
+    bottom: 50px;
+    right: calc(100px);
+
+    background-color: antiquewhite;
+    box-shadow: 0 0 8px 0 black;
+    padding: 1em;
+    border-radius: 40px;
+    min-width: 120px;
+    opacity: 0;
+    transition: all 0.3s;
+    animation: update-glow 0.5s linear 1 forwards;
+}
+
+.floating-total.show {
+    opacity: 1;
+}
+
+.floating-total:active {
+    box-shadow: 0 0 10px 0 pink;
+}
+.floating-total:hover {
+    box-shadow: 0 0 8px 0 pink;
+}
+
+@keyframes update-glow {
+    0% { box-shadow: 0 0 8px 0 black }
+    50% { box-shadow: 5px 0 8px 1px pink }
+    100% { box-shadow: 0 0 8px 0 black }
+}
+
+td {
+    font-family: 'Courier New', Courier, monospace;
 }

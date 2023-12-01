@@ -1,52 +1,44 @@
-import classNames from "classnames";
-import { NailShape2 } from "../../constants/design-constants";
-import { NailShapeOption, NailShapeTypeOption } from "../../types/design-types";
-import { useState } from "react";
+import { NailShape } from "../../constants/design-constants";
+import { nailShapeAndLength } from "../../constants/other-constants";
+import { getLengthId } from "../../service/helpers";
+import { HandDesign, NailLengthOption, NailShapeOption, NailShapeOptionVal } from "../../types/design-types";
+import { Hands } from "../hand/Hands";
+import { MainAndSubSelect } from "./MainAndSubSelect";
 
-// const shapeOptions = Object.entries(NailShape).map(o => {
-//     return {label: o[1], value: o[0] as NailShapeOption}
-// });
 
-const shapeOptions: NailShapeTypeOption[] = Object.keys(NailShape2) as NailShapeTypeOption[];
+const shapeOptions = Object.entries(NailShape)
+  .map(([id, shape]) => ({id, ...shape})) as ({id: NailShapeOption} & NailShapeOptionVal)[];
 
 interface Props {
-    selected: NailShapeOption[];
-    onSelection: (shape: NailShapeOption) => void;
+  hand: HandDesign;
+  selected: NailShapeOption;
+  onSelection: (shape: NailShapeOption) => void;
+  isNatural: boolean;
+  selectedLength: NailLengthOption;
 }
 export function ShapeMenu(props: Props) {
-  const { selected, onSelection } = props;
-  const [selectedShapeType, setShapeType] = useState<null | NailShapeTypeOption>(null);
+  const { selected, onSelection, isNatural, selectedLength, hand } = props;
 
-  const onShapeTypeClick = (type: NailShapeTypeOption) => {
-    if (type === selectedShapeType) {
-      setShapeType(null);
-    } else {
-      setShapeType(type);
-    }
-
-    // onSelection();
+  const isTypeDisabled = (type: string) => {
+    return isNatural && !(type === 'Rounded' || type === 'Square')
   }
 
-  return <div className={classNames("shape-menu", {'selected': selectedShapeType !== null})}>
-    <div className={classNames("base-options-grid p-3")}>
-      {shapeOptions.map(option => 
-        <div key={option}
-          className={classNames("base-option", {active: selectedShapeType === option})} 
-          onClick={() => onShapeTypeClick(option)}>
-          {option}
-        </div>
-      )}
-    </div>
-    
-    {selectedShapeType && <div className="d-flex flex-column shape-list p-3">
-      {NailShape2[selectedShapeType].map(shape => {
-        return <div key={shape.id}
-          className={classNames('base-option', {'active': selected.includes(shape.id)})}
-          onClick={() => onSelection(shape.id)}>
-          {shape.label}
-        </div>
-      })}
-    </div>}
+  const isShapeDisabled = (shape: NailShapeOption) => {
+    const length = getLengthId(selectedLength);
+    const svg = nailShapeAndLength[shape][length] 
+    return typeof svg === 'undefined' || svg === '';
+  }
+
+  return <div className="position-relative h-100">
+    <Hands hand={hand} />
+  
+    <MainAndSubSelect 
+      isTypeDisabled={isTypeDisabled}
+      isSubTypeDisabled={isShapeDisabled}
+      onSubSelect={onSelection}
+      selected={selected}
+      options={shapeOptions} />
+
   </div>;
     
 }

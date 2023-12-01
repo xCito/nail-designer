@@ -1,28 +1,26 @@
-import classNames from "classnames";
 import { NailLength } from "../../constants/design-constants";
-import { NailLengthOption } from "../../types/design-types";
+import { HandDesign, NailLengthOption, NailLengthOptionVal } from "../../types/design-types";
+import { Hands } from "../hand/Hands";
+import { MainAndSubSelect } from "./MainAndSubSelect";
 
-// const shapeOptions = Object.entries(NailShape).map(o => {
-//     return {label: o[1], value: o[0] as NailShapeOption}
-// });
+const lengthOptions = Object.entries(NailLength)
+  .map(([id, val]) => ({id, ...val})) as ({id: NailLengthOption} & NailLengthOptionVal)[];
 
-const lengthOptions = Object.entries(NailLength).map(([id, label]) => {
-  return { displayLabel: label, value: id };
-}) as {displayLabel: string, value: NailLengthOption}[]
 interface Props {
-    selected: NailLengthOption[]
-    onSelection: (length: NailLengthOption) => void;
+  hand: HandDesign;
+  selected: NailLengthOption;
+  onSelection: (length: NailLengthOption) => void;
 }
 export function LengthMenu(props: Props) {
-  const { selected, onSelection } = props;
+  const { selected, onSelection, hand } = props;
 
-  return <div className="base-options-grid p-3">
-      {lengthOptions.map(option => 
-        <div key={option.value}
-          onClick={() => onSelection(option.value)}
-          className={classNames("base-option", {active: selected.includes(option.value)})}>
-            {option.displayLabel}
-        </div>
-      )}   
-    </div>
+  return <div className="position-relative h-100">
+    <Hands hand={hand} />
+  
+    <MainAndSubSelect
+      onSubSelect={onSelection} 
+      options={lengthOptions}
+      selected={selected}  />
+  </div>;
+    
 }

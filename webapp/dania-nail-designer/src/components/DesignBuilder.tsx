@@ -8,7 +8,7 @@ import { BaseChooser } from "./selection-menu/BaseChooser";
 import { LengthMenu } from "./selection-menu/LengthMenu";
 import { ShapeMenu } from "./selection-menu/ShapeMenu";
 import { DesignElementMenu } from "./selection-menu/DesignElementMenu";
-import { Summary } from "./Summary";
+import { Summary } from "./receipt/Summary";
 
 export function DesignBuilder() {
   const [openSection, setOpenSection] = useState<string | null>(null)
@@ -62,24 +62,31 @@ export function DesignBuilder() {
           title='Length'
           isExpanded={openSection === 'Length'}
           onHeaderClick={() => onHeaderClick('Length')}>
-          <LengthMenu selected={getAppliedLength(nailDesign)} onSelection={onLengthSelection} />
+          <LengthMenu 
+            hand={nailDesign.left}
+            selected={nailDesign.left.length} 
+            onSelection={onLengthSelection} />
         </DesignSection>
 
         <DesignSection 
           title='Shape'
           isExpanded={openSection === 'Shape'}
           onHeaderClick={() => onHeaderClick('Shape')}>
-          <ShapeMenu selected={getAppliedShape(nailDesign)} onSelection={onShapeSelection} />
+          <ShapeMenu 
+            hand={nailDesign.left}
+            isNatural={nailDesign.left.length === 'natural'}
+            selected={nailDesign.left.shape} 
+            selectedLength={nailDesign.left.length}
+            onSelection={onShapeSelection} />
         </DesignSection>
 
         <DesignSection 
           title='Design'
-          // isExpanded={openSection === 'Design'}
-          isExpanded={true}
+          isExpanded={openSection === 'Design'}
+          // isExpanded={true}
           onHeaderClick={() => onHeaderClick('Design')}>
           <DesignElementMenu
-            shape={nailDesign.left.shape}
-            length={nailDesign.left.length}
+            hand={nailDesign.left}
             selectedIds={getAppliedDesignElementIds(nailDesign)} 
             onSelection={onDesignElemSelection} 
             onRemove={onDesignElemRemoval}/>

@@ -31,3 +31,8 @@ export type ShapeAndLengths = {
     [length in NailLengthOption]?: string | undefined;
   }
 }
+export type LengthAndPixelHeight = {
+  [len in BaseLength]: number;
+}
+
+export type BaseLength = Exclude<NailLengthOption, 'x_short_S' | 'short_S' | 'medium_S' | 'long_S' | 'x_long_S' | 'xx_long_S'>
