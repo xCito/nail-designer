@@ -10,7 +10,7 @@ interface Props {
     selected: NailBaseOption[]
     onSelection: (base: NailBaseOption) => void;
 }
-export function BaseChooser(props: Props) {
+export function BaseMenu(props: Props) {
     const { selected, onSelection } = props;
     return <div className="base-options-grid p-3">
         {baseOptions.map(option => 

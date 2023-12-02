@@ -1,14 +1,15 @@
 import { useContext, useState } from "react";
 import { DesignContext } from "../contexts/DesignContext";
-import { getAppliedBases, getAppliedDesignElementIds, getAppliedLength, getAppliedShape } from "../service/helpers";
+import { getAppliedBases, getAppliedDesignElementIds } from "../service/helpers";
 import { NailBaseOption, NailDesignOption, NailLengthOption, NailShapeOption } from "../types/design-types";
 import './../styles/style.css';
 import { DesignSection } from "./DesignSection";
-import { BaseChooser } from "./selection-menu/BaseChooser";
+import { Summary } from "./receipt/Summary";
+import { BaseMenu } from "./selection-menu/BaseMenu";
+import { DesignElementMenu } from "./selection-menu/DesignElementMenu";
 import { LengthMenu } from "./selection-menu/LengthMenu";
 import { ShapeMenu } from "./selection-menu/ShapeMenu";
-import { DesignElementMenu } from "./selection-menu/DesignElementMenu";
-import { Summary } from "./receipt/Summary";
+import { ConsultationMenu } from "./selection-menu/ConsultationMenu";
 
 export function DesignBuilder() {
   const [openSection, setOpenSection] = useState<string | null>(null)
@@ -52,10 +53,17 @@ export function DesignBuilder() {
   return <div className="h-100"> 
     <div className="layout d-flex flex-column">
         <DesignSection 
+          title='Consultation' 
+          isExpanded={openSection === 'Consultation'}
+          onHeaderClick={() => onHeaderClick('Consultation')}>
+            <ConsultationMenu />
+        </DesignSection>
+
+        <DesignSection 
           title='Base' 
           isExpanded={openSection === 'Base'}
           onHeaderClick={() => onHeaderClick('Base')}>
-          <BaseChooser selected={getAppliedBases(nailDesign)} onSelection={onBaseSelection} />
+          <BaseMenu selected={getAppliedBases(nailDesign)} onSelection={onBaseSelection} />
         </DesignSection>
 
         <DesignSection 

@@ -187,7 +187,9 @@ html, body, #root {
     min-width: 120px;
     opacity: 0;
     transition: all 0.3s;
-    animation: update-glow 0.5s linear 1 forwards;
+    /* animation: update-glow 0.5s linear 1 forwards forwards; */
+    animation: update-glow 0.5s linear 0.1s 1 normal forwards;
+
 }
 
 .floating-total.show {
@@ -204,7 +206,7 @@ html, body, #root {
 @keyframes update-glow {
     0% { box-shadow: 0 0 8px 0 black }
     50% { box-shadow: 5px 0 8px 1px pink }
-    100% { box-shadow: 0 0 8px 0 black }
+    99% { box-shadow: 0 0 8px 0 black }
 }
 
 td {

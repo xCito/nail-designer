@@ -1,7 +1,6 @@
-import classNames from "classnames"
+import classNames from "classnames";
 import { useState } from "react";
 import { getByType } from "../../service/helpers";
-import { NailShapeOption } from "../../types/design-types";
 
 type Typed<K> = {id: K, label: string, type: string};
 interface Props<K extends string, T extends Typed<K>> {
@@ -21,7 +20,7 @@ export function MainAndSubSelect<K extends string, T extends Typed<K>>(props: Pr
     .reduce((set, val) => set.add(val.type), new Set<string>())];
 
   const filteredOptions = selectedType ? getByType(options, selectedType) : [];
-  let count = filteredOptions.length;
+  const count = filteredOptions.length;
 
   const onTypeSelect = (type: string) => {
     console.log(type);
@@ -38,32 +37,32 @@ export function MainAndSubSelect<K extends string, T extends Typed<K>>(props: Pr
   }
 
   return <div className={classNames("shape-menu", {'selected': selectedType !== null && count > 1})}>
-  <div className={classNames("base-options-grid p-3")}>
-    {mainOptions.map(option => 
-      <div key={option}
-        className={classNames(
-            "base-option", 
-            {active: selectedType === option},
-            {disabled: isTypeDisabled(option)}
-            )} 
-        onClick={() => onTypeSelect(option)}>
-        {option}
-      </div>
-    )}
-  </div>
-  
-  {count > 1 && <div className="shape-list p-3">
-    {filteredOptions.map((option) => {
-      return <div key={option.id}
-      className={classNames(
-        'base-option',
-        {'active': selected === option.id},
-        {disabled: isSubTypeDisabled(option.id)}
+    <div className={classNames("base-options-grid p-3")}>
+      {mainOptions.map(option => 
+        <div key={option}
+          className={classNames(
+              "base-option", 
+              {active: selectedType === option},
+              {disabled: isTypeDisabled(option)}
+              )} 
+          onClick={() => onTypeSelect(option)}>
+          {option}
+        </div>
       )}
-      onClick={() => onSubSelect(option.id)}>
-        {option.label}
-      </div>
-    })}
-  </div>}
-</div>
+    </div>
+    
+    {count > 1 && <div className="shape-list p-3">
+      {filteredOptions.map((option) => {
+        return <div key={option.id}
+        className={classNames(
+          'base-option',
+          {'active': selected === option.id},
+          {disabled: isSubTypeDisabled(option.id)}
+        )}
+        onClick={() => onSubSelect(option.id)}>
+          {option.label}
+        </div>
+      })}
+    </div>}
+  </div>
 }
