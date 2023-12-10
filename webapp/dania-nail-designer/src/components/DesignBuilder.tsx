@@ -12,7 +12,7 @@ import { ShapeMenu } from "./selection-menu/ShapeMenu";
 import { ConsultationMenu } from "./selection-menu/ConsultationMenu";
 
 export function DesignBuilder() {
-  const [openSection, setOpenSection] = useState<string | null>(null)
+  const [openSection, setOpenSection] = useState<string | null>('Design')
   const { dispatch, nailDesign } = useContext(DesignContext);
 //  console.log(JSON.stringify(nailDesign, null, 2));
 
@@ -74,7 +74,7 @@ export function DesignBuilder() {
             hand={nailDesign.left}
             selected={nailDesign.left.length} 
             onSelection={onLengthSelection} />
-        </DesignSection>
+        </DesignSection> 
 
         <DesignSection 
           title='Shape'

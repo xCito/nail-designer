@@ -15,7 +15,7 @@ export function DesignSection({title, children, isExpanded, onHeaderClick}: Prop
     <div className="section-header p-3 d-flex align-items-center" onClick={onHeaderClick}>
       <h3 className="m-0">{title}</h3>
     </div>
-    <div className="section-body">
+    <div className="section-body w-100">
       {children}
     </div>
   </div>;

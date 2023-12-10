@@ -1,4 +1,4 @@
-import { Design } from "../types/design-types";
+import { Design, DesignElement } from "../types/design-types";
 
 
 export const NailShape = {
@@ -38,82 +38,36 @@ export const NailLength = {
   xx_long: {label: '2X Long', type: 'Extension'},
 } as const;
 
+export const ComplexityScore = {
+  A: 0.5,
+  B: 1.0,
+  C: 1.5,
+  D: 2.0,
+  E: 2.5,
+  F: 3.0,
+} as const;
 
-export const DesignElements = [
-  { 
-    id: "French", 
-    complexity: 3, 
-    name: "French",
-  }, { 
-    id: "Marble", 
-    complexity: 3, 
-    name: "Marble" 
-  }, { 
-    id: "Gradient", 
-    complexity: 2, 
-    name: "Gradient" 
-  }, { 
-    id: "GlitterTopper", 
-    complexity: 1, 
-    name: "Glitter Topper" 
-  }, { 
-    id: "Dots", 
-    complexity: 1, 
-    name: "Dots" 
-  }, { 
-    id: "Jelly", 
-    complexity: 2, 
-    name: "Jelly" 
-  }, { 
-    id: "Sticker", 
-    complexity: 2, 
-    name: "Sticker" 
-  }, { 
-    id: "Gem", 
-    complexity: 1, 
-    name: "Gem" 
-  }, { 
-    id: "GemCluster", 
-    complexity: 2, 
-    name: "Gem Cluster" 
-  }, { 
-    id: "Charm", 
-    complexity: 2, 
-    name: "Charm" 
-  }, { 
-    id: "Sugaring", 
-    complexity: 3, 
-    name: "Sugaring" 
-  }, { 
-    id: "Foil", 
-    complexity: 2, 
-    name: "Foil" 
-  }, { 
-    id: "Chrome", 
-    complexity: 2, 
-    name: "Chrome" 
-  }, { 
-    id: "Magnetic", 
-    complexity: 2, 
-    name: "Magnetic" 
-  }, { 
-    id: "StripingTape", 
-    complexity: 2, 
-    name: "Striping Tape" 
-  }, { 
-    id: "HandDrawnLevel_1", 
-    complexity: 2, 
-    name: "Small Drawn Element" 
-  }, { 
-    id: "HandDrawnLevel_2", 
-    complexity: 3, 
-    name: "Multiple Drawn Elements" 
-  }, { 
-    id: "Inlay", 
-    complexity: 3, 
-    name: "Inlay" 
-  }
-] as const;
+export const DesignElements: DesignElement[] = [
+  { id: 0,  name: "French", complexity: "F" },
+  { id: 1,  name: "Marble", complexity: "E" },
+  { id: 2,  name: "Gradient", complexity: "D" },
+  { id: 3,  name: "Glitter Gradient", complexity: "E" },
+  { id: 4,  name: "Glitter Topper", complexity: "C"  },
+  { id: 5,  name: "Dots", complexity: "C" },
+  { id: 6,  name: "Jelly", complexity: "D" }, 
+  { id: 7,  name: "Sticker", complexity: "D" }, 
+  { id: 8,  name: "Gem", complexity: "C" }, 
+  { id: 9,  name: "Gem Cluster", complexity: "D" }, 
+  { id: 10, name: "Charm", complexity: "D" }, 
+  { id: 11, name: "Sugaring", complexity: "D" }, 
+  { id: 12, name: "Foil", complexity: "D" }, 
+  { id: 13, name: "Chrome", complexity: "D" }, 
+  { id: 14, name: "Magnetic", complexity: "E" }, 
+  { id: 15, name: "Striping Tape", complexity: "D" }, 
+  { id: 16, name: "Small Drawn Element", complexity: "D" }, 
+  { id: 17, name: "Multiple Drawn Elements", complexity: "E" }, 
+  { id: 18, name: "Inlay", complexity: "E" }
+];
 
 
 export function getDefaultDesign(): Design {

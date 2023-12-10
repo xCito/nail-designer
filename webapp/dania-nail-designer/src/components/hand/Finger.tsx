@@ -28,7 +28,7 @@ export function Finger({shape, length}: Props) {
   const [lengthVal, setLengthVal] = useState(processedLength);
   // const [shapeVal, setShapeVal] = useState(shape);
   const heightVal = NailSvgHeight[lengthVal];
-  console.log(lengthVal);
+  // console.log(lengthVal);
 
   // Animation reasons
   useEffect(() => {

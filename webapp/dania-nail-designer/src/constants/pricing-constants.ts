@@ -1,7 +1,12 @@
+import { NailManicureServices } from "../types/design-types";
 import { NailBasePrice, NailLengthPrice, NailShapePrice } from "../types/price-types";
 
 
 export const SERVICE_FEE = 20;
+export const BASE_MANICURE_PRICE = 20;
+export const GEL_REMOVAL_PRICE = 5;
+export const POLISH_REMOVAL_PRICE = 0;
+export const TAKE_DOWN_PRICE = 5;
 
 // Manicure
 export const BasePrice: NailBasePrice = {
@@ -39,3 +44,54 @@ export const LengthPrice: NailLengthPrice = {
     xx_long_S: 0,
 }
 
+
+export const ManicureServices: NailManicureServices = {
+    basic_manicure: {
+        price: 0,
+        colorPrice: 0,
+        isRemoveReq: false,
+        lengthPrice: null,
+    },
+    polish_manicure: {
+        price: 5,
+        colorPrice: 0,
+        isRemoveReq: true,
+        lengthPrice: null,
+    },
+    basegel_manicure: {
+        price: 5,
+        colorPrice: 5,
+        isRemoveReq: true,
+        lengthPrice: null,
+    },
+    hard_manicure: {
+        price: 15,
+        colorPrice: 5,
+        isRemoveReq: true,
+        lengthPrice: [
+            { length: 'long', amount: 5 },
+            { length: 'x_long', amount: 10 },
+            { length: 'xx_long', amount: 15 },
+        ],
+    },
+    poly_manicure: {
+        price: 20,
+        colorPrice: 5,
+        isRemoveReq: true,
+        lengthPrice: [
+            { length: 'long', amount: 5 },
+            { length: 'x_long', amount: 10 },
+            { length: 'xx_long', amount: 15 },
+        ],
+    },
+    rubber_manicure: {
+        price: 5,
+        colorPrice: 5,
+        isRemoveReq: true,
+        lengthPrice: [
+            { length: 'long', amount: 5 },
+            { length: 'x_long', amount: 10 },
+            { length: 'xx_long', amount: 15 },
+        ],
+    },
+}

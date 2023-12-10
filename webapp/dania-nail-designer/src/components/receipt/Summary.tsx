@@ -1,38 +1,18 @@
 import { createPortal } from "react-dom";
-import { DesignElements, NailBase, NailLength, NailShape } from "../../constants/design-constants"
+import { ComplexityScore, DesignElements, NailBase, NailLength, NailShape } from "../../constants/design-constants"
 import { FingerIndices } from "../../constants/other-constants";
 import { BasePrice, LengthPrice, SERVICE_FEE, ShapePrice } from "../../constants/pricing-constants"
-import { Design } from "../../types/design-types"
+import { ComplexityValue, Design, DesignElement } from "../../types/design-types"
 import { FloatingTotal } from "./FloatingTotal";
 
-function getDesignById(id: string) {
-  return DesignElements.find(d => d.id === id)!;
+
+function complexityToPrice(cmplx: ComplexityValue, count: number) {
+  const prod = ComplexityScore[cmplx] * count;
+  return prod;
 }
 
-function complexityToLabel(cmplx: number) {
-  if (cmplx >= 3) {
-    return 'HIGH';
-  } else if (cmplx >= 2){
-    return 'MED';
-  } else {
-    return 'LOW';
-  }
-}
-
-function complexityToPrice(cmplx: number, count: number) {
-  const prod = cmplx * count;
-
-  if (prod >= 40) {
-    return 20;
-  } else if (prod >= 30) {
-    return 15;
-  } else if (prod >= 20) {
-    return 10;
-  } else if (prod >= 10) {
-    return 5;
-  } else {
-    return 2;
-  }
+function getDesignById(id: string | number): DesignElement {
+  return DesignElements.find(design => design.id == id)!;
 }
 
 interface Props {
@@ -42,27 +22,28 @@ export function Summary({ nailDesign }: Props) {
   const bsePrice = BasePrice[ nailDesign.left.base ];
   const lenPrice = LengthPrice[ nailDesign.left.length ];
   const shpPrice = ShapePrice[ nailDesign.left.shape ];
-  const designElemCount: {[k: string]: number} = {};
+  const designCount = new Map<number, number>();
  
+  // Count designs occurrences
   for (const finger of FingerIndices) {
     nailDesign.left[finger].designElems.forEach(dL => {
-      if (designElemCount[dL.id]) {
-        designElemCount[dL.id]++;
+      if (designCount.has(dL.id)) {
+        designCount.set(dL.id, designCount.get(dL.id)! + 1);
       } else {
-        designElemCount[dL.id] = 1;
+        designCount.set(dL.id, 1);
       }
     });
     nailDesign.right[finger].designElems.forEach(dL => {
-      if (designElemCount[dL.id]) {
-        designElemCount[dL.id]++;
+      if (designCount.has(dL.id)) {
+        designCount.set(dL.id, designCount.get(dL.id)! + 1);
       } else {
-        designElemCount[dL.id] = 1;
+        designCount.set(dL.id, 1);
       }
     });
   }
 
-  const designTotal = Object.entries(designElemCount)
-    .map(([id, count]) => complexityToPrice(getDesignById(id).complexity, count))
+  const designTotal = Object.entries(designCount)
+    .map(([id, count]: [id: string, count: number]) => complexityToPrice(getDesignById(id).complexity, count))
     .reduce((total, price) => total + price, 0);
   
   const total = SERVICE_FEE + bsePrice + shpPrice + lenPrice + designTotal;
@@ -113,12 +94,12 @@ export function Summary({ nailDesign }: Props) {
           <td className="text-start fw-light">${shpPrice}</td>
         </tr>
 
-        {Object.entries(designElemCount).map(([designId, count]) => {
+        {[...designCount.entries()].map(([designId, count]) => {
           const design = getDesignById(designId);
           return <tr key={designId}>
             <td className="text-start">Design</td>
             <td className="text-start fw-light">{design.name}</td>
-            <td className="text-start fw-light">{complexityToLabel(design.complexity)} x{count}</td>
+            <td className="text-start fw-light">{design.complexity} x{count}</td>
             <td className="text-start fw-light">${complexityToPrice(design.complexity, count)}</td>
           </tr>
         })}

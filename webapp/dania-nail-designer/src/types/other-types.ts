@@ -10,6 +10,10 @@ export type DesignAction = {
   type: 'SET_LENGTH',
   length: NailLengthOption
 } | {
+  type: 'SET_DESIGN_BY_COUNT',
+  design: NailDesignOption,
+  count: number,
+} | {
   type: 'ADD_DESIGN',
   design: NailDesignOption
 } | {
@@ -32,7 +36,7 @@ export type ShapeAndLengths = {
   }
 }
 export type LengthAndPixelHeight = {
-  [len in BaseLength]: number;
+  [len in BaseNailLength]: number;
 }
 
-export type BaseLength = Exclude<NailLengthOption, 'x_short_S' | 'short_S' | 'medium_S' | 'long_S' | 'x_long_S' | 'xx_long_S'>
+export type BaseNailLength = Exclude<NailLengthOption, 'x_short_S' | 'short_S' | 'medium_S' | 'long_S' | 'x_long_S' | 'xx_long_S'>

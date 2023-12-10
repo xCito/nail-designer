@@ -1,6 +1,6 @@
 import { FingerIndices } from "../constants/other-constants";
 import { Design, NailBaseOption, NailLengthOption, NailShapeOption } from "../types/design-types";
-import { BaseLength } from "../types/other-types";
+import { BaseNailLength } from "../types/other-types";
 
 export function getAppliedBases(nailDesign: Design) {
     const selectedBase: NailBaseOption[] = [];
@@ -41,8 +41,8 @@ export function getAppliedShape(nailDesign: Design) {
     return selectedBase;
 }
 
-export function getAppliedDesignElementIds(nailDesign: Design): string[] {
-    const selectedDesignIds = new Set<string>();
+export function getAppliedDesignElementIds(nailDesign: Design): number[] {
+    const selectedDesignIds = new Set<number>();
     for (const fingerIndex of FingerIndices) {
         nailDesign.left[fingerIndex].designElems.forEach(dElem => {
             selectedDesignIds.add(dElem.id);
@@ -61,6 +61,6 @@ export function getByType<T extends {type: string}>(list: T[], type: string): T[
     return list.filter(elem => elem.type === type);
 }
 
-export function getLengthId(id: NailLengthOption): BaseLength {
-    return (id.endsWith('_S') ? id.substring(0, id.length - 2) : id) as BaseLength;
+export function getLengthId(id: NailLengthOption): BaseNailLength {
+    return (id.endsWith('_S') ? id.substring(0, id.length - 2) : id) as BaseNailLength;
 }

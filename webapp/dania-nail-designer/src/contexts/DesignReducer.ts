@@ -22,10 +22,31 @@ export function designReducer(prevState: Design, action: DesignAction) {
       newState.right.length = action.length;
       return newState;
     }
+    case 'SET_DESIGN_BY_COUNT': {
+      const newState: Design = structuredClone(prevState);
+      const { design, count } = action;
+
+      for (const fingerIndex of FingerIndices) {
+        const leftHand: Finger = newState.left[fingerIndex];
+        const rightHand: Finger = newState.right[fingerIndex];
+        leftHand.designElems = leftHand.designElems.filter(d => d.id == design.id);
+        rightHand.designElems = rightHand.designElems.filter(d => d.id == design.id);
+      }
+
+      const fIndices = [...FingerIndices, ...FingerIndices.reverse()];
+      for (let i = 0; i < count; i++) {
+        const fingerIndex = fIndices[i];
+        const hand = (i < 5) ? newState.left : newState.right;
+        
+        hand[fingerIndex].designElems.push(design);
+      }
+      return newState;
+    }
     case 'ADD_DESIGN': {
       const newState: Design = structuredClone(prevState);
       const { design } = action;
 
+  
       for (const fingerIndex of FingerIndices) {
         const leftHand: Finger = newState.left[fingerIndex];
         const rightHand: Finger = newState.right[fingerIndex];

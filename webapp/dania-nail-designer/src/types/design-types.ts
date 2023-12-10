@@ -1,4 +1,5 @@
-import { DesignElements, NailBase, NailLength, NailShape } from "../constants/design-constants";
+import { ComplexityScore, DesignElements, NailBase, NailLength, NailShape } from "../constants/design-constants";
+import { BaseNailLength } from "./other-types";
 
 
 export interface Design {
@@ -31,6 +32,29 @@ export interface DesignProperties {
   timeEst?: number; // mins?
 }
 
+export interface DesignElement {
+  id: number;
+  complexity: ComplexityValue;
+  name: string;
+}
+
+export interface NailManicureServices {
+  basic_manicure: ManicureSvc,
+  polish_manicure: ManicureSvc,
+  basegel_manicure: ManicureSvc,
+  rubber_manicure: ManicureSvc,
+  hard_manicure: ManicureSvc,
+  poly_manicure: ManicureSvc,
+}
+
+export interface ManicureSvc {
+  price: number,
+  colorPrice: number,
+  lengthPrice: Array<{length: BaseNailLength, amount: number}> | null,
+  isRemoveReq: boolean,
+}
+
+export type ComplexityValue = keyof typeof ComplexityScore;
 export type NailLengthTypeOption = typeof NailLength[keyof typeof NailLength]['type'];
 export type NailLengthOptionVal = typeof NailLength[keyof typeof NailLength];
 export type NailLengthOption = keyof typeof NailLength;

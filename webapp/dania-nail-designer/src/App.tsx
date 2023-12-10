@@ -1,4 +1,3 @@
-import './App.css';
 import { DesignBuilder } from './components/DesignBuilder';
 import { DesignProvider } from './contexts/DesignContext';
 
