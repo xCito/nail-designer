@@ -5,10 +5,19 @@
 :root {
     --main-color: #8B551B;
     --second-color: #DCA062;
-    --active-color: #b9834e;
+    --third-color: #E8CDB2;
+
+    --main-dark-color: #7c4b16;
+    --main-darker-color: #693f12;
+
+    --active-color: #a17346;
+    --hover-color: #be8953;
 
     --text-color: white;
     --bg-color: #FFF1DF;
+
+    /* background-color: var(--bg-color) */
+    background-color: white;
 }
 
 html, body, #root {
@@ -33,6 +42,7 @@ html, body, #root {
     flex-basis: 0;
     transition: all 0.3s;
     overflow: hidden;
+    border: 1.5px solid var(--main-color);
 }
 
 .design-section.open {
@@ -219,89 +229,122 @@ html, body, #root {
 }
 
 td {
-    font-family: 'Courier New', Courier, monospace;
+  color: #666;
+  font-family: Monaco, monospace;
 }
 
 
-/* ====================== New syntax ====================== */
+/* ====================== Basic ====================== */
 
-/* .design-options-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-} */
-
-.design-options-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-flow: row dense;
-    gap: 10px;
+input[type="text"] {
+  color: black;
+  border: 1px solid var(--main-color);
+  padding: .5em;
+  border-radius: 8px;
+  background-color: white;
+  outline-color:  var(--second-color);
 }
 
-.design-options-container .design-option {
-    position: relative;
-    height: 35px;
-    /* width: calc(33% - ((10px + 1px) / 2)); */
-    border-radius: 15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.design-options-container .design-option:hover {
- 
-}
-
-.design-options-container .design-option.active {
+button {
+  background-color: var(--main-color);
+  border: none;
+  padding: 0.56em;
+  border-radius: 5px;
+  cursor: pointer;
   
-    background-color: blanchedalmond;
+  &:hover {
+    background-color: var(--main-dark-color);
+  }
+  &:active {
+    background-color: var(--main-darker-color);
+  }
 }
 
-.design-option .option-buttons {
-    position: absolute;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 35px;
-    background-color: var(--second-color);
-    border-radius: 15px;
-    overflow: hidden;
-}
-.design-option .option-buttons > button {
-    flex-grow: 1;
-    height: 25px;
-    background-color: var(--second-color);
-    border: none;
-}
-.design-option .option-buttons > button:hover {
-    color: var(--main-color);
-}
-.design-option .option-buttons > button:active {
-    background-color: var(--active-color);
-}
-.design-option .option-buttons:has(> button:first-child:active, > button:last-child:active) {
-    background-color: var(--active-color);
-}
-.design-option:hover {
-    height: 60px;
-}
-.design-option:hover .option-buttons {
-    height: 60px;
-}
-.design-option .option-label {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 35px;
-    background-color: var(--main-color);
-    color: var(--text-color);
-    border-radius: 15px;
+/* ====================== Design Selection ====================== */
+
+.design-list {
+  --gap-size: 1em;
+  --item-size: 45px;
+  --border-radii: 20px;
+
+  flex: 1 0 10%;
+  gap: var(--gap-size);
+
+  .design-column {
+    flex: 1 0 10%; 
+    gap: var(--gap-size);
+  }
+
+  .design-option {
+    position: relative;
+    height: var(--item-size);
+    transition: height 0.2s;
+    
+    &.expanded {
+      height: calc(var(--item-size) * 1.7);
+    }
+    
+    .option-count {
+      color: var(--main-color);
+      background-color: var(--third-color);
+      background-color: orange;
+      font-weight: bold;
+      font-size: 0.85em;
+      padding-top: 3px;
+      border-radius: 50%;
+      border: 1px solid black;
+      text-align: center;
+
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      height: 25px;
+      width: 25px;
+    }
+
+    .option-label {
+      top: 0;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--main-color);
+      border-radius: var(--border-radii);
+      height: var(--item-size);
+      cursor: pointer;
+    }
+    
+    .option-buttons {
+      display: flex;
+      position: relative;
+      align-items: stretch;
+      border-radius: var(--border-radii);
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+
+      button {
+        all: unset;
+        cursor: pointer;
+        color: white;
+        background-color: var(--second-color);
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        flex: 1 0 30%;
+        padding-bottom: calc(var(--item-size) / 6);
+        border: none;
+      }
+      button:hover {
+        background-color: var(--hover-color);
+      }
+      button:active {
+        background-color: var(--active-color);
+      }
+      button:disabled, button:disabled:hover {
+        background-color: var(--third-color);
+
+      }
+    }
+  }
 }

@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
 import { DesignContext } from "../contexts/DesignContext";
-import { getAppliedBases, getAppliedDesignElementIds } from "../service/helpers";
+import { getAppliedBases, getAppliedDesignElementCounts, getAppliedDesignElementIds } from "../service/helpers";
 import { NailBaseOption, NailDesignOption, NailLengthOption, NailShapeOption } from "../types/design-types";
-import './../styles/style.css';
 import { DesignSection } from "./DesignSection";
 import { Summary } from "./receipt/Summary";
 import { BaseMenu } from "./selection-menu/BaseMenu";
@@ -44,9 +43,14 @@ export function DesignBuilder() {
     dispatch({type: 'ADD_DESIGN', design: designElem});
   }
 
-  const onDesignElemRemoval = (designElem: NailDesignOption) => {
+  const onDesignElemRemoval = () => {
+    console.log('clear all');
+    dispatch({type: 'REMOVE_ALL'});
+  }
+
+  const onDesignElementCountChange = (designElem: NailDesignOption, count: number) => {
     console.log('selected', designElem);
-    dispatch({type: 'REMOVE_DESIGN', design: designElem});
+    dispatch({type: 'SET_DESIGN_BY_COUNT', design: designElem, count});
   }
 
 
@@ -95,9 +99,9 @@ export function DesignBuilder() {
           onHeaderClick={() => onHeaderClick('Design')}>
           <DesignElementMenu
             hand={nailDesign.left}
-            selectedIds={getAppliedDesignElementIds(nailDesign)} 
-            onSelection={onDesignElemSelection} 
-            onRemove={onDesignElemRemoval}/>
+            selectedCountMap={getAppliedDesignElementCounts(nailDesign)} 
+            onSelection={onDesignElementCountChange} 
+            onClear={onDesignElemRemoval}/>
         </DesignSection>
       </div>
 

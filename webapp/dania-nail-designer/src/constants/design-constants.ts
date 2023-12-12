@@ -47,27 +47,29 @@ export const ComplexityScore = {
   F: 3.0,
 } as const;
 
-export const DesignElements: DesignElement[] = [
-  { id: 0,  name: "French", complexity: "F" },
-  { id: 1,  name: "Marble", complexity: "E" },
-  { id: 2,  name: "Gradient", complexity: "D" },
-  { id: 3,  name: "Glitter Gradient", complexity: "E" },
-  { id: 4,  name: "Glitter Topper", complexity: "C"  },
-  { id: 5,  name: "Dots", complexity: "C" },
-  { id: 6,  name: "Jelly", complexity: "D" }, 
-  { id: 7,  name: "Sticker", complexity: "D" }, 
-  { id: 8,  name: "Gem", complexity: "C" }, 
-  { id: 9,  name: "Gem Cluster", complexity: "D" }, 
-  { id: 10, name: "Charm", complexity: "D" }, 
-  { id: 11, name: "Sugaring", complexity: "D" }, 
-  { id: 12, name: "Foil", complexity: "D" }, 
-  { id: 13, name: "Chrome", complexity: "D" }, 
-  { id: 14, name: "Magnetic", complexity: "E" }, 
-  { id: 15, name: "Striping Tape", complexity: "D" }, 
-  { id: 16, name: "Small Drawn Element", complexity: "D" }, 
-  { id: 17, name: "Multiple Drawn Elements", complexity: "E" }, 
-  { id: 18, name: "Inlay", complexity: "E" }
-];
+export const DesignElements = [
+  { id: 0,  name: "French", complexity: "F", type: 'art' },
+  { id: 1,  name: "Marble", complexity: "E", type: 'art' },
+  { id: 2,  name: "Gradient", complexity: "D", type: 'art' },
+  { id: 3,  name: "Glitter Gradient", complexity: "E", type: 'art' },
+  { id: 4,  name: "Glitter Topper", complexity: "C" , type: 'art' },
+  { id: 5,  name: "Dots", complexity: "C", type: 'art' },
+  { id: 6,  name: "Jelly", complexity: "D", type: 'art' }, 
+  { id: 7,  name: "Sticker", complexity: "D", type: 'art' }, 
+  { id: 8,  name: "Gem", complexity: "C", type: 'item' }, 
+  { id: 9,  name: "Gem Cluster", complexity: "D", type: 'item' }, 
+  { id: 10, name: "Charm SM", complexity: "D", type: 'item' }, 
+  { id: 11, name: "Sugaring", complexity: "D", type: 'art' }, 
+  { id: 12, name: "Foil", complexity: "D", type: 'art' }, 
+  { id: 13, name: "Chrome", complexity: "D", type: 'art' }, 
+  { id: 14, name: "Magnetic", complexity: "E", type: 'art' }, 
+  { id: 15, name: "Striping Tape", complexity: "D", type: 'art' }, 
+  { id: 16, name: "Small Art", complexity: "D", type: 'art' }, 
+  { id: 17, name: "Multiple Arts", complexity: "E", type: 'art' }, 
+  { id: 18, name: "Inlay", complexity: "E", type: 'art' },
+  { id: 19, name: "Base Color", complexity: "E", type: 'base' },
+  { id: 20, name: "Charm LG", complexity: "E", type: 'item' }, 
+] as const;
 
 
 export function getDefaultDesign(): Design {

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap-utilities.min.css';
 import App from './App.tsx'
 import './index.css'
+import '@/styles/style.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,23 +15,26 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 /**
  * GOALS
  * 
- * [x] Complexity calculator
- * [ ] Disabled options in Shape or Length
- * [ ] Apply design elements onto INDIVIDUAL nails 
- *      - Click on finger to focus on it, then apply design elements to it.
- *      - Click on same finger to unfocus, continue applying designs to all.
- * [ ] Switch between left & right hand
- *      ? Two page carousel for left and right hand
- *      ? Split design option into 2 sections (left | right)
- * [x] Display total cost as floating element
- *     Upon click, scroll to bottom to see price summary
- * [ ] Repair
- * [ ] Gel/design removal
- * [ ] Design images
+ * [ ] Form asking for clients current nail details:
+ *      - LENGTH 
+ *      - SHAPE
+ * [ ] Consulation Form: 
+ *      - Basic manicure: (ON or OFF), <-- applies $$$
+ *      - Enhancement options: (Maintenance, New Set, or Takedown) <-- applies $$$
+ *            - Maintenance options: (Refill or Rebalance)   
+ *                  - Design removal: (ON or OFF) <-- applied $$$  
+ *                  - Refill: *display suboptions*
+ *                  - Rebalance: *display suboptions*
+ *            - New Set
+ *            
+ *            
+ * 
+ * 
+ * [ ] Merge Base, Shape, and Length section in respective order.
+ * [ ] Disable length options depending on selected shape.
+ * [ ] 
+ * 
  * [ ] More SVGs
- * [ ] Color for base nail (optional)
- * [ ] Apply color to applicable designs (gradient, dots, marble, magnetic)
- *      - hide color options non-applicable (charms, gem, sticker)
  *
  * 
  * NICE TO HAVE

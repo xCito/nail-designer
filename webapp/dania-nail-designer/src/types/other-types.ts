@@ -20,6 +20,8 @@ export type DesignAction = {
   type: 'REMOVE_DESIGN',
   design: NailDesignOption
 } | {
+  type: 'REMOVE_ALL'
+} | {
   type: 'string'
 }
 

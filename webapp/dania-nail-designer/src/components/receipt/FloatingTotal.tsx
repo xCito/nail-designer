@@ -28,6 +28,6 @@ export function FloatingTotal({total}: Props) {
     return <div key={total} className={classNames("floating-total", {'show': show})}
         onClick={show ? scrollToBottom : undefined}>
         <span className="fw-bold">Total:</span>
-        <span className="ps-3">${total}</span>
+        <span className="ps-3">${total.toFixed(2)}</span>
     </div>
 }

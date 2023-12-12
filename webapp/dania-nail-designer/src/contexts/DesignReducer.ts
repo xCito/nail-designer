@@ -3,6 +3,8 @@ import { Design, Finger } from "../types/design-types";
 import { DesignAction } from "../types/other-types";
 
 export function designReducer(prevState: Design, action: DesignAction) {
+  // console.log(prevState);
+
   switch(action.type) {
     case 'SET_BASE': {
       const newState = structuredClone(prevState);
@@ -29,8 +31,8 @@ export function designReducer(prevState: Design, action: DesignAction) {
       for (const fingerIndex of FingerIndices) {
         const leftHand: Finger = newState.left[fingerIndex];
         const rightHand: Finger = newState.right[fingerIndex];
-        leftHand.designElems = leftHand.designElems.filter(d => d.id == design.id);
-        rightHand.designElems = rightHand.designElems.filter(d => d.id == design.id);
+        leftHand.designElems = leftHand.designElems.filter(d => d.id != design.id);
+        rightHand.designElems = rightHand.designElems.filter(d => d.id != design.id);
       }
 
       const fIndices = [...FingerIndices, ...FingerIndices.reverse()];
@@ -72,6 +74,17 @@ export function designReducer(prevState: Design, action: DesignAction) {
         const rmIndexR = rightHand.designElems.findIndex(d => d.id === design.id);
         leftHand.designElems.splice(rmIndexL, 1);
         rightHand.designElems.splice(rmIndexR, 1);
+      }
+      return newState;
+    }
+    case 'REMOVE_ALL': {
+      const newState: Design = structuredClone(prevState);
+
+      for (const fingerIndex of FingerIndices) {
+        const leftHand: Finger = newState.left[fingerIndex];
+        const rightHand: Finger = newState.right[fingerIndex];
+        leftHand.designElems = [];
+        rightHand.designElems = [];
       }
       return newState;
     }

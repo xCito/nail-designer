@@ -36,6 +36,7 @@ export interface DesignElement {
   id: number;
   complexity: ComplexityValue;
   name: string;
+  type: 'art' | 'item' | 'base';
 }
 
 export interface NailManicureServices {

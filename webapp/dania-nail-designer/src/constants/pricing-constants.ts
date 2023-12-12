@@ -1,5 +1,5 @@
 import { NailManicureServices } from "../types/design-types";
-import { NailBasePrice, NailLengthPrice, NailShapePrice } from "../types/price-types";
+import { NailBasePrice, NailLengthPrice, NailShapePrice, OrnamentPrice } from "../types/price-types";
 
 
 export const SERVICE_FEE = 20;
@@ -7,6 +7,13 @@ export const BASE_MANICURE_PRICE = 20;
 export const GEL_REMOVAL_PRICE = 5;
 export const POLISH_REMOVAL_PRICE = 0;
 export const TAKE_DOWN_PRICE = 5;
+
+export const OrnamentPrices = {
+  "10": 5,
+  "20": 8,
+  "8": 1,
+  "9": 5,
+};
 
 // Manicure
 export const BasePrice: NailBasePrice = {
