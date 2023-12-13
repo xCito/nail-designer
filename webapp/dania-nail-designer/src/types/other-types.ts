@@ -26,15 +26,26 @@ export type DesignAction = {
   type: 'string'
 }
 
-export type DesignProviderValue = {
+export interface DesignProviderValue {
   nailDesign: Design,
   dispatch: (a: DesignAction) => void,
-  startingLength: NailLengthId | null,
-  setStartingLength: (id: NailLengthId) => void,
-  startingShape: NailShapeId | null,
-  setStartingShape: (id: NailShapeId) => void,
-  service: NailServiceId | null,
-  setService: (id: NailServiceId) => void,
+  // startingLength: NailLengthId | null,
+  // setStartingLength: (id: NailLengthId) => void,
+  // startingShape: NailShapeId | null,
+  // setStartingShape: (id: NailShapeId) => void,
+  // service: NailServiceId | null,
+  // setService: (id: NailServiceId) => void,
+  // includeManicure: boolean | null,
+  // setIncludeManicure: (id: boolean | null) => void,
+  consultData: ConsultationValue;
+  setConsultData: (v: Partial<ConsultationValue>) => void; 
+}
+
+export interface ConsultationValue {
+  service: NailServiceId | null;
+  startLen: NailLengthId | null;
+  startShape: NailShapeId | null;
+  isManiApplied: boolean | null;
 }
 
 export type DesignFingerIndex = keyof Pick<Design['left' | 'right'], 'f1' | 'f2' | 'f3' | 'f4' | 'f5'>;

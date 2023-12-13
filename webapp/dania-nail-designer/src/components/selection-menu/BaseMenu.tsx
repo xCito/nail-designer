@@ -24,11 +24,11 @@ export function BaseMenu(props: Props) {
     <h4 className="ps-3">Base Options</h4>
     <div className="base-options-grid px-3">
       {baseOptions.map(option =>
-        <div key={option.value}
-          className={classNames("base-option", { active: selected === option.id })}
+        <button key={option.value}
+          className={classNames("", { active: selected === option.id })}
           onClick={() => onBaseSelect(option.id)}>
           {option.value}
-        </div>
+        </button>
       )}
     </div>
   </div>

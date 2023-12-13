@@ -19,8 +19,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
  *      - LENGTH 
  *      - SHAPE
  * [ ] Consulation Form: 
- *      - Basic manicure: (ON or OFF), <-- applies $$$
- *      - Enhancement options: (Maintenance, New Set, or Takedown) <-- applies $$$
+ *      - [x] Basic manicure: (ON or OFF), <-- applies $$$
+ *      - [ ] Enhancement options: (Maintenance, New Set, or Takedown) <-- applies $$$
  *            - Maintenance options: (Refill or Rebalance)   
  *                  - Design removal: (ON or OFF) <-- applied $$$  
  *                  - Refill: *display suboptions*
@@ -30,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
  *            
  * 
  * 
- * [ ] Merge Base, Shape, and Length section in respective order.
+ * [x] Merge Base, Shape, and Length section in respective order.
  * [ ] Disable length options depending on selected shape.
  * [ ] 
  * 

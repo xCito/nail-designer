@@ -258,8 +258,14 @@ button {
   &:active {
     background-color: var(--main-darker-color);
   }
+  &.active {
+    background-color: orange;
+  }
 }
 
+tr:hover {
+  background-color: rgba(0,0,0,0.1);
+}
 /* ====================== Design Selection ====================== */
 
 .design-list {

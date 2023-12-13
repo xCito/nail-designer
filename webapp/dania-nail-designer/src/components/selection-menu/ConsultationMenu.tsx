@@ -1,14 +1,14 @@
 import { NailLengthId, NailServiceId, NailShapeId } from "@/constants/design-constants"
 import { getNailLengthsAsList, getNailServicesAsList, getNailShapesAsList } from "@/service/helpers";
+import { ConsultationValue } from "@/types/other-types";
 import { ChangeEvent } from "react";
 
 interface Props {
   startLen: NailLengthId | null,
-  onLengthChange: (l: NailLengthId) => void;
   startShape: NailShapeId | null,
-  onShapeChange: (l: NailShapeId) => void;
   service: NailServiceId | null,
-  onServiceChange: (l: NailServiceId) => void;
+  isManiApplied: boolean | null,
+  onConsultChange: (v: Partial<ConsultationValue>) => void;
 }
 
 const lengths = getNailLengthsAsList();
@@ -16,23 +16,44 @@ const shapes = getNailShapesAsList();
 const services = getNailServicesAsList();
 
 export function ConsultationMenu(props: Props) {
-  const { startLen, startShape, service } = props;
-  const { onLengthChange, onShapeChange, onServiceChange } = props;
+  const { startLen, startShape, service, isManiApplied } = props;
+  const { onConsultChange } = props;
 
   const onStartLengthSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    onLengthChange(e.target.value as NailLengthId);
+    const selectLen = e.target.value as NailLengthId;
+    onConsultChange({startLen: selectLen});
   }
 
   const onStartShapeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    onShapeChange(e.target.value as NailShapeId);
+    const selectShape = e.target.value as NailShapeId;
+    onConsultChange({startShape: selectShape});
   }
 
   const onServiceSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    onServiceChange(e.target.value as NailServiceId);
+    const selectSvc = e.target.value as NailServiceId;
+    const updateConsult: Partial<ConsultationValue> = { service: selectSvc };
+
+    if (selectSvc === 'manicure') {
+      updateConsult.isManiApplied = null
+      updateConsult.startLen = 'natural', 
+      updateConsult.startShape = 'round';
+    } else if (selectSvc == 'take_down') {
+      updateConsult.isManiApplied = true,
+      updateConsult.startLen = 'natural', 
+      updateConsult.startShape = 'round';
+    } else {
+      updateConsult.isManiApplied = true;
+    }
+
+    onConsultChange(updateConsult);
+  }
+
+  const onApplyManicureChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectMani = e.target.checked;
+    onConsultChange({isManiApplied: selectMani});
   }
 
   return <div className="text-start px-3">
-  
 
     <p className='fw-bold'>Desired Service</p>
     {services.map(s => 
@@ -50,7 +71,17 @@ export function ConsultationMenu(props: Props) {
     
     <br />
     
-    {(service !== 'manicure' && service !== 'take_down') && <>
+    {(service !== null && service !== 'manicure') && <>
+      <label htmlFor='include_mani'>
+        <input id="include_mani" type="checkbox" checked={isManiApplied ?? false} onChange={onApplyManicureChange}/>
+        Apply manicure
+      </label>
+
+      <br />
+      <br />
+    </>}
+
+    {(service !== null && service !== 'manicure' && service !== 'take_down') && <>
       <p className='fw-bold'>Select your nail length before service</p>
       <select className="ms-3" id="strt_length" onChange={onStartLengthSelect} value={startLen ?? undefined}>
         <option disabled>Choose length</option>

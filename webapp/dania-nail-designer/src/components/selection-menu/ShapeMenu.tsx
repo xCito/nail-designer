@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { HandDesign, NailLengthId, NailShapeId } from "../../constants/design-constants";
 import { nailShapeAndLength } from "../../constants/other-constants";
 import { getNailShapesAsList } from "../../service/helpers";
@@ -26,8 +27,14 @@ export function ShapeMenu(props: Props) {
   }
 
   return <div className="position-relative">
-     <h4 className="ps-3">Shape Options</h4>
-  
+    <h4 className="ps-3">Shape Options</h4>
+
+    
+    {shapeOptions.map(s => 
+      <button className={classNames({active: selected === s.id})} onClick={() => onSelection(s.id)} key={s.id}>
+        {s.value.label}
+      </button>
+    )}
     {/* <MainAndSubSelect 
       isTypeDisabled={isTypeDisabled}
       isSubTypeDisabled={isShapeDisabled}

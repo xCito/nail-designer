@@ -1,14 +1,14 @@
 
 export const NailShapes = {
-  coffin:     { label: 'Coffin',      type: 'Tapered' },
-  ballerina:  { label: 'Ballerina',   type: 'Tapered' },
-  oval:       { label: 'Oval',        type: 'Rounded' },
-  round:      { label: 'Round',       type: 'Rounded' },
-  stiletto:   { label: 'Stiletto',    type: 'Pointy' },
-  almondetto: { label: 'Almondetto',  type: 'Pointy' },
-  almond:     { label: 'Almond',      type: 'Pointy' },
-  kitten:     { label: 'Kitten',      type: 'Pointy' },
-  square:     { label: 'Square',      type: 'Square' },
+  stiletto:   { label: 'Stiletto',    type: 'Pointy',  size: 0 },
+  almondetto: { label: 'Almondetto',  type: 'Pointy',  size: 1 },
+  almond:     { label: 'Almond',      type: 'Pointy',  size: 2 },
+  // kitten:     { label: 'Kitten',      type: 'Pointy',  size: 3 },
+  ballerina:  { label: 'Ballerina',   type: 'Tapered', size: 3 },
+  coffin:     { label: 'Coffin',      type: 'Tapered', size: 4 },
+  oval:       { label: 'Oval',        type: 'Rounded', size: 5 },
+  round:      { label: 'Round',       type: 'Rounded', size: 6 },
+  square:     { label: 'Square',      type: 'Square',  size: 7 },
 } as const;
 
 
@@ -21,13 +21,13 @@ export const NailBases = {
 
 
 export const NailLengths = {
-  natural: { label: 'Natural', type: 'Natural' },
-  x_short: { label: 'X Short', type: 'Extension' },
-  short:   { label: 'Short',   type: 'Extension' },
-  medium:  { label: 'Medium',  type: 'Extension' },
-  long:    { label: 'Long',    type: 'Extension' },
-  x_long:  { label: 'X Long',  type: 'Extension' },
-  xx_long: { label: '2X Long', type: 'Extension' },
+  natural: { label: 'Natural', type: 'Natural',   size: 0},
+  x_short: { label: 'X Short', type: 'Extension', size: 1},
+  short:   { label: 'Short',   type: 'Extension', size: 2},
+  medium:  { label: 'Medium',  type: 'Extension', size: 3},
+  long:    { label: 'Long',    type: 'Extension', size: 4},
+  x_long:  { label: 'X Long',  type: 'Extension', size: 5},
+  xx_long: { label: '2X Long', type: 'Extension', size: 6},
 } as const;
 
 export const ComplexityScore = {

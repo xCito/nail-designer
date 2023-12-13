@@ -9,6 +9,7 @@ import { DesignElementMenu } from "./selection-menu/DesignElementMenu";
 import { LengthMenu } from "./selection-menu/LengthMenu";
 import { ShapeMenu } from "./selection-menu/ShapeMenu";
 import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId } from "@/constants/design-constants";
+import { ConsultationValue } from "@/types/other-types";
 
 
 export function DesignBuilder() {
@@ -17,12 +18,8 @@ export function DesignBuilder() {
   const { 
     dispatch, 
     nailDesign, 
-    startingLength, 
-    setStartingLength,
-    startingShape, 
-    setStartingShape,
-    service,
-    setService
+    consultData,
+    setConsultData,
   } = useContext(DesignContext);
 
   const onHeaderClick = (section: string) => {
@@ -60,18 +57,17 @@ export function DesignBuilder() {
 
 
   return <div className="h-100"> 
-    <div className="layout d-flex flex-column">
+    <div className="layout d-flex flex-column mx-auto">
         <DesignSection 
           title='Consultation' 
           isExpanded={openSection === 'Consultation'}
           onHeaderClick={() => onHeaderClick('Consultation')}>
             <ConsultationMenu 
-              service={service}
-              startLen={startingLength}
-              startShape={startingShape}
-              onServiceChange={setService}
-              onShapeChange={setStartingShape}
-              onLengthChange={setStartingLength} />
+              service={consultData.service}
+              startLen={consultData.startLen}
+              startShape={consultData.startShape}
+              isManiApplied={consultData.isManiApplied}
+              onConsultChange={(v: Partial<ConsultationValue>) => setConsultData(v) }  />
         </DesignSection>
 
         <DesignSection 
@@ -125,6 +121,11 @@ export function DesignBuilder() {
         </DesignSection>
       </div>
 
-      <Summary nailDesign={nailDesign} />
+      <Summary 
+        nailDesign={nailDesign} 
+        isManiApplied={consultData.isManiApplied}
+        selectedServiceId={consultData.service}
+        startLength={consultData.startLen}
+        startShape={consultData.startShape} />
     </div>;
 }
