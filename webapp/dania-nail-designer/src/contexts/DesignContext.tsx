@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useReducer, useState } from "react";
-import { Design, NailLengthId, NailServiceId, NailShapeId, getDefaultDesign } from "../constants/design-constants";
+import { Design, getDefaultDesign } from "../constants/design-constants";
 import { ConsultationValue, DesignProviderValue } from "../types/other-types";
 import { designReducer } from "./DesignReducer";
 
@@ -30,10 +30,6 @@ export const DesignContext = createContext<DesignProviderValue>(contextDefault);
 
 export function DesignProvider({children}: {children?: ReactNode}) {
   const [nailDesign, dispatch] = useReducer(designReducer, defaultDesign);
-  const [startingLength, setStartingLength] = useState<NailLengthId | null>(null);
-  const [startingShape, setStartingShape] = useState<NailShapeId | null>(null);
-  const [service, setService] = useState<NailServiceId | null>(null);
-  const [includeManicure, setIncludeManicure] = useState<boolean | null>(null);
   const [consultation, setConsultation] = useState<ConsultationValue>(consultDataDefault);
 
   const updateConsultationData = (v: Partial<ConsultationValue>) => {

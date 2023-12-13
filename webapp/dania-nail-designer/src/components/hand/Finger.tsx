@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { NailLengthId, NailShapeId } from "../../constants/design-constants";
 import { DefaultNailAndLength, NailSvgHeight, nailShapeAndLength } from "../../constants/other-constants";
 
@@ -22,7 +21,7 @@ interface Props {
   length: NailLengthId
 }
 export function Finger({shape, length}: Props) {
-  const [lengthVal, setLengthVal] = useState(length);
+  // const [lengthVal, setLengthVal] = useState(length);
   // const [shapeVal, setShapeVal] = useState(shape);
   const heightVal = NailSvgHeight['xx_long'];
   // console.log(lengthVal);

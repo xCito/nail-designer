@@ -60,6 +60,6 @@ export function getAppliedDesignElementCounts(nailDesign: Design): Map<NailDesig
 }
 
 
-export function getByType<T extends { type: string }>(list: T[], type: string): T[] {
-  return list.filter(elem => elem.type === type);
+export function getByType<T extends { "type": string }>(list: T[], t: string): T[] {
+  return list.filter(elem => elem.type === t);
 }

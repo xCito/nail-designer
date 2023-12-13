@@ -75,7 +75,7 @@ interface OptionProps {
   onSelect: () => void;
 }
 function DesignOption(props: OptionProps) {
-  const { label, isSelected, count, onSetCount, onSelect, designType } = props;
+  const { label, isSelected, count, onSetCount, designType } = props;
   const [isExpanded, setExpanded] = useState<boolean>(false);
   const MIN = 0;
   const MAX = designType === 'base' ? 1 : 10;

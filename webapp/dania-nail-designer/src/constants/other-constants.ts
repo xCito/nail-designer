@@ -69,14 +69,14 @@ export const nailShapeAndLength: ShapeAndLengths = {
     x_long: 'C 10 71 8 80 6 86 C 2 97 -2 97 -6 86 C -8 80 -10 71 -15 36',
     xx_long: 'C 11 84 8 93 6 99 C 2 110 -2 110 -6 99 C -8 93 -11 84 -15 36',
   },
-  kitten: {
+  // kitten: {
     //x_short: '',
     //short: '',
-    medium: '', //is a stiletto, only at this length
+    // medium: '', //is a stiletto, only at this length
     //long: '',
     //x_long: '',
     //xx_long: '',
-  }
+  // }
 }
 
 export const NailSvgHeight: LengthAndPixelHeight = {
