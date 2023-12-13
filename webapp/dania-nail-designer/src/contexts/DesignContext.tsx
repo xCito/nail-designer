@@ -1,16 +1,33 @@
-import { ReactNode, createContext, useReducer } from "react";
-import { getDefaultDesign } from "../constants/design-constants";
-import { Design } from "../types/design-types";
+import { ReactNode, createContext, useReducer, useState } from "react";
+import { Design, NailLengthId, NailShapeId, getDefaultDesign } from "../constants/design-constants";
 import { DesignProviderValue } from "../types/other-types";
 import { designReducer } from "./DesignReducer";
 
 const defaultDesign: Design = getDefaultDesign();
-export const DesignContext = createContext<DesignProviderValue>({nailDesign: defaultDesign, dispatch: () => void 0});
+const contextDefault: DesignProviderValue = {
+  nailDesign: defaultDesign, 
+  dispatch: () => void 0,
+  startingLength: null,
+  setStartingLength: () => void 0,
+  startingShape: null,
+  setStartingShape: () => void 0,
+}
+export const DesignContext = createContext<DesignProviderValue>(contextDefault);
 
 export function DesignProvider({children}: {children?: ReactNode}) {
   const [nailDesign, dispatch] = useReducer(designReducer, defaultDesign);
+  const [startingLength, setStartingLength] = useState<NailLengthId | null>(null);
+  const [startingShape, setStartingShape] = useState<NailShapeId | null>(null);
 
-  return <DesignContext.Provider value={{nailDesign, dispatch}}>
+  const value = {
+    startingLength,
+    setStartingLength,
+    startingShape,
+    setStartingShape,
+    nailDesign, 
+    dispatch
+  }
+  return <DesignContext.Provider value={value}>
     {children}
   </DesignContext.Provider>
 }

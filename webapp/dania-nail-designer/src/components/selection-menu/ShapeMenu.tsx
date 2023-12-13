@@ -1,43 +1,39 @@
-import { NailShape } from "../../constants/design-constants";
+import { HandDesign, NailLengthId, NailShapeId } from "../../constants/design-constants";
 import { nailShapeAndLength } from "../../constants/other-constants";
-import { getLengthId } from "../../service/helpers";
-import { HandDesign, NailLengthOption, NailShapeOption, NailShapeOptionVal } from "../../types/design-types";
-import { Hands } from "../hand/Hands";
+import { getNailShapesAsList } from "../../service/helpers";
 import { MainAndSubSelect } from "./MainAndSubSelect";
 
 
-const shapeOptions = Object.entries(NailShape)
-  .map(([id, shape]) => ({id, ...shape})) as ({id: NailShapeOption} & NailShapeOptionVal)[];
+const shapeOptions = getNailShapesAsList();
 
 interface Props {
   hand: HandDesign;
-  selected: NailShapeOption;
-  onSelection: (shape: NailShapeOption) => void;
+  selected: NailShapeId;
+  onSelection: (shape: NailShapeId) => void;
   isNatural: boolean;
-  selectedLength: NailLengthOption;
+  selectedLength: NailLengthId;
 }
 export function ShapeMenu(props: Props) {
-  const { selected, onSelection, isNatural, selectedLength, hand } = props;
+  const { selected, onSelection, isNatural, selectedLength } = props;
 
   const isTypeDisabled = (type: string) => {
     return isNatural && !(type === 'Rounded' || type === 'Square')
   }
 
-  const isShapeDisabled = (shape: NailShapeOption) => {
-    const length = getLengthId(selectedLength);
-    const svg = nailShapeAndLength[shape][length] 
+  const isShapeDisabled = (shape: NailShapeId) => {
+    const svg = nailShapeAndLength[shape][selectedLength];
     return typeof svg === 'undefined' || svg === '';
   }
 
-  return <div className="position-relative h-100">
-    <Hands hand={hand} />
+  return <div className="position-relative">
+     <h4 className="ps-3">Shape Options</h4>
   
-    <MainAndSubSelect 
+    {/* <MainAndSubSelect 
       isTypeDisabled={isTypeDisabled}
       isSubTypeDisabled={isShapeDisabled}
       onSubSelect={onSelection}
       selected={selected}
-      options={shapeOptions} />
+      options={shapeOptions} /> */}
 
   </div>;
     

@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
 import classnames from 'classnames';
+import { ReactNode } from "react";
 
 interface Props {
     title: string;
@@ -15,7 +15,7 @@ export function DesignSection({title, children, isExpanded, onHeaderClick}: Prop
     <div className="section-header p-3 d-flex align-items-center" onClick={onHeaderClick}>
       <h3 className="m-0">{title}</h3>
     </div>
-    <div className="section-body w-100">
+    <div className="section-body">
       {children}
     </div>
   </div>;

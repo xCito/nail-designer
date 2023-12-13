@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 /**
  * GOALS
  * 
- * [ ] Form asking for clients current nail details:
+ * [x] Form asking for clients current nail details:
  *      - LENGTH 
  *      - SHAPE
  * [ ] Consulation Form: 

@@ -2,18 +2,18 @@ import classNames from "classnames";
 import { useState } from "react";
 import { getByType } from "../../service/helpers";
 
-type Typed<K> = {id: K, label: string, type: string};
-interface Props<K extends string, T extends Typed<K>> {
+type Typed<T> = {id: keyof T, value: T[keyof T]};
+interface Props<T extends Typed<T>> {
   options: Array<T>;
-  selected: K;
-  onSubSelect: (subId: K) => void; 
+  selected: T['id'];
+  onSubSelect: (subId: T['id']) => void; 
   isTypeDisabled?: (type: string) => boolean;  
-  isSubTypeDisabled?: (shape: K) => boolean;  
+  isSubTypeDisabled?: (shape: T['id']) => boolean;  
 }
-export function MainAndSubSelect<K extends string, T extends Typed<K>>(props: Props<K, T>) {
+export function MainAndSubSelect<T extends Typed<T>>(props: Props<T>) {
   const { selected, options, onSubSelect, isTypeDisabled = () => false, isSubTypeDisabled = () => false} = props;
   const [selectedType, setType] = useState<null | string>(() => {
-    return options.find(o => selected === o.id)?.type ?? null;
+    return options.find(o => selected === o.id)?.value.type ?? null;
   });
 
   const mainOptions = [...options
@@ -36,8 +36,8 @@ export function MainAndSubSelect<K extends string, T extends Typed<K>>(props: Pr
     }
   }
 
-  return <div className={classNames("shape-menu", {'selected': selectedType !== null && count > 1})}>
-    <div className={classNames("base-options-grid p-3")}>
+  return <div className={classNames("shape-menu px-3", {'selected': selectedType !== null && count > 1})}>
+    <div className={classNames("base-options-grid")}>
       {mainOptions.map(option => 
         <div key={option}
           className={classNames(

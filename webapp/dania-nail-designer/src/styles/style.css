@@ -285,16 +285,17 @@ button {
     }
     
     .option-count {
-      color: var(--main-color);
+      color: black;
       background-color: var(--third-color);
-      background-color: orange;
       font-weight: bold;
       font-size: 0.85em;
-      padding-top: 3px;
       border-radius: 50%;
       border: 1px solid black;
       text-align: center;
 
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: absolute;
       top: -7px;
       right: -7px;

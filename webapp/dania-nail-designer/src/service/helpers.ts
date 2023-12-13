@@ -1,80 +1,60 @@
-import { count } from "console";
+import { Design, DesignElements, NailBases, NailDesignElemId, NailLengths, NailShapes, NailServices } from "@/constants/design-constants";
 import { FingerIndices } from "../constants/other-constants";
-import { Design, NailBaseOption, NailLengthOption, NailShapeOption } from "../types/design-types";
-import { BaseNailLength } from "../types/other-types";
-import { DesignElements } from "@/constants/design-constants";
+
+
+
+function getObjAsList<T extends { [k in keyof T]: string | object}>(obj: T): Array<{id: keyof T, value: T[keyof T]}> {
+  return (Object.entries<string | object>(obj) as Array<[id: keyof T, value: T[keyof T]]>)
+    .map(([k,v]) => ({id: k, value: typeof v ==='object' ? {...v} : v}));
+}
+
+export function getNailServicesAsList() {  return getObjAsList(NailServices); }
+export function getNailBasesAsList() {  return getObjAsList(NailBases); }
+export function getNailLengthsAsList() {  return getObjAsList(NailLengths); }
+export function getNailShapesAsList() {  return getObjAsList(NailShapes); }
+export function getNailDesignElementsAsList() {  return getObjAsList(DesignElements); }
 
 export function getAppliedBases(nailDesign: Design) {
-  const selectedBase: NailBaseOption[] = [];
-
-  if (nailDesign.left?.base) {
-    selectedBase.push(nailDesign.left.base);
-  }
-  if (nailDesign.right?.base) {
-    selectedBase.push(nailDesign.right.base);
-  }
-
-  return selectedBase;
+  return nailDesign.left.base;
 }
 
 export function getAppliedLength(nailDesign: Design) {
-  const selectedBase: NailLengthOption[] = [];
-
-  if (nailDesign.left?.length) {
-    selectedBase.push(nailDesign.left.length);
-  }
-  if (nailDesign.right?.length) {
-    selectedBase.push(nailDesign.right.length);
-  }
-
-  return selectedBase;
+  return nailDesign.left.length;
 }
 
 export function getAppliedShape(nailDesign: Design) {
-  const selectedBase: NailShapeOption[] = [];
-
-  if (nailDesign.left.shape) {
-    selectedBase.push(nailDesign.left.shape);
-  }
-  if (nailDesign.right.shape) {
-    selectedBase.push(nailDesign.right.shape);
-  }
-
-  return selectedBase;
+  return nailDesign.left.shape;
 }
 
-export function getAppliedDesignElementIds(nailDesign: Design): number[] {
-  const selectedDesignIds = new Set<number>();
+export function getAppliedDesignElementIds(nailDesign: Design): NailDesignElemId[] {
+  const fingers = [];
   for (const fingerIndex of FingerIndices) {
-    nailDesign.left[fingerIndex].designElems.forEach(dElem => {
-      selectedDesignIds.add(dElem.id);
-    });
-
-    nailDesign.right[fingerIndex].designElems.forEach(dElem => {
-      selectedDesignIds.add(dElem.id);
-    });
+    fingers.push(nailDesign.left[fingerIndex]);
+    fingers.push(nailDesign.right[fingerIndex]);
   }
 
-  return new Array(...selectedDesignIds);
+  const designElemSet = fingers.map(finger => finger.designElems)
+    .flat()
+    .reduce((set, d) => set.add(d), new Set<NailDesignElemId>());
+
+  return Array.from(designElemSet);
 }
 
-export function getAppliedDesignElementCounts(nailDesign: Design): Map<typeof DesignElements[number]['id'], number> {
-  const countMap = new Map<typeof DesignElements[number]['id'], number>();
-  for (const fingerIndex of FingerIndices) {
-    nailDesign.left[fingerIndex].designElems.forEach(dElem => {
-      if (countMap.has(dElem.id))
-        countMap.set(dElem.id, countMap.get(dElem.id)! + 1);
-      else
-        countMap.set(dElem.id, 1);
-    });
+export function getAppliedDesignElementCounts(nailDesign: Design): Map<NailDesignElemId, number> {
+  const countMap = new Map<NailDesignElemId, number>();
 
-    nailDesign.right[fingerIndex].designElems.forEach(dElem => {
-      if (countMap.has(dElem.id))
-        countMap.set(dElem.id, countMap.get(dElem.id)! + 1);
-      else
-        countMap.set(dElem.id, 1);
-    });
+  const fingers = [];
+  for (const fingerIndex of FingerIndices) {
+    fingers.push(nailDesign.left[fingerIndex]);
+    fingers.push(nailDesign.right[fingerIndex]);
   }
+
+  fingers.map(finger => finger.designElems).flat().forEach(dElemId => {
+    if (countMap.has(dElemId))
+      countMap.set(dElemId, countMap.get(dElemId)! + 1);
+    else
+      countMap.set(dElemId, 1);
+  });
 
   return countMap;
 }
@@ -82,8 +62,4 @@ export function getAppliedDesignElementCounts(nailDesign: Design): Map<typeof De
 
 export function getByType<T extends { type: string }>(list: T[], type: string): T[] {
   return list.filter(elem => elem.type === type);
-}
-
-export function getLengthId(id: NailLengthOption): BaseNailLength {
-  return (id.endsWith('_S') ? id.substring(0, id.length - 2) : id) as BaseNailLength;
 }

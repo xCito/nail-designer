@@ -1,7 +1,6 @@
+import { HandDesign, NailDesignElem, NailDesignElemId } from "@/constants/design-constants";
+import { getNailDesignElementsAsList } from "@/service/helpers";
 import classNames from "classnames";
-import { DesignElements } from "@/constants/design-constants";
-import { DesignElement, HandDesign, NailDesignOption } from "../../types/design-types";
-import { Hands } from "../hand/Hands";
 import { useState } from "react";
 
 
@@ -12,23 +11,23 @@ function defaultColObj(): ColMap {
 }
 
 
-const designOptionArr = DesignElements.map(o => ({ label: o.name, value: o }));
+const designOptionArr = getNailDesignElementsAsList();
 
 
 interface Props {
   hand: HandDesign,
-  selectedCountMap: Map<number, number>,
-  onSelection: (design: NailDesignOption, count: number) => void;
+  selectedCountMap: Map<NailDesignElemId, number>,
+  onSelection: (design: NailDesignElemId, count: number) => void;
   onClear: () => void;
 }
 export function DesignElementMenu(props: Props) {
-  const { selectedCountMap, onSelection, onClear, hand } = props;
+  const { selectedCountMap, onSelection, onClear } = props;
   const [searchText, setSearchText] = useState<string>("");
 
-  const filteredOptions = designOptionArr.filter(d => d.label.toUpperCase().includes(searchText.toUpperCase()))
+  const filteredOptions = designOptionArr.filter(d => d.value.name.toUpperCase().includes(searchText.toUpperCase()))
   
   const designColumns = filteredOptions
-      .sort((a, b) => a.label.localeCompare(b.label))
+      .sort((a, b) => a.value.name.localeCompare(b.value.name))
       .reduce((cols, d, index) => {
         const mappedTo = index % COLUMNS;
         cols[mappedTo].push(d);
@@ -53,12 +52,12 @@ export function DesignElementMenu(props: Props) {
       {Object.entries(designColumns).map(([colNum, designs]) =>
         <div className="design-column d-flex flex-column" key={colNum}>
           {designs.map(option =>
-            <DesignOption key={option.value.id}
-              isSelected={selectedCountMap.has(option.value.id)}
+            <DesignOption key={option.id}
+              isSelected={selectedCountMap.has(option.id)}
               designType={option.value.type}
-              label={option.label}
-              count={selectedCountMap.get(option.value.id) || 0}
-              onSetCount={(c) => onSelection(option.value, c)}
+              label={option.value.name}
+              count={selectedCountMap.get(option.id) || 0}
+              onSetCount={(c) => onSelection(option.id, c)}
               onSelect={console.log} />
           )}
         </div>
@@ -70,7 +69,7 @@ export function DesignElementMenu(props: Props) {
 interface OptionProps {
   isSelected: boolean;
   label: string;
-  designType: DesignElement['type'];
+  designType: NailDesignElem['type'];
   count: number;
   onSetCount: (c: number) => void;
   onSelect: () => void;

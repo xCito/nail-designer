@@ -1,26 +1,23 @@
-import { NailLength } from "../../constants/design-constants";
-import { HandDesign, NailLengthOption, NailLengthOptionVal } from "../../types/design-types";
-import { Hands } from "../hand/Hands";
-import { MainAndSubSelect } from "./MainAndSubSelect";
+import { getNailLengthsAsList } from "@/service/helpers";
+import { HandDesign, NailLengthId } from "../../constants/design-constants";
 
-const lengthOptions = Object.entries(NailLength)
-  .map(([id, val]) => ({id, ...val})) as ({id: NailLengthOption} & NailLengthOptionVal)[];
+const lengthOptions = getNailLengthsAsList();
 
 interface Props {
   hand: HandDesign;
-  selected: NailLengthOption;
-  onSelection: (length: NailLengthOption) => void;
+  selected: NailLengthId;
+  onSelection: (length: NailLengthId) => void;
 }
 export function LengthMenu(props: Props) {
-  const { selected, onSelection, hand } = props;
+  const { selected, onSelection } = props;
 
-  return <div className="position-relative h-100">
-    <Hands hand={hand} />
+  return <div className="position-relative">
+    <h4 className="ps-3">Length Options</h4>
   
-    <MainAndSubSelect
+    {/* <MainAndSubSelect
       onSubSelect={onSelection} 
       options={lengthOptions}
-      selected={selected}  />
+      selected={selected}  /> */}
   </div>;
     
 }

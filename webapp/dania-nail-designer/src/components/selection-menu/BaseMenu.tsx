@@ -1,24 +1,26 @@
+import { getNailBasesAsList } from "@/service/helpers";
 import classNames from "classnames";
-import { NailBase } from "../../constants/design-constants"
-import { NailBaseOption } from "../../types/design-types";
+import { NailBaseId } from "../../constants/design-constants";
 
-const baseOptions = Object.entries(NailBase).map(o => {
-    return {label: o[1], value: o[0] as NailBaseOption}
-});
+
+const baseOptions = getNailBasesAsList();
 
 interface Props {
-    selected: NailBaseOption[]
-    onSelection: (base: NailBaseOption) => void;
+    selected: NailBaseId
+    onSelection: (base: NailBaseId) => void;
 }
 export function BaseMenu(props: Props) {
     const { selected, onSelection } = props;
-    return <div className="base-options-grid p-3">
-        {baseOptions.map(option => 
-            <div key={option.value}
-                className={classNames("base-option", {active: selected.includes(option.value)})} 
-                onClick={() => onSelection(option.value)}>
-                {option.label}
-            </div>
-        )}
+    return <div>   
+      <h4 className="ps-3">Base Options</h4>    
+      <div className="base-options-grid px-3">
+          {baseOptions.map(option => 
+              <div key={option.value}
+              className={classNames("base-option", {active: selected === option.id})} 
+              onClick={() => onSelection(option.id)}>
+                  {option.value}
+              </div>
+          )}
+      </div>
     </div>
 }

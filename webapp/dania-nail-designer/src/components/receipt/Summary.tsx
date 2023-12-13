@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { ComplexityScore, DesignElements, NailBase, NailLength, NailShape } from "../../constants/design-constants"
+import { ComplexityScore, DesignElements, NailBases, NailLengths, NailShapes } from "../../constants/design-constants"
 import { FingerIndices } from "../../constants/other-constants";
 import { BasePrice, LengthPrice, OrnamentPrices, SERVICE_FEE, ShapePrice } from "../../constants/pricing-constants"
 import { ComplexityValue, Design, DesignElement } from "../../types/design-types"
@@ -69,7 +69,7 @@ export function Summary({ nailDesign }: Props) {
         <tr>
           <td className="text-start">Length</td>
           <td className="text-start fw-light">
-            {NailLength[ nailDesign.left.length ].label}
+            {NailLengths[ nailDesign.left.length ].label}
             {lenPrice === 0 && <span className="fst-italic">(Same length)</span>}
           </td>
           <td className="text-start fw-light">-</td>
@@ -78,7 +78,7 @@ export function Summary({ nailDesign }: Props) {
         <tr>
           <td className="text-start">Shape</td>
           <td className="text-start fw-light">
-            {NailShape[ nailDesign.left.shape ].label}
+            {NailShapes[ nailDesign.left.shape ].label}
           </td>
           <td className="text-start fw-light">-</td>
           <td className="text-start fw-light">${shpPrice.toFixed(2)}</td>

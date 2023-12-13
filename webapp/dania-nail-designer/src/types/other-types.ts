@@ -1,24 +1,25 @@
-import { Design, NailBaseOption, NailDesignOption, NailLengthOption, NailShapeOption } from "./design-types"
+import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId, Design } from "@/constants/design-constants"
+
 
 export type DesignAction = {
   type: 'SET_BASE',
-  base: NailBaseOption
+  base: NailBaseId
 } | {
   type: 'SET_SHAPE',
-  shape: NailShapeOption
+  shape: NailShapeId
 } | {
   type: 'SET_LENGTH',
-  length: NailLengthOption
+  length: NailLengthId
 } | {
   type: 'SET_DESIGN_BY_COUNT',
-  design: NailDesignOption,
+  design: NailDesignElemId,
   count: number,
 } | {
   type: 'ADD_DESIGN',
-  design: NailDesignOption
+  design: NailDesignElemId
 } | {
   type: 'REMOVE_DESIGN',
-  design: NailDesignOption
+  design: NailDesignElemId
 } | {
   type: 'REMOVE_ALL'
 } | {
@@ -27,18 +28,22 @@ export type DesignAction = {
 
 export type DesignProviderValue = {
   nailDesign: Design,
-  dispatch: (a: DesignAction) => void
+  dispatch: (a: DesignAction) => void,
+  startingLength: NailLengthId | null,
+  setStartingLength: (id: NailLengthId) => void,
+  startingShape: NailShapeId | null,
+  setStartingShape: (id: NailShapeId) => void,
 }
 
 export type DesignFingerIndex = keyof Pick<Design['left' | 'right'], 'f1' | 'f2' | 'f3' | 'f4' | 'f5'>;
 
 export type ShapeAndLengths = {
-  [shape in NailShapeOption]: {
-    [length in NailLengthOption]?: string | undefined;
+  [shape in NailShapeId]: {
+    [length in NailLengthId]?: string | undefined;
   }
 }
 export type LengthAndPixelHeight = {
   [len in BaseNailLength]: number;
 }
 
-export type BaseNailLength = Exclude<NailLengthOption, 'x_short_S' | 'short_S' | 'medium_S' | 'long_S' | 'x_long_S' | 'xx_long_S'>
+export type BaseNailLength = Exclude<NailLengthId, 'x_short_S' | 'short_S' | 'medium_S' | 'long_S' | 'x_long_S' | 'xx_long_S'>
