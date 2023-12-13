@@ -10,6 +10,8 @@ import { LengthMenu } from "./selection-menu/LengthMenu";
 import { ShapeMenu } from "./selection-menu/ShapeMenu";
 import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId } from "@/constants/design-constants";
 import { ConsultationValue } from "@/types/other-types";
+import { Hands } from "./hand/Hands";
+import classNames from "classnames";
 
 
 export function DesignBuilder() {
@@ -92,6 +94,10 @@ export function DesignBuilder() {
             hand={nailDesign.left}
             selected={nailDesign.left.length} 
             onSelection={onLengthSelection} />
+
+          <div className={classNames("d-flex justify-content-center mt-5 hands border-top", nailDesign.left.length)}>
+            <Hands hand={nailDesign.left} />
+          </div>
         </DesignSection>
 
         {/* <DesignSection 

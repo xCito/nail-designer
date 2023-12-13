@@ -24,18 +24,18 @@ interface Props {
 export function Finger({shape, length}: Props) {
   const [lengthVal, setLengthVal] = useState(length);
   // const [shapeVal, setShapeVal] = useState(shape);
-  const heightVal = NailSvgHeight[lengthVal];
+  const heightVal = NailSvgHeight['xx_long'];
   // console.log(lengthVal);
 
   // Animation reasons
-  useEffect(() => {
-    if (NailSvgHeight[length] > NailSvgHeight[lengthVal]) {
-      setLengthVal(length);
-      return;
-    } 
-    const int = setTimeout(() => setLengthVal(length), 300);
-    return () => clearTimeout(int);
-  }, [length, lengthVal]);
+  // useEffect(() => {
+  //   if (NailSvgHeight[length] > NailSvgHeight[lengthVal]) {
+  //     setLengthVal(length);
+  //     return;
+  //   } 
+  //   const int = setTimeout(() => setLengthVal(length), 100);
+  //   return () => clearTimeout(int);
+  // }, [length, lengthVal]);
 
 
 
@@ -51,7 +51,7 @@ export function Finger({shape, length}: Props) {
         <path d="M -15 36 C -15 24 -15 16 -14 12 C -11 -1 11 -1 14 12 C 15 16 15 24 15 36" stroke="black" strokeWidth="0.5" fill={nailColor} />
         
         {/* Nail Shape and Length */}
-        <path d={`M 15 36 ${nailShapeAndLength[shape][lengthVal] || DefaultNailAndLength}`} stroke="black" strokeWidth="0.5" fill={nailColor} style={{transition: 'all 0.3s'}} />
+        <path d={`M 15 36 ${nailShapeAndLength[shape][length] || DefaultNailAndLength}`} stroke="black" strokeWidth="0.5" fill={nailColor} style={{transition: 'all 0.3s'}} />
       </svg>
   }
 }

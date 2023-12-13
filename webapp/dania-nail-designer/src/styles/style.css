@@ -116,11 +116,12 @@ html, body, #root {
 
 .hands {
     top: 0;
-    background-color: var(--bg-color);
-    box-shadow: 0px 0px 15px 10px antiquewhite;
+    /* background-color: var(--bg-color); */
+    /* box-shadow: 0px 0px 15px 10px antiquewhite; */
     transition: all 0.3s;
     height: 40px;
 }
+.hands.natural { height: 50px }
 .hands.xx_short { height: 50px }
 .hands.x_short { height: 60px }
 .hands.short { height: 70px }
