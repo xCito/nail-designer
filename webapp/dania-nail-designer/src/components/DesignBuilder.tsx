@@ -21,6 +21,8 @@ export function DesignBuilder() {
     setStartingLength,
     startingShape, 
     setStartingShape,
+    service,
+    setService
   } = useContext(DesignContext);
 
   const onHeaderClick = (section: string) => {
@@ -31,19 +33,19 @@ export function DesignBuilder() {
     }
   }
 
-  const onBaseSelection = (base: NailBaseId) => {
+  const onBaseSelection = (base: NailBaseId | null) => {
     console.log('selected', base);
-    dispatch({type: 'SET_BASE', base});
+    dispatch({type: 'SET_BASE', baseId: base});
   }
 
   const onShapeSelection = (shape: NailShapeId) => {
     console.log('selected', shape);
-    dispatch({type: 'SET_SHAPE', shape});
+    dispatch({type: 'SET_SHAPE', shapeId: shape});
   }
 
   const onLengthSelection = (length: NailLengthId) => {
     console.log('selected', length);
-    dispatch({type: 'SET_LENGTH', length});
+    dispatch({type: 'SET_LENGTH', lengthId: length});
   }
 
   const onDesignElemRemoval = () => {
@@ -53,7 +55,7 @@ export function DesignBuilder() {
 
   const onDesignElementCountChange = (designElem: NailDesignElemId, count: number) => {
     console.log('selected', designElem);
-    dispatch({type: 'SET_DESIGN_BY_COUNT', design: designElem, count});
+    dispatch({type: 'SET_DESIGN_BY_COUNT', designId: designElem, count});
   }
 
 
@@ -64,10 +66,12 @@ export function DesignBuilder() {
           isExpanded={openSection === 'Consultation'}
           onHeaderClick={() => onHeaderClick('Consultation')}>
             <ConsultationMenu 
-              startingLength={startingLength}
-              startingShape={startingShape}
-              onStartShapeChange={setStartingShape}
-              onStartLengthChange={setStartingLength} />
+              service={service}
+              startLen={startingLength}
+              startShape={startingShape}
+              onServiceChange={setService}
+              onShapeChange={setStartingShape}
+              onLengthChange={setStartingLength} />
         </DesignSection>
 
         <DesignSection 

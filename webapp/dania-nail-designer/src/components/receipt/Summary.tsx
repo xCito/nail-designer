@@ -1,42 +1,39 @@
+import { getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
 import { createPortal } from "react-dom";
-import { ComplexityScore, DesignElements, NailBases, NailLengths, NailShapes } from "../../constants/design-constants"
-import { FingerIndices } from "../../constants/other-constants";
-import { BasePrice, LengthPrice, OrnamentPrices, SERVICE_FEE, ShapePrice } from "../../constants/pricing-constants"
-import { ComplexityValue, Design, DesignElement } from "../../types/design-types"
+import { ComplexityScore, Design, DesignElements, NailDesignElem, NailDesignElemId, NailLengths, NailShapes } from "../../constants/design-constants";
+import { BasePrice, LengthPrice, SERVICE_FEE, ShapePrice } from "../../constants/pricing-constants";
 import { FloatingTotal } from "./FloatingTotal";
-import { getAppliedDesignElementCounts } from "@/service/helpers";
-import { OrnamentPriceId } from "@/types/price-types";
 
 
-function getDesignPrice(design: DesignElement, count: number): number {
-  const designId = design.id as OrnamentPriceId;
-
+function getDesignPrice(design: NailDesignElem, count: number): number {
   return design.type === 'art' 
     ? ComplexityScore[design.complexity] * count
     : design.type === 'base' 
     ? 5
-    : OrnamentPrices[designId] * count;
+    : 5 * count;
 }
 
-function getDesignById(id: string | number): DesignElement {
-  return DesignElements.find(design => design.id == id)!;
+function getDesignById(id: NailDesignElemId) {
+  return getNailDesignElementsAsList().find(design => design.id == id)!;
 }
 
 interface Props {
   nailDesign: Design
 }
 export function Summary({ nailDesign }: Props) {
-  const bsePrice = BasePrice[ nailDesign.left.base ];
-  const lenPrice = LengthPrice[ nailDesign.left.length ];
-  const shpPrice = ShapePrice[ nailDesign.left.shape ];
+  const {base, length, shape} = nailDesign.left;
+
+  const bsePrice = base ? BasePrice[ base ] : 0;
+  const lenPrice = LengthPrice[ length ];
+  const shpPrice = ShapePrice[shape ];
   const designCount = getAppliedDesignElementCounts(nailDesign);
  
 
   const designTotal = [...designCount.entries()]
-    .map(([id, count]: [id: number, count: number]) => getDesignPrice(getDesignById(id), count))
+    .map(([id, count]: [id: NailDesignElemId, count: number]) => getDesignPrice(DesignElements[id], count))
     .reduce((total, price) => total + price, 0);
   
-  const total = /**SERVICE_FEE + bsePrice + shpPrice + lenPrice +*/ designTotal;
+  const total = SERVICE_FEE + bsePrice + shpPrice + lenPrice + designTotal;
 
   
   return <div className="px-2 pt-4 pb-5 text-black">
@@ -88,9 +85,9 @@ export function Summary({ nailDesign }: Props) {
           const design = getDesignById(designId);
           return <tr key={designId}>
             <td className="text-start">Design</td>
-            <td className="text-start fw-lighter">{design.name}</td>
-            <td className="text-start fw-lighter">{design.complexity} x{count}</td>
-            <td className="text-start fw-lighter">${getDesignPrice(design, count).toFixed(2)}</td>
+            <td className="text-start fw-lighter">{design.value.name}</td>
+            <td className="text-start fw-lighter">{design.value.complexity} x{count}</td>
+            <td className="text-start fw-lighter">${getDesignPrice(design.value, count).toFixed(2)}</td>
           </tr>
         })}
       </tbody>

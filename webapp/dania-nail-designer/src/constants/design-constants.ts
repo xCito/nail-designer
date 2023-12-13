@@ -1,4 +1,3 @@
-import { ManicureServices } from './pricing-constants';
 
 export const NailShapes = {
   coffin:     { label: 'Coffin',      type: 'Tapered' },
@@ -75,7 +74,7 @@ export const NailServices = {
 export function getDefaultDesign(): Design {
   return {
     left: {
-      base: 'BaseGel',
+      base: null,
       shape: 'round',
       length: 'natural',
       f1: {
@@ -110,7 +109,7 @@ export function getDefaultDesign(): Design {
       },
     },
     right: {
-      base: 'BaseGel',
+      base: null,
       shape: 'stiletto',
       length: 'medium',
       f1: {
@@ -157,7 +156,7 @@ export interface Design {
 
 export interface HandDesign {
   shape: NailShapeId;
-  base: NailBaseId;
+  base: NailBaseId | null;
   length: NailLengthId;
   f1: Finger;
   f2: Finger;

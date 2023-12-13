@@ -1,25 +1,25 @@
-import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId, Design } from "@/constants/design-constants"
+import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId, Design, NailServiceId } from "@/constants/design-constants"
 
 
 export type DesignAction = {
   type: 'SET_BASE',
-  base: NailBaseId
+  baseId: NailBaseId | null
 } | {
   type: 'SET_SHAPE',
-  shape: NailShapeId
+  shapeId: NailShapeId
 } | {
   type: 'SET_LENGTH',
-  length: NailLengthId
+  lengthId: NailLengthId
 } | {
   type: 'SET_DESIGN_BY_COUNT',
-  design: NailDesignElemId,
+  designId: NailDesignElemId,
   count: number,
 } | {
   type: 'ADD_DESIGN',
-  design: NailDesignElemId
+  designId: NailDesignElemId
 } | {
   type: 'REMOVE_DESIGN',
-  design: NailDesignElemId
+  designId: NailDesignElemId
 } | {
   type: 'REMOVE_ALL'
 } | {
@@ -33,6 +33,8 @@ export type DesignProviderValue = {
   setStartingLength: (id: NailLengthId) => void,
   startingShape: NailShapeId | null,
   setStartingShape: (id: NailShapeId) => void,
+  service: NailServiceId | null,
+  setService: (id: NailServiceId) => void,
 }
 
 export type DesignFingerIndex = keyof Pick<Design['left' | 'right'], 'f1' | 'f2' | 'f3' | 'f4' | 'f5'>;
