@@ -27,12 +27,16 @@ export function ShapeMenu(props: Props) {
   return <div className="position-relative">
     <h4 className="ps-3">Shape Options</h4>
 
-    
-    {shapeOptions.map(s => 
-      <button className={classNames({active: selected === s.id})} onClick={() => onSelection(s.id)} key={s.id}>
-        {s.value.label}
-      </button>
-    )}
+    <div className="d-flex flex-wrap column-gap-2 row-gap-2 px-3">
+      {shapeOptions.map(s => 
+        <button 
+          className={classNames("fs-6",{active: selected === s.id})} 
+          onClick={() => onSelection(s.id)} 
+          key={s.id}>
+          {s.value.label}
+        </button>
+      )}
+    </div>
     {/* <MainAndSubSelect 
       isTypeDisabled={isTypeDisabled}
       isSubTypeDisabled={isShapeDisabled}

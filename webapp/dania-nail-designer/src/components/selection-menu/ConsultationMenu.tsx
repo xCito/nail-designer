@@ -57,11 +57,12 @@ export function ConsultationMenu(props: Props) {
 
     <p className='fw-bold'>Desired Service</p>
     {services.map(s => 
-      <label className='ms-3 d-block' htmlFor={`svc_type_${s.id}`} key={s.id}>
+      <label className='ms-3 mb-2 d-block fs-4' htmlFor={`svc_type_${s.id}`} key={s.id}>
         <input 
           id={`svc_type_${s.id}`}
           checked={s.id === service}
           name="service_type" 
+          className="me-3"
           type="radio" 
           value={s.id}
           onChange={onServiceSelect} />
@@ -72,9 +73,10 @@ export function ConsultationMenu(props: Props) {
     <br />
     
     {(service !== null && service !== 'manicure') && <>
-      <label htmlFor='include_mani'>
+      <p className='fw-bold'>Include Manicure?</p>
+      <label htmlFor='include_mani' className="ms-3 fs-4">
         <input id="include_mani" type="checkbox" checked={isManiApplied ?? false} onChange={onApplyManicureChange}/>
-        Apply manicure
+        Yes
       </label>
 
       <br />
@@ -83,7 +85,7 @@ export function ConsultationMenu(props: Props) {
 
     {(service !== null && service !== 'manicure' && service !== 'take_down') && <>
       <p className='fw-bold'>Select your nail length before service</p>
-      <select className="ms-3" id="strt_length" onChange={onStartLengthSelect} value={startLen ?? undefined}>
+      <select className="ms-3 p-2 fs-6 rounded" id="strt_length" onChange={onStartLengthSelect} value={startLen ?? undefined}>
         <option disabled>Choose length</option>
         {lengths.map(len => <option key={len.id} value={len.id}>{len.value.label}</option>)}
       </select>
@@ -92,7 +94,7 @@ export function ConsultationMenu(props: Props) {
       <br />
 
       <p className='fw-bold'>Select your nail shape before service</p>
-      <select className="ms-3" id="strt_shape" onChange={onStartShapeSelect} value={startShape ?? undefined}>
+      <select className="ms-3 p-2 fs-6 rounded" id="strt_shape" onChange={onStartShapeSelect} value={startShape ?? undefined}>
         <option disabled>Choose shape</option>
         {shapes.map(len => <option key={len.id} value={len.id}>{len.value.label}</option>)}
       </select>

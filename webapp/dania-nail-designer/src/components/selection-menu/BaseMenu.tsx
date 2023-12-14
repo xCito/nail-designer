@@ -22,10 +22,10 @@ export function BaseMenu(props: Props) {
 
   return <div>
     <h4 className="ps-3">Base Options</h4>
-    <div className="base-options-grid px-3">
+    <div className="d-flex flex-wrap column-gap-2 row-gap-2 px-3">
       {baseOptions.map(option =>
         <button key={option.value}
-          className={classNames("", { active: selected === option.id })}
+          className={classNames("fs-6", { active: selected === option.id })}
           onClick={() => onBaseSelect(option.id)}>
           {option.value}
         </button>

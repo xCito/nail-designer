@@ -12,6 +12,7 @@ import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId } from "@/const
 import { ConsultationValue } from "@/types/other-types";
 import { Hands } from "./hand/Hands";
 import classNames from "classnames";
+import { Finger } from "./hand/Finger";
 
 
 export function DesignBuilder() {
@@ -58,8 +59,20 @@ export function DesignBuilder() {
   }
 
 
-  return <div className="h-100"> 
+  return <div className="h-100 py-3 px-2"> 
     <div className="layout d-flex flex-column mx-auto">
+
+      <div className="d-flex">
+        <div>
+          <h2 className="page-title fancy-font my-0">Stardust Factory</h2>
+          <p className="fancy-font mt-0">By Dania Nails</p>
+        </div>
+        <div className="flex-grow-1 justify-self-end text-end">
+
+          <Finger length={nailDesign.left.length} shape={nailDesign.left.shape}/>
+        </div>
+      </div>
+
         <DesignSection 
           title='Consultation' 
           isExpanded={openSection === 'Consultation'}
@@ -95,9 +108,9 @@ export function DesignBuilder() {
             selected={nailDesign.left.length} 
             onSelection={onLengthSelection} />
 
-          <div className={classNames("d-flex justify-content-center mt-5 hands border-top", nailDesign.left.length)}>
+          {/* <div className={classNames("d-flex justify-content-center mt-5 hands border-top", nailDesign.left.length)}>
             <Hands hand={nailDesign.left} />
-          </div>
+          </div> */}
         </DesignSection>
 
         {/* <DesignSection 

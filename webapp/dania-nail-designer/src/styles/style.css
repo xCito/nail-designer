@@ -25,10 +25,17 @@ html, body, #root {
 }
 
 .layout {
-    padding: 20px 0px;
-    max-width: 1200px;
-    width: 500px;
-    height: 100%;
+  padding: 20px;
+  max-width: 1200px;
+  width: 500px;
+  height: 100%;
+}
+/* Maximum width */
+@media (max-width: 600px) {
+  .layout {
+    width: 100%;
+    padding: 0;
+  }
 }
 
 .design-section {
@@ -67,7 +74,13 @@ html, body, #root {
     height: 50px;
 }
 
-
+.fancy-font {
+  font-family: Optima;
+}
+.page-title {
+  font-size: 1.8em;
+  font-weight: lighter;
+}
 
 
 .base-options-grid {
@@ -137,14 +150,8 @@ html, body, #root {
 
 
 .finger {
-    border-bottom: 100px solid red;
-    border-top: 2px solid red;
-    border-left: 30px solid rgba(255, 0, 0, 0.142);
-    border-right: 30px solid rgba(255, 0, 0, 0.155);
-    height: 20px;
-    width: 100px;
-
-    /* border-radius: 100% 100% 100% 100%; */
+  transform: scale(1) translate(0px, 0px) rotateZ(0deg);
+  height: 80px;
 }
 
 /* .finger {
@@ -197,8 +204,8 @@ html, body, #root {
 .floating-total {
     color: black;
     position: fixed;
-    bottom: 50px;
-    right: calc(100px);
+    bottom: 100px;
+    right: 10px;
 
     background-color: antiquewhite;
     box-shadow: 0 0 8px 0 black;
@@ -247,9 +254,10 @@ input[type="text"] {
 }
 
 button {
+  color: white;
   background-color: var(--main-color);
   border: none;
-  padding: 0.56em;
+  padding: 0.8em;
   border-radius: 5px;
   cursor: pointer;
   
@@ -271,8 +279,8 @@ tr:hover {
 
 .design-list {
   --gap-size: 1em;
-  --item-size: 45px;
-  --border-radii: 20px;
+  --item-size: 60px;
+  --border-radii: 25px;
 
   flex: 1 0 10%;
   gap: var(--gap-size);
@@ -286,6 +294,7 @@ tr:hover {
     position: relative;
     height: var(--item-size);
     transition: height 0.2s;
+    font-size: 1.2em;
     
     &.expanded {
       height: calc(var(--item-size) * 1.7);
@@ -314,6 +323,7 @@ tr:hover {
       top: 0;
       position: absolute;
       display: flex;
+      
       justify-content: center;
       align-items: center;
       background-color: var(--main-color);
