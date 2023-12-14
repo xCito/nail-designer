@@ -1,7 +1,7 @@
 import { getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
 import { createPortal } from "react-dom";
 import { ComplexityScore, Design, DesignElements, NailBaseId, NailBases, NailDesignElem, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "../../constants/design-constants";
-import { BASE_MANICURE_PRICE, BasePrice, NO_CHARGE, LengthPrice, SHAPE_EXPANSION_BIG_FEE, ServicePrices, ShapePrice, TAKE_DOWN_PRICE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
+import { BASE_MANICURE_PRICE, BasePrice, LENGTH_EXTENSION_FEE, LengthPrice, NO_CHARGE, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE, ServicePrices, ShapePrice } from "../../constants/pricing-constants";
 import { FloatingTotal } from "./FloatingTotal";
 
 
@@ -25,11 +25,45 @@ function getBasePrice(svcId: NailServiceId | null, baseId: NailBaseId | null) {
   }
 }
 
+function getShapeDiff(val1: NailShapeId | null, val2: NailShapeId | null) {
+  if (!val1 || !val2) return 0;
+  return NailShapes[val1].size - NailShapes[val2].size;
+}
+
+function getLengthDiff(val1: NailLengthId | null, val2: NailLengthId | null) {
+  if (!val1 || !val2) return 0;
+  return NailLengths[val1].size - NailLengths[val2].size;
+}
+
+function getLengthFeePrice(svcId: NailServiceId | null, sLen: NailLengthId | null, cLen: NailLengthId | null) {
+  let price = 0;
+  if (svcId === 'new_set') return price;
+
+  if (sLen && cLen) {
+    const isReduction = NailLengths[sLen].size >= NailLengths[cLen].size;
+    price = isReduction ? NO_CHARGE : LENGTH_EXTENSION_FEE;
+  }
+  return price;
+}
+
+
+function getShapeFeePrice(svcId: NailServiceId | null, sShp: NailShapeId | null, cShp: NailShapeId | null) {
+  let price = 0;
+  if (svcId === 'new_set') return price;
+
+  if (sShp && cShp) {
+    const shapeDiff = getShapeDiff(sShp, cShp);
+    price = shapeDiff === 0 
+            ? NO_CHARGE
+            : Math.abs(shapeDiff) >= 2 ? SHAPE_EXPANSION_BIG_FEE : SHAPE_EXPANSION_SMALL_FEE;
+  }
+  return price;
+}
+
 function getNailServicePrice(svcId: NailServiceId | null) {
   switch (svcId) {
     case null: return 0;
     case 'manicure': return BASE_MANICURE_PRICE;
-    case 'take_down': return TAKE_DOWN_PRICE;
     default: return ServicePrices[svcId];
   }
 }
@@ -43,11 +77,9 @@ interface Props {
 }
 export function Summary({ nailDesign, selectedServiceId, startLength, startShape, isManiApplied }: Props) {
   const {base, length, shape} = nailDesign.left;
-  const lenDiff = startLength ? NailLengths[startLength].size - NailLengths[length].size : 0;
-  const shapeDiff = startShape ? NailShapes[startShape].size - NailShapes[shape].size : 0;
-  let shapeChangeFee = Math.abs(shapeDiff) >= 2 ? SHAPE_EXPANSION_BIG_FEE : SHAPE_EXPANSION_SMALL_FEE;
-  let lengthChangeFee = lenDiff < 0  ? 5 : NO_CHARGE;
-
+  let shapeChangeFee = getShapeFeePrice(selectedServiceId, startShape, shape);
+  let lengthChangeFee = getLengthFeePrice(selectedServiceId, startLength, length);
+  
   if (selectedServiceId === 'new_set') {
     shapeChangeFee = NO_CHARGE;
     lengthChangeFee = NO_CHARGE;
@@ -56,21 +88,22 @@ export function Summary({ nailDesign, selectedServiceId, startLength, startShape
   const svcPrice = getNailServicePrice(selectedServiceId);
   const maniPrice = (selectedServiceId !== null && selectedServiceId in ServicePrices) && isManiApplied === true ? BASE_MANICURE_PRICE : 0;
   const bsePrice = getBasePrice(selectedServiceId, base);
-  const lenPrice = LengthPrice[ length ];
-  const shpPrice = ShapePrice[ shape ];
+  const lenPrice = length ? LengthPrice[ length ] : 0;
+  const shpPrice = shape ? ShapePrice[ shape ] : 0;
   const designCount = getAppliedDesignElementCounts(nailDesign);
 
   const designTotal = [...designCount.entries()]
     .map(([id, count]: [id: NailDesignElemId, count: number]) => getDesignPrice(DesignElements[id], count))
     .reduce((total, price) => total + price, 0);
   
+    
   const total = 
     shapeChangeFee + lengthChangeFee
     + svcPrice + maniPrice + bsePrice + shpPrice + lenPrice 
     + designTotal;
 
   
-  return <div className="pt-4 pb-5 text-black mx-3">
+  return <div className="pt-4 pb-5 text-black">
     <h4 className="text-start mt-0">Summary</h4>
 
     <table className="w-100">
@@ -100,10 +133,10 @@ export function Summary({ nailDesign, selectedServiceId, startLength, startShape
             <td className="text-start fw-light">${BASE_MANICURE_PRICE.toFixed(2)}</td>
           </tr>}
 
-          {lenDiff !== 0 && startLength && <tr>
+          {lengthChangeFee > 0 && startLength && length && <tr>
             <td />
             <td className="text-start fw-light ps-2" colSpan={2}>
-              + Length {lenDiff > 0 ? 'Reduction' : 'Extension'} 
+              + Length {getLengthDiff(startLength, length) > 0 ? 'Reduction' : 'Extension'} 
               {` (${NailLengths[startLength].label} -> ${NailLengths[length].label})`}
             </td>
             <td className="text-start fw-light">
@@ -111,10 +144,10 @@ export function Summary({ nailDesign, selectedServiceId, startLength, startShape
             </td>
           </tr>}
 
-          {shapeDiff !== 0 && startShape && <tr>
+          {shapeChangeFee > 0 && startShape && shape && <tr>
             <td />
             <td className="text-start fw-light ps-2" colSpan={2}>
-              + Shape {shapeDiff > 0 ? 'Slimming' : 'Expansion'}
+              + Shape {getShapeDiff(startShape, shape) > 0 ? 'Slimming' : 'Expansion'}
               {` (${NailShapes[startShape].label} -> ${NailShapes[shape].label})`}
             </td>
             <td className="text-start fw-light">
@@ -134,9 +167,9 @@ export function Summary({ nailDesign, selectedServiceId, startLength, startShape
           <tr>
             <td />
             <td className="text-start fw-light ps-2" colSpan={2}>
-              + {NailLengths[ length ].label} {NailShapes[ shape ].label}
-              {length === startLength && <span className="fst-italic"> (Same length)</span>}
-              {shape === startShape && <span className="fst-italic"> (Same shape)</span>}
+              + {length ? NailLengths[length].label : ''} {shape ? NailShapes[shape].label : ''}
+              {/* {length === startLength && <span className="fst-italic"> (Same length)</span>}
+              {shape === startShape && <span className="fst-italic"> (Same shape)</span>} */}
             </td>
             <td className="text-start fw-light">${lenPrice.toFixed(2)}</td>
           </tr>
@@ -156,10 +189,10 @@ export function Summary({ nailDesign, selectedServiceId, startLength, startShape
 
       <tfoot>
         <tr>
-          <td className="text-start fw-bolder fst-italic pt-4">Total</td>
+          <td className="text-start fw-bold fst-italic pt-4">Total</td>
           <td></td>
           <td></td>
-          <td className="text-start fw-light fst-italic pt-4">${total.toFixed(2)}</td>
+          <td className="text-start fw-bold fst-italic pt-4">${total.toFixed(2)}</td>
         </tr>
       </tfoot>
     </table>

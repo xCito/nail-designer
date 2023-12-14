@@ -35,12 +35,12 @@ export function ConsultationMenu(props: Props) {
 
     if (selectSvc === 'manicure') {
       updateConsult.isManiApplied = null
-      updateConsult.startLen = 'natural', 
-      updateConsult.startShape = 'round';
+      updateConsult.startLen = null, 
+      updateConsult.startShape = null;
     } else if (selectSvc == 'take_down') {
       updateConsult.isManiApplied = true,
-      updateConsult.startLen = 'natural', 
-      updateConsult.startShape = 'round';
+      updateConsult.startLen = null, 
+      updateConsult.startShape = null;
     } else {
       updateConsult.isManiApplied = true;
     }
@@ -85,8 +85,8 @@ export function ConsultationMenu(props: Props) {
 
     {(service !== null && service !== 'manicure' && service !== 'take_down') && <>
       <p className='fw-bold'>Select your nail length before service</p>
-      <select className="ms-3 p-2 fs-6 rounded" id="strt_length" onChange={onStartLengthSelect} value={startLen ?? undefined}>
-        <option disabled>Choose length</option>
+      <select className="ms-3 p-2 fs-6 rounded" id="strt_length" onChange={onStartLengthSelect} value={startLen ?? ''}>
+        <option disabled value={''}>Choose length</option>
         {lengths.map(len => <option key={len.id} value={len.id}>{len.value.label}</option>)}
       </select>
 
@@ -94,8 +94,8 @@ export function ConsultationMenu(props: Props) {
       <br />
 
       <p className='fw-bold'>Select your nail shape before service</p>
-      <select className="ms-3 p-2 fs-6 rounded" id="strt_shape" onChange={onStartShapeSelect} value={startShape ?? undefined}>
-        <option disabled>Choose shape</option>
+      <select className="ms-3 p-2 fs-6 rounded" id="strt_shape" onChange={onStartShapeSelect} value={startShape ?? ''}>
+        <option disabled value={''}>Choose shape</option>
         {shapes.map(len => <option key={len.id} value={len.id}>{len.value.label}</option>)}
       </select>
 

@@ -1,28 +1,17 @@
 import classNames from "classnames";
-import { HandDesign, NailLengthId, NailShapeId } from "../../constants/design-constants";
+import { NailShapeId } from "../../constants/design-constants";
 import { getNailShapesAsList } from "../../service/helpers";
 
 
 const shapeOptions = getNailShapesAsList();
 
 interface Props {
-  hand: HandDesign;
-  selected: NailShapeId;
+  selected: NailShapeId | null;
   onSelection: (shape: NailShapeId) => void;
-  isNatural: boolean;
-  selectedLength: NailLengthId;
 }
 export function ShapeMenu(props: Props) {
   const { selected, onSelection } = props;
-
-  // const isTypeDisabled = (type: string) => {
-  //   return isNatural && !(type === 'Rounded' || type === 'Square')
-  // }
-
-  // const isShapeDisabled = (shape: NailShapeId) => {
-  //   const svg = nailShapeAndLength[shape][selectedLength];
-  //   return typeof svg === 'undefined' || svg === '';
-  // }
+  
 
   return <div className="position-relative">
     <h4 className="ps-3">Shape Options</h4>

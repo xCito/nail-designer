@@ -154,16 +154,6 @@ html, body, #root {
   height: 80px;
 }
 
-/* .finger {
-    height: 10px;
-    width: 1px;
-    
-    background-color: rgb(255, 200, 190);
-    border-left: 10px solid red;
-    border-right: 10px solid yellowgreen;
-    border-bottom: 200px solid blue;
-    border-color: rgb(255, 200, 190);
-} */
 
 .shape-menu {
   display: grid;
@@ -236,13 +226,19 @@ html, body, #root {
     99% { box-shadow: 0 0 8px 0 black }
 }
 
+
+
+/* ====================== Basic ====================== */
+td:first-child, th:first-child, td:last-child, th:last-child {
+  width: 10%;
+}
 td {
   color: #666;
   font-family: Monaco, monospace;
 }
-
-
-/* ====================== Basic ====================== */
+td:not(:last-child) {
+  padding-right: 1.5em;
+}
 
 input[type="text"] {
   color: black;

@@ -3,6 +3,7 @@ import { NailBaseId, NailShapeId, NailLengthId, NailServiceId } from "./design-c
 
 export const SERVICE_FEE = 20;
 export const NO_CHARGE = 0;
+export const LENGTH_EXTENSION_FEE = 5;
 export const SHAPE_EXPANSION_SMALL_FEE = 5;
 export const SHAPE_EXPANSION_BIG_FEE = 10;
 export const BASE_MANICURE_PRICE = 20;
@@ -19,6 +20,7 @@ export const OrnamentPrices = {
 
 // Manicure
 export const ServicePrices: NailServicePrice = {
+  take_down: 10,
   refill: 15,
   rebalance: 20,
   new_set: 25,
@@ -111,5 +113,5 @@ export const LengthPrice: NailLengthPrice = {
 export type NailBasePrice = Record<NailBaseId, number>
 export type NailShapePrice = Record<NailShapeId, number>
 export type NailLengthPrice = Record<NailLengthId, number>
-export type NailServicePrice = Record<Exclude<NailServiceId, "manicure" | "take_down">, number>
+export type NailServicePrice = Record<Exclude<NailServiceId, "manicure">, number>
 export type OrnamentPrice = Record<string, number>

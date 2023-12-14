@@ -34,6 +34,13 @@ export function DesignProvider({children}: {children?: ReactNode}) {
 
   const updateConsultationData = (v: Partial<ConsultationValue>) => {
     setConsultation({...consultation, ...v});
+    
+    if (v.startShape !== undefined) {
+      dispatch({type: 'SET_SHAPE', shapeId: v.startShape})
+    }
+    if (v.startLen !== undefined) {
+      dispatch({type: 'SET_LENGTH', lengthId: v.startLen})
+    }
   }
 
   const value: DesignProviderValue = {

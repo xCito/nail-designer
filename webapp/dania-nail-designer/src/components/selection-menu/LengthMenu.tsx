@@ -1,12 +1,11 @@
 import { getNailLengthsAsList } from "@/service/helpers";
-import { HandDesign, NailLengthId } from "../../constants/design-constants";
 import classNames from "classnames";
+import { NailLengthId } from "../../constants/design-constants";
 
 const lengthOptions = getNailLengthsAsList();
 
 interface Props {
-  hand: HandDesign;
-  selected: NailLengthId;
+  selected: NailLengthId | null;
   onSelection: (length: NailLengthId) => void;
 }
 export function LengthMenu(props: Props) {

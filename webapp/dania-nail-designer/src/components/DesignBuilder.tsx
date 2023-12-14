@@ -15,7 +15,7 @@ import { ShapeMenu } from "./selection-menu/ShapeMenu";
 
 export function DesignBuilder() {
 
-  const [openSection, setOpenSection] = useState<string | null>('Design')
+  const [openSection, setOpenSection] = useState<string | null>('Consultation')
   const { 
     dispatch, 
     nailDesign, 
@@ -67,7 +67,9 @@ export function DesignBuilder() {
         </div>
         <div className="flex-grow-1 justify-self-end text-end">
 
-          <Finger length={nailDesign.left.length} shape={nailDesign.left.shape}/>
+          <Finger 
+            length={nailDesign.left.length} 
+            shape={nailDesign.left.shape} />
         </div>
       </div>
 
@@ -93,16 +95,12 @@ export function DesignBuilder() {
           <br/>
           
           <ShapeMenu 
-            hand={nailDesign.left}
-            isNatural={nailDesign.left.length === 'natural'}
             selected={nailDesign.left.shape} 
-            selectedLength={nailDesign.left.length}
             onSelection={onShapeSelection} />
           
           <br/>
           
           <LengthMenu 
-            hand={nailDesign.left}
             selected={nailDesign.left.length} 
             onSelection={onLengthSelection} />
 

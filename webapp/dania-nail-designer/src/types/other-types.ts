@@ -6,10 +6,10 @@ export type DesignAction = {
   baseId: NailBaseId | null
 } | {
   type: 'SET_SHAPE',
-  shapeId: NailShapeId
+  shapeId: NailShapeId | null
 } | {
   type: 'SET_LENGTH',
-  lengthId: NailLengthId
+  lengthId: NailLengthId | null
 } | {
   type: 'SET_DESIGN_BY_COUNT',
   designId: NailDesignElemId,

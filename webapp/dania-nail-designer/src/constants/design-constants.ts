@@ -110,8 +110,8 @@ export function getDefaultDesign(): Design {
     },
     right: {
       base: null,
-      shape: 'stiletto',
-      length: 'medium',
+      shape: 'round',
+      length: 'natural',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),
@@ -155,9 +155,9 @@ export interface Design {
 } 
 
 export interface HandDesign {
-  shape: NailShapeId;
+  shape: NailShapeId | null;
   base: NailBaseId | null;
-  length: NailLengthId;
+  length: NailLengthId | null;
   f1: Finger;
   f2: Finger;
   f3: Finger;

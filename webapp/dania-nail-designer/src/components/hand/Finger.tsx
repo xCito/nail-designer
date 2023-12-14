@@ -5,10 +5,12 @@ import { DefaultNailAndLength, NailSvgHeight, nailShapeAndLength } from "../../c
 const nailColor = '#f3d4da';
 
 interface Props {
-  shape: NailShapeId,
-  length: NailLengthId
+  shape: NailShapeId | null,
+  length: NailLengthId | null;
 }
-export function Finger({shape, length}: Props) {
+export function Finger({shape, length = 'natural'}: Props) {
+  const shapeVal = shape ?? 'round';
+  const lengthVal = length ?? 'natural';
   const heightVal = NailSvgHeight['xx_long'];
 
   return <svg className={'finger'} width={heightVal * 1.5} viewBox={`-${heightVal} -0 ${heightVal} 1`} xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +23,7 @@ export function Finger({shape, length}: Props) {
       <path d="M -15 36 C -15 24 -15 16 -14 12 C -11 -1 11 -1 14 12 C 15 16 15 24 15 36" stroke="black" strokeWidth="0.5" fill={nailColor} />
       
       {/* Nail Shape and Length */}
-      <path d={`M 15 36 ${nailShapeAndLength[shape][length] || DefaultNailAndLength}`} stroke="black" strokeWidth="0.5" fill={nailColor} style={{transition: 'all 0.3s'}} />
+      <path d={`M 15 36 ${nailShapeAndLength[shapeVal][lengthVal] || DefaultNailAndLength}`} stroke="black" strokeWidth="0.5" fill={nailColor} style={{transition: 'all 0.3s'}} />
     </g>
   </svg>
   
