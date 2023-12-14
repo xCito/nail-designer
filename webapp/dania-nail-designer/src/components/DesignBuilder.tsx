@@ -1,18 +1,16 @@
+import { NailBaseId, NailDesignElemId, NailLengthId, NailShapeId } from "@/constants/design-constants";
+import { ConsultationValue } from "@/types/other-types";
 import { useContext, useState } from "react";
 import { DesignContext } from "../contexts/DesignContext";
 import { getAppliedBases, getAppliedDesignElementCounts } from "../service/helpers";
 import { DesignSection } from "./DesignSection";
+import { Finger } from "./hand/Finger";
 import { Summary } from "./receipt/Summary";
 import { BaseMenu } from "./selection-menu/BaseMenu";
 import { ConsultationMenu } from "./selection-menu/ConsultationMenu";
 import { DesignElementMenu } from "./selection-menu/DesignElementMenu";
 import { LengthMenu } from "./selection-menu/LengthMenu";
 import { ShapeMenu } from "./selection-menu/ShapeMenu";
-import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId } from "@/constants/design-constants";
-import { ConsultationValue } from "@/types/other-types";
-import { Hands } from "./hand/Hands";
-import classNames from "classnames";
-import { Finger } from "./hand/Finger";
 
 
 export function DesignBuilder() {
