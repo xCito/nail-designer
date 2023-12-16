@@ -229,15 +229,18 @@ html, body, #root {
 
 
 /* ====================== Basic ====================== */
-td:first-child, th:first-child, td:last-child, th:last-child {
+/* td:first-child, th:first-child, td:last-child, th:last-child {
   width: 10%;
+} */
+td:first-child, th:first-child {
+  /* width: 100%; */
+}
+td:last-child, th:last-child {
+  width: 75px;
 }
 td {
   color: #666;
   font-family: Monaco, monospace;
-}
-td:not(:last-child) {
-  padding-right: 1.5em;
 }
 
 input[type="text"] {

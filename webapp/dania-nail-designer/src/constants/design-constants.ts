@@ -59,7 +59,7 @@ export const DesignElements = {
   small_art:    { name: "Small Art",        complexity: "D", type: 'art' },
   multiple_art: { name: "Multiple Arts",    complexity: "E", type: 'art' },
   inlay:        { name: "Inlay",            complexity: "E", type: 'art' },
-  base_color:   { name: "Base Color",       complexity: "E", type: 'base'},
+  base_color:   { name: "Gel Color",        complexity: "A", type: 'base'},
   charm_lg:     { name: "Charm LG",         complexity: "E", type: 'item'},
 } as const
 
@@ -70,6 +70,11 @@ export const NailServices = {
   new_set:    { name: 'New Set'},
   take_down:  { name: 'Take Down'},
 } as const;
+
+export const NailBuildingPlatforms = {
+  sculpted:       { name: 'Sculped' },
+  non_sculpted:   { name: 'Tips' }
+}
 
 export function getDefaultDesign(): Design {
   return {
@@ -174,6 +179,7 @@ export interface Finger {
 
 
 export type NailServiceId = keyof typeof NailServices;
+export type NailPlatformId = keyof typeof NailBuildingPlatforms;
 export type NailBaseId = keyof typeof NailBases;
 export type NailShapeId = keyof typeof NailShapes;
 export type NailLengthId = keyof typeof NailLengths;

@@ -46,6 +46,8 @@ export function getAppliedDesignElementCounts(nailDesign: Design): Map<NailDesig
   const fingers = [];
   for (const fingerIndex of FingerIndices) {
     fingers.push(nailDesign.left[fingerIndex]);
+  }
+  for (const fingerIndex of FingerIndices) {
     fingers.push(nailDesign.right[fingerIndex]);
   }
 

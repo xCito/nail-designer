@@ -1,13 +1,16 @@
 import { NailLengthId, NailServiceId, NailShapeId } from "@/constants/design-constants"
 import { getNailLengthsAsList, getNailServicesAsList, getNailShapesAsList } from "@/service/helpers";
 import { ConsultationValue } from "@/types/other-types";
+import classNames from "classnames";
 import { ChangeEvent } from "react";
 
 interface Props {
   startLen: NailLengthId | null,
   startShape: NailShapeId | null,
   service: NailServiceId | null,
-  isManiApplied: boolean | null,
+  manicureApplied: boolean | null,
+  designRemoval: boolean | null,
+  enhancementRemoval: boolean | null,
   onConsultChange: (v: Partial<ConsultationValue>) => void;
 }
 
@@ -16,7 +19,7 @@ const shapes = getNailShapesAsList();
 const services = getNailServicesAsList();
 
 export function ConsultationMenu(props: Props) {
-  const { startLen, startShape, service, isManiApplied } = props;
+  const { startLen, startShape, service, manicureApplied, designRemoval, enhancementRemoval } = props;
   const { onConsultChange } = props;
 
   const onStartLengthSelect = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -49,9 +52,15 @@ export function ConsultationMenu(props: Props) {
   }
 
   const onApplyManicureChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectMani = e.target.checked;
-    onConsultChange({isManiApplied: selectMani});
+    const isChecked = e.target.checked;
+    onConsultChange({isManiApplied: isChecked});
   }
+
+  const onDesignRemoval = (e: ChangeEvent<HTMLInputElement>) =>  
+    onConsultChange({isDesignRemoval: e.target.checked, isEnhancementRemoval: false});
+  const onEnhancementRemoval = (e: ChangeEvent<HTMLInputElement>) =>  
+    onConsultChange({isDesignRemoval: false, isEnhancementRemoval: e.target.checked});
+
 
   return <div className="text-start px-3">
 
@@ -75,13 +84,49 @@ export function ConsultationMenu(props: Props) {
     {(service !== null && service !== 'manicure') && <>
       <p className='fw-bold'>Include Manicure?</p>
       <label htmlFor='include_mani' className="ms-3 fs-4">
-        <input id="include_mani" type="checkbox" checked={isManiApplied ?? false} onChange={onApplyManicureChange}/>
+        <input 
+          id="include_mani" 
+          type="checkbox"
+          className="me-3"
+          checked={manicureApplied ?? false} 
+          onChange={onApplyManicureChange}/>
         Yes
       </label>
 
       <br />
       <br />
     </>}
+    
+    {(service !== null && service !== 'take_down') && <>
+      <p className='fw-bold'>Removal Services</p>
+      <label htmlFor='take_down_radio' className={classNames("ms-3 fs-4 d-block", {"text-muted": ['refill', 'rebalance'].includes(service)})}>
+        <input 
+          id="take_down_radio" 
+          name={'removals'} 
+          type="checkbox" 
+          className="me-3"
+          checked={!!enhancementRemoval} 
+          disabled={['refill', 'rebalance'].includes(service)}
+          onChange={onEnhancementRemoval}/>
+        Remove old nails
+      </label>
+      <label htmlFor='design_remove_radio' className="ms-3 fs-4 d-block">
+        <input 
+          id="design_remove_radio" 
+          name={'removals'} 
+          type="checkbox" 
+          className="me-3"
+          checked={!!designRemoval}
+          onChange={onDesignRemoval}/>
+        Remove old design
+      </label>
+
+      <br />
+      <br />
+    </>}
+    
+
+    
 
     {(service !== null && service !== 'manicure' && service !== 'take_down') && <>
       <p className='fw-bold'>Select your nail length before service</p>

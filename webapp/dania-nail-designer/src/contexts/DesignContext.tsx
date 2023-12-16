@@ -6,6 +6,8 @@ import { designReducer } from "./DesignReducer";
 const defaultDesign: Design = getDefaultDesign();
 const consultDataDefault: ConsultationValue = {
   isManiApplied: null,
+  isDesignRemoval: false,
+  isEnhancementRemoval: false,
   startLen: null,
   startShape: null,
   service: null,
@@ -16,14 +18,6 @@ const contextDefault: DesignProviderValue = {
   dispatch: () => void 0,
   consultData: consultDataDefault,
   setConsultData: () => void 0,
-  // startingLength: null,
-  // setStartingLength: () => void 0,
-  // startingShape: null,
-  // setStartingShape: () => void 0,
-  // service: null,
-  // setService: () => void 0,
-  // includeManicure: null,
-  // setIncludeManicure: () => void 0,
 }
 
 export const DesignContext = createContext<DesignProviderValue>(contextDefault);
@@ -34,7 +28,7 @@ export function DesignProvider({children}: {children?: ReactNode}) {
 
   const updateConsultationData = (v: Partial<ConsultationValue>) => {
     setConsultation({...consultation, ...v});
-    
+
     if (v.startShape !== undefined) {
       dispatch({type: 'SET_SHAPE', shapeId: v.startShape})
     }

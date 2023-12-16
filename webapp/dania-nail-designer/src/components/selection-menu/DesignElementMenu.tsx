@@ -27,7 +27,7 @@ export function DesignElementMenu(props: Props) {
   const filteredOptions = designOptionArr.filter(d => d.value.name.toUpperCase().includes(searchText.toUpperCase()))
   
   const designColumns = filteredOptions
-      .sort((a, b) => a.value.name.localeCompare(b.value.name))
+      .sort((a, b) => a.value.complexity.localeCompare(b.value.complexity))
       .reduce((cols, d, index) => {
         const mappedTo = index % COLUMNS;
         cols[mappedTo].push(d);

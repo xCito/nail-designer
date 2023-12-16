@@ -46,6 +46,8 @@ export interface ConsultationValue {
   startLen: NailLengthId | null;
   startShape: NailShapeId | null;
   isManiApplied: boolean | null;
+  isDesignRemoval: boolean | null;
+  isEnhancementRemoval: boolean | null;
 }
 
 export type DesignFingerIndex = keyof Pick<Design['left' | 'right'], 'f1' | 'f2' | 'f3' | 'f4' | 'f5'>;

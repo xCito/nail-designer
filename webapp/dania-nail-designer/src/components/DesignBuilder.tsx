@@ -81,7 +81,9 @@ export function DesignBuilder() {
               service={consultData.service}
               startLen={consultData.startLen}
               startShape={consultData.startShape}
-              isManiApplied={consultData.isManiApplied}
+              manicureApplied={consultData.isManiApplied}
+              designRemoval={consultData.isDesignRemoval}
+              enhancementRemoval={consultData.isEnhancementRemoval}
               onConsultChange={(v: Partial<ConsultationValue>) => setConsultData(v) }  />
         </DesignSection>
 
@@ -103,25 +105,7 @@ export function DesignBuilder() {
           <LengthMenu 
             selected={nailDesign.left.length} 
             onSelection={onLengthSelection} />
-
-          {/* <div className={classNames("d-flex justify-content-center mt-5 hands border-top", nailDesign.left.length)}>
-            <Hands hand={nailDesign.left} />
-          </div> */}
         </DesignSection>
-
-        {/* <DesignSection 
-          title='Length'
-          isExpanded={openSection === 'Length'}
-          onHeaderClick={() => onHeaderClick('Length')}>
-          
-        </DesignSection> 
-
-        <DesignSection 
-          title='Shape'
-          isExpanded={openSection === 'Shape'}
-          onHeaderClick={() => onHeaderClick('Shape')}>
-         
-        </DesignSection> */}
 
         <DesignSection 
           title='Design'
@@ -138,6 +122,7 @@ export function DesignBuilder() {
 
       <Summary 
         nailDesign={nailDesign} 
+        consultionData={consultData}
         isManiApplied={consultData.isManiApplied}
         selectedServiceId={consultData.service}
         startLength={consultData.startLen}
