@@ -1,7 +1,6 @@
-import { NailLengthId, NailServiceId, NailShapeId } from "@/constants/design-constants"
+import { NailLengthId, NailServiceId, NailShapeId } from "@/constants/design-constants";
 import { getNailLengthsAsList, getNailServicesAsList, getNailShapesAsList } from "@/service/helpers";
 import { ConsultationValue } from "@/types/other-types";
-import classNames from "classnames";
 import { ChangeEvent } from "react";
 
 interface Props {
@@ -99,17 +98,16 @@ export function ConsultationMenu(props: Props) {
     
     {(service !== null && service !== 'take_down') && <>
       <p className='fw-bold'>Removal Services</p>
-      <label htmlFor='take_down_radio' className={classNames("ms-3 fs-4 d-block", {"text-muted": ['refill', 'rebalance'].includes(service)})}>
+      {['refill', 'rebalance', 'new_set'].includes(service) && <label htmlFor='take_down_radio' className={"ms-3 fs-4 d-block"}>
         <input 
           id="take_down_radio" 
           name={'removals'} 
           type="checkbox" 
           className="me-3"
-          checked={!!enhancementRemoval} 
-          disabled={['refill', 'rebalance'].includes(service)}
+          checked={!!enhancementRemoval}
           onChange={onEnhancementRemoval}/>
         Remove old nails
-      </label>
+      </label>}
       <label htmlFor='design_remove_radio' className="ms-3 fs-4 d-block">
         <input 
           id="design_remove_radio" 
@@ -118,7 +116,7 @@ export function ConsultationMenu(props: Props) {
           className="me-3"
           checked={!!designRemoval}
           onChange={onDesignRemoval}/>
-        Remove old design
+        Remove old design or gel
       </label>
 
       <br />

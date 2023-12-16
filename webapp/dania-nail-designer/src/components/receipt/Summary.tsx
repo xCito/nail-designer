@@ -3,7 +3,7 @@ import { ConsultationValue } from "@/types/other-types";
 import { Fragment } from "react";
 import { createPortal } from "react-dom";
 import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElem, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "../../constants/design-constants";
-import { NO_CHARGE, NailServiceRates, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
+import { DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NO_CHARGE, NailServiceRates, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
 import { FloatingTotal } from "./FloatingTotal";
 
 
@@ -126,9 +126,9 @@ function getSummaryDetails(args: DetailArgs) {
   
   // Pre-service
   if (isDesignRemoval) 
-    summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Design Removal', price: 99});
+    summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Design Removal', price: DESIGN_REMOVAL_PRICE});
   if (isEnhancementRemoval)
-    summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Enhancement Removal', price: 99});
+    summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Enhancement Removal', price: NAIL_REMOVAL_PRICE});
   if (isManiApplied && serviceRates.maniRate)
     summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Manicure', price: serviceRates.maniRate});
 

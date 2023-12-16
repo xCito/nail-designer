@@ -8,6 +8,8 @@ export const SHAPE_EXPANSION_SMALL_FEE = 5;
 export const SHAPE_EXPANSION_BIG_FEE = 10;
 export const BASE_MANICURE_PRICE = 20;
 export const GEL_REMOVAL_PRICE = 5;
+export const DESIGN_REMOVAL_PRICE = 5;
+export const NAIL_REMOVAL_PRICE = 8;
 export const POLISH_REMOVAL_PRICE = 0;
 export const TAKE_DOWN_PRICE = 10;
 
