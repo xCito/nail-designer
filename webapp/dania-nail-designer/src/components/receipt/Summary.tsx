@@ -151,7 +151,7 @@ function getSummaryDetails(args: DetailArgs) {
       const lengthLabel = diff === 0 ? 'Same' : diff > 0 ? 'Shorted' : 'Extended';
       summaryDetails[EXT_SERVICE_INDEX].items.push({
         title: `${NailLengths[length].label} Length (${lengthLabel})`, 
-        price: serviceRates.length[length]
+        price: serviceRates.length[length] 
       });
     }
   }

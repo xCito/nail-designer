@@ -1,4 +1,4 @@
-import { NailBaseId, NailLengthId, NailPlatformId, NailServiceId, NailShapeId } from "./design-constants";
+import { DesignElements, NailBaseId, NailDesignElem, NailDesignElemId, NailLengthId, NailPlatformId, NailServiceId, NailShapeId } from "./design-constants";
 
 
 export const SERVICE_FEE = 20;
@@ -60,7 +60,7 @@ export const NailServiceRates: TNailServiceRates = {
     base: {
       AcryGel: 5,
       BaseGel: null,
-      HardGel: -8,
+      HardGel: -13,
       PolyGel: 0,
     },
     length: {
@@ -68,9 +68,9 @@ export const NailServiceRates: TNailServiceRates = {
       x_short: 0,
       short: 0,
       medium: 0,
-      long: 5,
-      x_long: 10,
-      xx_long: 15,
+      long: 0,
+      x_long: 0,
+      xx_long: 0,
     }, 
     platform: null,
   },
@@ -159,7 +159,20 @@ export type TNailServiceRates = {
   }
 }
 
+type Orn<T> = { 
+  -readonly [K in keyof T]?: T[K] extends {type: 'item'} ? number : never;
+}
+type MakeNeverOptional<T> = {
+  [K in keyof T]: T[K] extends never ? undefined : T[K];
+};           
+export let o: MakeNeverOptional<Orn<typeof DesignElements>> = {
+  charm_lg: 2,
+  charm_sm: 3,
+  // gem: 1,
+  gem_cluster: 1,
+}
 
+console.log(o);
 export type NailPlatformPrice = Record<NailPlatformId, number>
 export type NailBasePrice = Record<NailBaseId, number>
 export type NailShapePrice = Record<NailShapeId, number>
