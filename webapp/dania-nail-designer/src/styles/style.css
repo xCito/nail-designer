@@ -131,7 +131,7 @@ html, body, #root {
     top: 0;
     /* background-color: var(--bg-color); */
     /* box-shadow: 0px 0px 15px 10px antiquewhite; */
-    transition: all 0.3s;
+    transition: height 0.3s;
     height: 40px;
 }
 .hands.natural { height: 50px }
@@ -188,42 +188,6 @@ html, body, #root {
 
 .dashed {
   border-style: dashed !important;
-}
-
-
-.floating-total {
-    color: black;
-    position: fixed;
-    bottom: 100px;
-    right: 10px;
-
-    background-color: antiquewhite;
-    box-shadow: 0 0 8px 0 black;
-    padding: 1em;
-    border-radius: 40px;
-    min-width: 120px;
-    opacity: 0;
-    transition: all 0.3s;
-    /* animation: update-glow 0.5s linear 1 forwards forwards; */
-    animation: update-glow 0.5s linear 0.1s 1 normal forwards;
-
-}
-
-.floating-total.show {
-    opacity: 1;
-}
-
-.floating-total:active {
-    box-shadow: 0 0 10px 0 pink;
-}
-.floating-total:hover {
-    box-shadow: 0 0 8px 0 pink;
-}
-
-@keyframes update-glow {
-    0% { box-shadow: 0 0 8px 0 black }
-    50% { box-shadow: 5px 0 8px 1px pink }
-    99% { box-shadow: 0 0 8px 0 black }
 }
 
 
@@ -391,7 +355,7 @@ tr:hover {
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
   background-color: var(--second-color);
   
-  transition: all 0.4s, background-color 0.8s 0.2s;
+  transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
   
   &.open {
     max-height: 50%;
@@ -399,7 +363,7 @@ tr:hover {
     color: black;
     box-shadow: 0 0 100vh 100vh rgba(0,0,0,0.3);
     background-color: var(--bg-color);
-    transition: all 0.4s, background-color 0.8s 0.2s;
+    transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
 
     .header {
       cursor: unset;
@@ -408,7 +372,7 @@ tr:hover {
     .title {
       left: 0;
       opacity: 1;
-      transition: all 0.3s 0.2s;
+      transition: opacity 0.3s 0.2s;
     }
     .price {
       opacity: 0;
@@ -416,7 +380,7 @@ tr:hover {
     }
     .summary-table {
       height: 100%;
-      transition: all 0.3s;
+      transition: height 0.3s, flex-grow 0.3;
       overflow-y: auto;
       flex-grow: 1;
     }
@@ -427,7 +391,7 @@ tr:hover {
     cursor: pointer;
     position: relative;
     color: white; 
-    transition: all 0.4s 0.1s;
+    transition: color 0.4s 0.1s;
   }
   &.open .header { 
     color: black; 
@@ -441,11 +405,11 @@ tr:hover {
   }
   .price {
     opacity: 1;
-    transition: all 0.3s 0.5s;
+    transition: opacity 0.3s 0.5s;
   }
 
   .summary-table {
-    transition: all 0.3s;
+    transition: height 0.3s, flex-grow 0.3;
     height: 0px;
     overflow: hidden;
     flex-grow: 0;
