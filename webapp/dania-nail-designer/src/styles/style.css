@@ -360,7 +360,7 @@ tr:hover {
  
   &.open { 
     &.full {
-      max-height: 95%;
+      max-height: calc(100% - 107px);
     }
     max-height: 60%;
     height: 100%;
