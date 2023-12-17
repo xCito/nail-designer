@@ -420,3 +420,7 @@ tr:hover {
     }
   }
 }
+
+.nail-svg {
+  transition: d 0.3s;
+}

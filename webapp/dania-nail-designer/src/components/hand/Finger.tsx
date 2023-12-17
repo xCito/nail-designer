@@ -23,7 +23,7 @@ export function Finger({shape, length = 'natural'}: Props) {
       <path d="M -15 36 C -15 24 -15 16 -14 12 C -11 -1 11 -1 14 12 C 15 16 15 24 15 36" stroke="black" strokeWidth="0.5" fill={nailColor} />
       
       {/* Nail Shape and Length */}
-      <path d={`M 15 36 ${nailShapeAndLength[shapeVal][lengthVal] || DefaultNailAndLength}`} stroke="black" strokeWidth="0.5" fill={nailColor} style={{transition: 'd 0.3s'}} />
+      <path d={`M 15 36 ${nailShapeAndLength[shapeVal][lengthVal] || DefaultNailAndLength}`} stroke="black" strokeWidth="0.5" fill={nailColor} className="nail-svg" />
     </g>
   </svg>
   
