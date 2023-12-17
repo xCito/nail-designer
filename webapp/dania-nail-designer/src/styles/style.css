@@ -422,5 +422,6 @@ tr:hover {
 }
 
 .nail-svg {
+  -webkit-transition: d 0.3s;
   transition: d 0.3s;
 }
