@@ -201,6 +201,7 @@ export function Summary({ nailDesign, consultionData }: Props) {
         const sumElem = document.getElementById('summary-d')!;
         const { top, bottom, left, right } = sumElem.getBoundingClientRect();
         const isInside = top < e.y && e.y < bottom && left < e.x && e.x < right;
+        console.log(isInside)
         setOpen(isInside);
       }
     };
@@ -214,14 +215,15 @@ export function Summary({ nailDesign, consultionData }: Props) {
       document.removeEventListener('click', clickHandler);
     }
   }, [isOpen]);
+ 
   
-  return <div id="summary-d" className={classNames("summary-drawer px-3 text-black", {'open': isOpen})}>
-    <div className="header py-3" role='button' onClick={() =>  !isOpen && setOpen(true)}>
+  return <div className={classNames("summary-drawer text-black", {'open': isOpen})}>
+    <div className="header px-3 py-3" role='button' onClick={() => !isOpen && setOpen(true)}>
       <h3 className="title m-0">Summary</h3>
       <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
     </div>
 
-    <div className="summary-table pb-2">
+    <div id="summary-d" className="summary-table pb-2 px-3">
       <table className="w-100">
         <thead>
           <tr>
