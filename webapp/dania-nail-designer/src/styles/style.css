@@ -357,7 +357,11 @@ tr:hover {
   
   transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
   
-  &.open {
+ 
+  &.open { 
+    &.full {
+      max-height: 95%;
+    }
     max-height: 60%;
     height: 100%;
     color: black;
@@ -383,9 +387,30 @@ tr:hover {
       transition: height 0.3s, flex-grow 0.3s;
       overflow-y: auto;
       flex-grow: 1;
+    } 
+    .btn-group {
+      display: block;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      
+      button {
+        padding-top: 16px;
+        height: 44px;
+        width: 44px;
+        border-radius: 10px;
+        margin-left: 4px;
+      }
+      button:last-child {
+        transform: rotate(180deg)
+      }
     }
   }
   
+  .btn-group {
+    display: none;
+  }
+
   .header {
     flex: 0 0;
     cursor: pointer;

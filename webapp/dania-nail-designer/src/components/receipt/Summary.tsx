@@ -180,7 +180,7 @@ interface Props {
 }
 export function Summary({ nailDesign, consultionData }: Props) {
   const {base, length, shape} = nailDesign.left;
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const [isOpen, setOpen] = useState<'close' | 'open' | 'full'>('close');
 
   const summaryDetails = getSummaryDetails({
     consult: consultionData, 
@@ -197,12 +197,12 @@ export function Summary({ nailDesign, consultionData }: Props) {
 
   useEffect(() => {
     const clickHandler = function (e: MouseEvent) {
-      if (e.target && isOpen) {
+      if (e.target && isOpen !== 'close') {
         const sumElem = document.getElementById('summary-d')!;
         const { top, bottom, left, right } = sumElem.getBoundingClientRect();
         const isInside = top < e.y && e.y < bottom && left < e.x && e.x < right;
-        console.log(isInside)
-        setOpen(isInside);
+        if (!isInside)
+          setOpen('close');
       }
     };
 
@@ -216,11 +216,26 @@ export function Summary({ nailDesign, consultionData }: Props) {
     }
   }, [isOpen]);
  
-  
-  return <div className={classNames("summary-drawer text-black", {'open': isOpen})}>
-    <div className="header px-3 py-3" role='button' onClick={() => !isOpen && setOpen(true)}>
+  const onHeaderClick = () => {
+    if (isOpen === 'close')
+      setOpen('open');
+  }
+ 
+  const onFullClick = () => {
+    setOpen('full');
+  }
+ 
+  const onMiniClick = () => {
+    setOpen('close');
+  }
+  return <div className={classNames("summary-drawer text-black", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}>
+    <div className="header px-3 py-3" role='button' onClick={onHeaderClick}>
       <h3 className="title m-0">Summary</h3>
       <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
+      <div className="btn-group">
+        <button onClick={onFullClick}>^</button>
+        <button onClick={onMiniClick}>^</button>
+      </div>
     </div>
 
     <div id="summary-d" className="summary-table pb-2 px-3">
