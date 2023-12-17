@@ -1,4 +1,4 @@
-import { DesignElements, NailBaseId, NailDesignElem, NailDesignElemId, NailLengthId, NailPlatformId, NailServiceId, NailShapeId } from "./design-constants";
+import { DesignElements, NailBaseId, NailLengthId, NailPlatformId, NailServiceId, NailShapeId } from "./design-constants";
 
 
 export const SERVICE_FEE = 20;
@@ -11,13 +11,14 @@ export const GEL_REMOVAL_PRICE = 5;
 export const DESIGN_REMOVAL_PRICE = 5;
 export const NAIL_REMOVAL_PRICE = 8;
 export const POLISH_REMOVAL_PRICE = 0;
+export const BASE_COLOR_PRICE = 5;
 export const TAKE_DOWN_PRICE = 10;
 
-export const OrnamentPrices = {
-  "10": 5,
-  "20": 8,
-  "8": 1,
-  "9": 5,
+export const OrnamentPrices: OrnamentPrice = {
+  charm_sm: 5,
+  charm_lg: 8,
+  gem: 1,
+  gem_cluster: 5,
 } as const;
 
 // Manicure
@@ -159,23 +160,13 @@ export type TNailServiceRates = {
   }
 }
 
-type Orn<T> = { 
+export type OrnamentPrice = DesignElemItems<typeof DesignElements>;
+export type DesignElemItems<T> = { 
   -readonly [K in keyof T]?: T[K] extends {type: 'item'} ? number : never;
-}
-type MakeNeverOptional<T> = {
-  [K in keyof T]: T[K] extends never ? undefined : T[K];
-};           
-export let o: MakeNeverOptional<Orn<typeof DesignElements>> = {
-  charm_lg: 2,
-  charm_sm: 3,
-  // gem: 1,
-  gem_cluster: 1,
-}
+}        
 
-console.log(o);
 export type NailPlatformPrice = Record<NailPlatformId, number>
 export type NailBasePrice = Record<NailBaseId, number>
 export type NailShapePrice = Record<NailShapeId, number>
 export type NailLengthPrice = Record<NailLengthId, number>
 export type NailServicePrice = Record<Exclude<NailServiceId, "manicure">, number>
-export type OrnamentPrice = Record<string, number>

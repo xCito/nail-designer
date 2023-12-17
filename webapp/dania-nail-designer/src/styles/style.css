@@ -28,7 +28,7 @@ html, body, #root {
   padding: 20px;
   max-width: 1200px;
   width: 500px;
-  height: 100%;
+  height: calc(100% - 58px);
 }
 /* Maximum width */
 @media (max-width: 600px) {
@@ -269,6 +269,10 @@ button {
   &.active {
     background-color: orange;
   }
+  &:disabled {
+    background-color: var(--third-color);
+    cursor: unset;
+  }
 }
 
 tr:hover {
@@ -347,7 +351,7 @@ tr:hover {
         background-color: var(--second-color);
         display: flex;
         justify-content: center;
-        align-items: end;
+        align-items: flex-end;
         flex: 1 0 30%;
         padding-bottom: calc(var(--item-size) / 6);
         border: none;
@@ -362,6 +366,93 @@ tr:hover {
         background-color: var(--third-color);
 
       }
+    }
+  }
+}
+
+
+/* =================== Summary ====================== */
+
+.summary-drawer {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 0.5em;
+  left: 0.5em;
+  
+  width: calc(100% - 1em);
+  max-height: 56px;
+  height: 56px;
+  overflow: hidden;
+
+  border: 1px solid var(--main-color);
+  border-radius: 10px;
+
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+  background-color: var(--second-color);
+  
+  transition: all 0.4s, background-color 0.8s 0.2s;
+  
+  &.open {
+    max-height: 50%;
+    height: 100%;
+    color: black;
+    box-shadow: 0 0 100vh 100vh rgba(0,0,0,0.3);
+    background-color: var(--bg-color);
+    transition: all 0.4s, background-color 0.8s 0.2s;
+
+    .header {
+      cursor: unset;
+    }
+
+    .title {
+      left: 0;
+      opacity: 1;
+      transition: all 0.3s 0.2s;
+    }
+    .price {
+      opacity: 0;
+      transition: none;
+    }
+    .summary-table {
+      height: 100%;
+      transition: all 0.3s;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+  }
+  
+  .header {
+    flex: 0 0;
+    cursor: pointer;
+    position: relative;
+    color: white; 
+    transition: all 0.4s 0.1s;
+  }
+  &.open .header { 
+    color: black; 
+  }
+  
+  .title { 
+    position: absolute; 
+    left: -20px;
+    opacity: 0;
+    transition: none;
+  }
+  .price {
+    opacity: 1;
+    transition: all 0.3s 0.5s;
+  }
+
+  .summary-table {
+    transition: all 0.3s;
+    height: 0px;
+    overflow: hidden;
+    flex-grow: 0;
+
+    tr th {
+      border-bottom: 2px dashed gray;
+      padding: 0 0 8px;
     }
   }
 }

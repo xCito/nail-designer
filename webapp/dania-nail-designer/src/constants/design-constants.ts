@@ -64,11 +64,11 @@ export const DesignElements = {
 } as const
 
 export const NailServices = {
-  manicure:   { name: 'Basic Manicure'},
-  refill:     { name: 'Refill' },
-  rebalance:  { name: 'Rebalance'},
-  new_set:    { name: 'New Set'},
-  take_down:  { name: 'Take Down'},
+  manicure:   { name: 'Basic Manicure', type: 'pre-service'},
+  refill:     { name: 'Refill',         type: 'ext-service' },
+  rebalance:  { name: 'Rebalance',      type: 'ext-service'},
+  new_set:    { name: 'New Set',        type: 'ext-service'},
+  take_down:  { name: 'Take Down',      type: 'pre-service'},
 } as const;
 
 export const NailBuildingPlatforms = {
