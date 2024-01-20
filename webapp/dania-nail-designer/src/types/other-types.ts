@@ -58,7 +58,5 @@ export type ShapeAndLengths = {
   }
 }
 export type LengthAndPixelHeight = {
-  [len in BaseNailLength]: number;
+  [len in NailLengthId]: number;
 }
-
-export type BaseNailLength = Exclude<NailLengthId, 'x_short_S' | 'short_S' | 'medium_S' | 'long_S' | 'x_long_S' | 'xx_long_S'>

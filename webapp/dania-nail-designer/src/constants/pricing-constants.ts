@@ -1,4 +1,4 @@
-import { DesignElements, NailBaseId, NailDesignElem, NailDesignElemId, NailLengthId, NailPlatformId, NailServiceId, NailShapeId } from "./design-constants";
+import { DesignElements, NailBaseId, NailLengthId, NailPlatformId, NailServiceId, NailShapeId } from "./design-constants";
 
 
 export const SERVICE_FEE = 20;
@@ -165,10 +165,10 @@ type Orn<T> = {
 type MakeNeverOptional<T> = {
   [K in keyof T]: T[K] extends never ? undefined : T[K];
 };           
-export let o: MakeNeverOptional<Orn<typeof DesignElements>> = {
+export const o: MakeNeverOptional<Orn<typeof DesignElements>> = {
   charm_lg: 2,
   charm_sm: 3,
-  // gem: 1,
+  gem: 1,
   gem_cluster: 1,
 }
 
