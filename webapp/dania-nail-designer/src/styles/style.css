@@ -28,7 +28,7 @@ html, body, #root {
   padding: 20px;
   max-width: 1200px;
   width: 500px;
-  height: 100%;
+  height: calc(100% - 58px);
 }
 /* Maximum width */
 @media (max-width: 600px) {
@@ -131,7 +131,7 @@ html, body, #root {
     top: 0;
     /* background-color: var(--bg-color); */
     /* box-shadow: 0px 0px 15px 10px antiquewhite; */
-    transition: all 0.3s;
+    transition: height 0.3s;
     height: 40px;
 }
 .hands.natural { height: 50px }
@@ -191,42 +191,6 @@ html, body, #root {
 }
 
 
-.floating-total {
-    color: black;
-    position: fixed;
-    bottom: 100px;
-    right: 10px;
-
-    background-color: antiquewhite;
-    box-shadow: 0 0 8px 0 black;
-    padding: 1em;
-    border-radius: 40px;
-    min-width: 120px;
-    opacity: 0;
-    transition: all 0.3s;
-    /* animation: update-glow 0.5s linear 1 forwards forwards; */
-    animation: update-glow 0.5s linear 0.1s 1 normal forwards;
-
-}
-
-.floating-total.show {
-    opacity: 1;
-}
-
-.floating-total:active {
-    box-shadow: 0 0 10px 0 pink;
-}
-.floating-total:hover {
-    box-shadow: 0 0 8px 0 pink;
-}
-
-@keyframes update-glow {
-    0% { box-shadow: 0 0 8px 0 black }
-    50% { box-shadow: 5px 0 8px 1px pink }
-    99% { box-shadow: 0 0 8px 0 black }
-}
-
-
 
 /* ====================== Basic ====================== */
 /* td:first-child, th:first-child, td:last-child, th:last-child {
@@ -268,6 +232,10 @@ button {
   }
   &.active {
     background-color: orange;
+  }
+  &:disabled {
+    background-color: var(--third-color);
+    cursor: unset;
   }
 }
 
@@ -347,7 +315,7 @@ tr:hover {
         background-color: var(--second-color);
         display: flex;
         justify-content: center;
-        align-items: end;
+        align-items: flex-end;
         flex: 1 0 30%;
         padding-bottom: calc(var(--item-size) / 6);
         border: none;
@@ -364,4 +332,120 @@ tr:hover {
       }
     }
   }
+}
+
+
+/* =================== Summary ====================== */
+
+.summary-drawer {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 0.5em;
+  left: 0.5em;
+  
+  width: calc(100% - 1em);
+  max-height: 56px;
+  height: 56px;
+  overflow: hidden;
+
+  border: 1px solid var(--main-color);
+  border-radius: 10px;
+
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+  background-color: var(--second-color);
+  
+  transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
+  
+ 
+  &.open { 
+    &.full {
+      max-height: calc(100% - 107px);
+    }
+    max-height: 60%;
+    height: 100%;
+    color: black;
+    box-shadow: 0 0 100vh 100vh rgba(0,0,0,0.3);
+    background-color: var(--bg-color);
+    transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
+
+
+    .header {
+      background-color: var(--second-color);
+    }
+    .title {
+      left: 1em;
+      opacity: 1;
+      transition: left -0.3 0.2s, opacity 0.3s 0.2s;
+    }
+    .price {
+      opacity: 0;
+      transition: none;
+    }
+    .summary-table {
+      height: 100%;
+      transition: height 0.3s, flex-grow 0.3s;
+      overflow-y: auto;
+      flex-grow: 1;
+    } 
+    .btn-group {
+      display: block;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      
+      button {
+        padding-top: 16px;
+        height: 44px;
+        width: 44px;
+        border-radius: 10px;
+        margin-left: 4px;
+      }
+      button:last-child {
+        transform: rotate(180deg)
+      }
+    }
+  }
+  
+  .btn-group {
+    display: none;
+  }
+
+  .header {
+    flex: 0 0;
+    cursor: pointer;
+    position: relative;
+    color: white; 
+    border-radius: 10px;
+    background-color: transparent;
+    transition: color 0.4s 0.1s, background-color 0.4s 0.1s;
+  }
+  
+  .title { 
+    position: absolute; 
+    left: -1em;
+    opacity: 0;
+    transition: left 0.3s 0.2s;
+  }
+  .price {
+    opacity: 1;
+    transition: opacity 0.3s 0.5s;
+  }
+
+  .summary-table {
+    transition: height 0.3s, flex-grow 0.3;
+    height: 0px;
+    overflow: hidden;
+    flex-grow: 0;
+
+    tr th {
+      border-bottom: 2px dashed gray;
+      padding: 8px 0 8px;
+    }
+  }
+}
+
+.nail-svg {
+  -webkit-transition: d 0.3s;
+  transition: d 0.3s;
 }

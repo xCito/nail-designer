@@ -1,18 +1,19 @@
 import { getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
 import { ConsultationValue } from "@/types/other-types";
-import { Fragment } from "react";
-import { createPortal } from "react-dom";
-import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElem, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "../../constants/design-constants";
-import { DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NO_CHARGE, NailServiceRates, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
-import { FloatingTotal } from "./FloatingTotal";
+import classNames from "classnames";
+import { Fragment, useEffect, useState } from "react";
+import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "../../constants/design-constants";
+import { BASE_COLOR_PRICE, DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NO_CHARGE, NailServiceRates, OrnamentPrices, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
 
 
-function getDesignPrice(design: NailDesignElem, count: number): number {
-  return design.type === 'art' 
-    ? ComplexityScore[design.complexity] * count
-    : design.type === 'base' 
-    ? 5
-    : 5 * count;
+function getDesignPrice(designId: NailDesignElemId, count: number): number {
+  const design = getDesignById(designId);
+
+  switch(design.value.type) {
+    case 'art': return ComplexityScore[design.value.complexity] * count;
+    case 'base': return BASE_COLOR_PRICE;
+    case 'item': return OrnamentPrices[design.id]! * count;
+  }
 }
 
 function getDesignById(id: NailDesignElemId) {
@@ -115,7 +116,7 @@ function getSummaryDetails(args: DetailArgs) {
     .forEach(([id, count]) => {
       const design = getDesignById(id).value;
       const name = `${design.name} x${count}`;
-      const price = getDesignPrice(design, count);
+      const price = getDesignPrice(id, count);
       summaryDetails[DESIGN_INDEX].items.push({title: name, price: price});
     });
   }
@@ -133,8 +134,11 @@ function getSummaryDetails(args: DetailArgs) {
     summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Manicure', price: serviceRates.maniRate});
 
   // Service
-  if (svcId === 'manicure' || svcId === 'take_down') 
+  if (svcId === 'manicure' || svcId === 'take_down') {
     summaryDetails[SERVICE_INDEX].items.push({title: NailServices[svcId].name, price: serviceRates.rate});
+
+    // TODO: handle base selection here
+  }
 
   // Extension Service
   if (svcId === 'refill' || svcId === 'rebalance' || svcId === 'new_set') {
@@ -176,6 +180,7 @@ interface Props {
 }
 export function Summary({ nailDesign, consultionData }: Props) {
   const {base, length, shape} = nailDesign.left;
+  const [isOpen, setOpen] = useState<'close' | 'open' | 'full'>('close');
 
   const summaryDetails = getSummaryDetails({
     consult: consultionData, 
@@ -189,161 +194,84 @@ export function Summary({ nailDesign, consultionData }: Props) {
   const total = summaryDetails.reduce((sum, section) => {
     return sum + section.items.reduce((subTotal, item) => subTotal + item.price, 0);
   }, 0);
-  // let shapeChangeFee = getShapeFeePrice(svcId, startShape, shape);
-  // let lengthChangeFee = getLengthFeePrice(svcId, startLength, length);
-  
-  // if (svcId === 'new_set') {
-  //   shapeChangeFee = NO_CHARGE;
-  //   lengthChangeFee = NO_CHARGE;
-  // }
 
-  // const svcPrice = getNailServicePrice(svcId);
-  // const maniPrice = getManicurePrice(svcId, isManiApplied);
-  // const bsePrice = getBasePrice(svcId, base);
-  // const lenPrice = length ? LengthPrice[ length ] : 0;
-  // const shpPrice = shape ? ShapePrice[ shape ] : 0;
-  // const designCount = getAppliedDesignElementCounts(nailDesign);
+  useEffect(() => {
+    const clickHandler = function (e: MouseEvent) {
+      if (e.target && isOpen !== 'close') {
+        const sumElem = document.getElementById('summary-d')!;
+        const { top, bottom, left, right } = sumElem.getBoundingClientRect();
+        const isInside = top < e.y && e.y < bottom && left < e.x && e.x < right;
+        if (!isInside)
+          setOpen('close');
+      }
+    };
 
-  // const designTotal = [...designCount.entries()]
-  //   .map(([id, count]: [id: NailDesignElemId, count: number]) => getDesignPrice(DesignElements[id], count))
-  //   .reduce((total, price) => total + price, 0);
-  
+    if (isOpen) {
+      // Wait for animation to finish
+      setTimeout(() => document.addEventListener('click', clickHandler), 100);
+    }
+    
+    return () => {
+      document.removeEventListener('click', clickHandler);
+    }
+  }, [isOpen]);
+ 
+  const onHeaderClick = () => {
+    if (isOpen === 'close')
+      setOpen('open');
+  }
+ 
+  const onFullClick = () => {
+    setOpen('full');
+  }
+ 
+  const onMiniClick = () => {
+    setOpen('close');
+  }
+  return <div className={classNames("summary-drawer text-black", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}>
+    <div className="header px-3 py-3" role='button' onClick={onHeaderClick}>
+      <h3 className="title m-0">Summary</h3>
+      <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
+      <div className="btn-group">
+        <button onClick={onFullClick}>^</button>
+        <button onClick={onMiniClick}>^</button>
+      </div>
+    </div>
 
+    <div id="summary-d" className="summary-table pb-2 px-3">
+      <table className="w-100">
+        <thead>
+          <tr>
+            <th className="text-start">Service</th>
+            <th className="text-start">Prices</th>
+          </tr>
+        </thead>
 
-  // const total = 
-  //   shapeChangeFee + lengthChangeFee
-  //   + svcPrice + maniPrice + bsePrice + shpPrice + lenPrice 
-  //   + designTotal;
-
-  
-  return <div className="pt-4 pb-5 text-black">
-    <h4 className="text-start mt-0">Summary</h4>
-
-    <table className="w-100">
-
-      <thead>
-        <tr>
-          <th className="text-start border-0 border-bottom dashed">Service</th>
-          <th className="text-start border-0 border-bottom dashed">Prices</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {summaryDetails.map((sumDetail) => <Fragment key={sumDetail.section}>
-          {sumDetail.items.map((item, index) => <Fragment key={item.title}>
-            {index === 0 && <tr>
-              {<td>{sumDetail.section}</td>}
-              <td />
-            </tr>}
-            <tr>
-              <td className="ps-5">+ {item.title}</td>
-              <td>${item.price.toFixed(2)}</td>    
-            </tr>
+        <tbody>
+          {summaryDetails.map((sumDetail) => <Fragment key={sumDetail.section}>
+            {sumDetail.items.map((item, index) => <Fragment key={item.title}>
+              {index === 0 && <tr>
+                {<td>{sumDetail.section}</td>}
+                <td />
+              </tr>}
+              <tr>
+                <td className="fst-italic ps-5">+ {item.title}</td>
+                <td>${item.price.toFixed(2)}</td>    
+              </tr>
+            </Fragment>)}
           </Fragment>)}
-        </Fragment>)}
-      </tbody>
+        </tbody>
 
-      <tfoot>
-        <tr>
-          <td className="text-start fw-bold fst-italic pt-4">Total</td>
-          <td className="text-start fw-bold fst-italic pt-4">${total.toFixed(2)}</td>
-        </tr>
-      </tfoot>
-    </table>
-    {/* <table className="w-100">
-
-      <thead>
-        <tr>
-          <th className="text-start border-0 border-bottom dashed">Attribute</th>
-          <th className="text-start border-0 border-bottom dashed">Pick</th>
-          <th className="text-start border-0 border-bottom dashed">Complexity</th>
-          <th className="text-start border-0 border-bottom dashed">Price</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        
-
-        {svcId && base && <>
+        <tfoot>
           <tr>
-            <td className="text-start">Service</td>
-            <td className="text-start fw-light">{NailBases[base]} {NailServices[svcId].name}</td>
-            <td />
-            <td className="text-start fw-light">${svcPrice.toFixed(2)}</td>
+            <td className="text-start fw-bold fst-italic pt-4">Total</td>
+            <td className="text-start fw-bold fst-italic pt-4">${total.toFixed(2)}</td>
           </tr>
+        </tfoot>
+      </table>
+    </div>
+   
 
-          {maniPrice > 0 && <tr>
-            <td />
-            <td className="text-start fw-light ps-2">+ Manicure</td>
-            <td />
-            <td className="text-start fw-light">${BASE_MANICURE_PRICE.toFixed(2)}</td>
-          </tr>}
-
-          {lengthChangeFee > 0 && startLength && length && <tr>
-            <td />
-            <td className="text-start fw-light ps-2" colSpan={2}>
-              + Length {getLengthDiff(startLength, length) > 0 ? 'Reduction' : 'Extension'} 
-              {` (${NailLengths[startLength].label} -> ${NailLengths[length].label})`}
-            </td>
-            <td className="text-start fw-light">
-              ${lengthChangeFee.toFixed(2)}
-            </td>
-          </tr>}
-
-          {shapeChangeFee > 0 && startShape && shape && <tr>
-            <td />
-            <td className="text-start fw-light ps-2" colSpan={2}>
-              + Shape {getShapeDiff(startShape, shape) > 0 ? 'Slimming' : 'Expansion'}
-              {` (${NailShapes[startShape].label} -> ${NailShapes[shape].label})`}
-            </td>
-            <td className="text-start fw-light">
-              ${shapeChangeFee.toFixed(2)}
-            </td>
-          </tr>}
-
-
-        </>}
-        {base && <>
-          <tr>
-            <td className="text-start">Base</td>
-            <td className="text-start fw-light">{NailBases[ base ]}</td>
-            <td />
-            <td className="text-start fw-light">${bsePrice.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td />
-            <td className="text-start fw-light ps-2" colSpan={2}>
-              + {length ? NailLengths[length].label : ''} {shape ? NailShapes[shape].label : ''}
-              {/* {length === startLength && <span className="fst-italic"> (Same length)</span>}
-              {shape === startShape && <span className="fst-italic"> (Same shape)</span>} }
-            </td>
-            <td className="text-start fw-light">${lenPrice.toFixed(2)}</td>
-          </tr>
-        
-        </>}
-
-        {[...designCount.entries()].map(([designId, count]) => {
-          const design = getDesignById(designId);
-          return <tr key={designId}>
-            <td className="text-start">Design</td>
-            <td className="text-start fw-lighter">{design.value.name}</td>
-            <td className="text-start fw-lighter">{design.value.complexity} x{count}</td>
-            <td className="text-start fw-lighter">${getDesignPrice(design.value, count).toFixed(2)}</td>
-          </tr>
-        })}
-      </tbody>
-
-      <tfoot>
-        <tr>
-          <td className="text-start fw-bold fst-italic pt-4">Total</td>
-          <td></td>
-          <td></td>
-          <td className="text-start fw-bold fst-italic pt-4">${total.toFixed(2)}</td>
-        </tr>
-      </tfoot>
-    </table> */}
-
-    {createPortal(<FloatingTotal total={total}/>, document.body)}
+   
 </div>
 }

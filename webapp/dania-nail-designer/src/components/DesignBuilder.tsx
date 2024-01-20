@@ -73,59 +73,63 @@ export function DesignBuilder() {
         </div>
       </div>
 
-        <DesignSection 
-          title='Consultation' 
-          isExpanded={openSection === 'Consultation'}
-          onHeaderClick={() => onHeaderClick('Consultation')}>
-            <ConsultationMenu 
-              service={consultData.service}
-              startLen={consultData.startLen}
-              startShape={consultData.startShape}
-              manicureApplied={consultData.isManiApplied}
-              designRemoval={consultData.isDesignRemoval}
-              enhancementRemoval={consultData.isEnhancementRemoval}
-              onConsultChange={(v: Partial<ConsultationValue>) => setConsultData(v) }  />
-        </DesignSection>
+      <DesignSection 
+        title='Consultation' 
+        isExpanded={openSection === 'Consultation'}
+        onHeaderClick={() => onHeaderClick('Consultation')}>
+          <ConsultationMenu 
+            service={consultData.service}
+            startLen={consultData.startLen}
+            startShape={consultData.startShape}
+            manicureApplied={consultData.isManiApplied}
+            designRemoval={consultData.isDesignRemoval}
+            enhancementRemoval={consultData.isEnhancementRemoval}
+            dispatch={dispatch}
+            onConsultChange={(v: Partial<ConsultationValue>) => setConsultData(v) }  />
+      </DesignSection>
 
-        <DesignSection 
-          title='Foundation' 
-          isExpanded={openSection === 'Foundation'}
-          onHeaderClick={() => onHeaderClick('Foundation')}
-        >
-          <BaseMenu selected={getAppliedBases(nailDesign)} onSelection={onBaseSelection} />
-          
+      <DesignSection 
+        title='Foundation' 
+        isExpanded={openSection === 'Foundation'}
+        onHeaderClick={() => onHeaderClick('Foundation')}>
+          <BaseMenu 
+            selected={getAppliedBases(nailDesign)} 
+            consultData={consultData}
+            onSelection={onBaseSelection} />
+        
           <br/>
-          
+        
           <ShapeMenu 
             selected={nailDesign.left.shape} 
+            consultData={consultData}
             onSelection={onShapeSelection} />
           
           <br/>
           
           <LengthMenu 
+            consultData={consultData}
             selected={nailDesign.left.length} 
             onSelection={onLengthSelection} />
-        </DesignSection>
+      </DesignSection>
 
-        <DesignSection 
-          title='Design'
-          isExpanded={openSection === 'Design'}
-          // isExpanded={true}
-          onHeaderClick={() => onHeaderClick('Design')}>
+      <DesignSection 
+        title='Design'
+        isExpanded={openSection === 'Design'}
+        onHeaderClick={() => onHeaderClick('Design')}>
           <DesignElementMenu
             hand={nailDesign.left}
             selectedCountMap={getAppliedDesignElementCounts(nailDesign)} 
             onSelection={onDesignElementCountChange} 
             onClear={onDesignElemRemoval}/>
-        </DesignSection>
-      </div>
+      </DesignSection>
+    </div>
 
-      <Summary 
-        nailDesign={nailDesign} 
-        consultionData={consultData}
-        isManiApplied={consultData.isManiApplied}
-        selectedServiceId={consultData.service}
-        startLength={consultData.startLen}
-        startShape={consultData.startShape} />
-    </div>;
+    <Summary 
+      nailDesign={nailDesign} 
+      consultionData={consultData}
+      isManiApplied={consultData.isManiApplied}
+      selectedServiceId={consultData.service}
+      startLength={consultData.startLen}
+      startShape={consultData.startShape} />
+  </div>;
 }

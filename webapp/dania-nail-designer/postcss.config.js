@@ -1,7 +1,12 @@
 import postcssNesting from 'postcss-nesting';
+import autoprefixer from 'autoprefixer';
 
 export default {
-  plugins: [
-    postcssNesting(/* pluginOptions */)
-  ]
+  plugins: {
+    autoprefixer: {
+      
+    },
+    'postcss-nesting': {},
+  }
+  
 }

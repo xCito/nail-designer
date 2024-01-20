@@ -1,6 +1,6 @@
 import { NailLengthId, NailServiceId, NailShapeId } from "@/constants/design-constants";
 import { getNailLengthsAsList, getNailServicesAsList, getNailShapesAsList } from "@/service/helpers";
-import { ConsultationValue } from "@/types/other-types";
+import { ConsultationValue, DesignAction } from "@/types/other-types";
 import { ChangeEvent } from "react";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   designRemoval: boolean | null,
   enhancementRemoval: boolean | null,
   onConsultChange: (v: Partial<ConsultationValue>) => void;
+  dispatch: (action: DesignAction) => void;
 }
 
 const lengths = getNailLengthsAsList();
@@ -18,7 +19,7 @@ const shapes = getNailShapesAsList();
 const services = getNailServicesAsList();
 
 export function ConsultationMenu(props: Props) {
-  const { startLen, startShape, service, manicureApplied, designRemoval, enhancementRemoval } = props;
+  const { startLen, startShape, service, manicureApplied, designRemoval, enhancementRemoval, dispatch } = props;
   const { onConsultChange } = props;
 
   const onStartLengthSelect = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -39,12 +40,14 @@ export function ConsultationMenu(props: Props) {
       updateConsult.isManiApplied = null
       updateConsult.startLen = null, 
       updateConsult.startShape = null;
+      dispatch({type: 'SET_BASE', baseId: 'BaseGel'});
     } else if (selectSvc == 'take_down') {
       updateConsult.isManiApplied = true,
       updateConsult.startLen = null, 
       updateConsult.startShape = null;
     } else {
       updateConsult.isManiApplied = true;
+      dispatch({type: 'SET_BASE', baseId: 'PolyGel'});
     }
 
     onConsultChange(updateConsult);
@@ -98,11 +101,12 @@ export function ConsultationMenu(props: Props) {
     
     {(service !== null && service !== 'take_down') && <>
       <p className='fw-bold'>Removal Services</p>
-      {['refill', 'rebalance', 'new_set'].includes(service) && <label htmlFor='take_down_radio' className={"ms-3 fs-4 d-block"}>
+      {<label htmlFor='take_down_radio' className={"ms-3 fs-4 d-block"}>
         <input 
           id="take_down_radio" 
           name={'removals'} 
           type="checkbox" 
+          disabled={service !== 'new_set'}
           className="me-3"
           checked={!!enhancementRemoval}
           onChange={onEnhancementRemoval}/>
