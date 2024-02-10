@@ -21,21 +21,26 @@
 * {
   color: var(--text-color);
 }
-
-html, body, #root {
-  height: 100%;
+html, body {
+  height: 100dvh;
   background-color: var(--bg-1-color);
-  overscroll-behavior: none;
 }
+#root {
+  height: calc(100% + 90px);
+  background-color: var(--bg-1-color);
+  /* overscroll-behavior: none; */
+}
+
 
 /* -------------- Basic Elements */
 button {
   padding: 1em 0.8em;
   border-radius: var(--radius);
   background-color: var(--primary-color);
-  border-color: transparent;
-  border-width: 2px;
-  border-style: solid;
+  border: none;
+  outline-color: transparent;
+  outline-width: 2px;
+  outline-style: solid;
   font-size: 0.9em;
   
   &.secondary {
@@ -65,11 +70,11 @@ button {
 
   &.outline {
     background-color: transparent;
-    border-color: var(--primary-color);
+    outline-color: var(--primary-color);
     
     &:hover {
       background-color: transparent;
-      border-color: var(--accent-color);
+      outline-color: var(--accent-color);
     }
   }
 }
@@ -286,7 +291,7 @@ label:has(> input[type="checkbox"]) {
     text-align: right;
 
     > * {
-      width: 35%;
+      min-width: 37%;
     }
   }
 

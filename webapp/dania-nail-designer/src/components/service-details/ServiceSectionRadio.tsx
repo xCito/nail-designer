@@ -10,7 +10,7 @@ interface Props {
 export function ServiceSectionRadio(p: Props) {
   const { title, options, selected, onChange } = p;
 
-  return <TitledGridContainer title={title} columns={3}>
+  return <TitledGridContainer title={title} columns={2}>
     {options.map(option => {
       const isChecked = selected === option;
 
