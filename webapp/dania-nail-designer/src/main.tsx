@@ -5,6 +5,8 @@ import App from './App.tsx'
 import './index.css'
 import '@/styles/style.css';
 
+history.scrollRestoration = "manual";
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

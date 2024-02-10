@@ -66,7 +66,6 @@ export function DesignBuilder() {
           <p className="fancy-font mt-0">By Dania Nails</p>
         </div>
         <div className="flex-grow-1 justify-self-end text-end">
-
           <Finger 
             length={nailDesign.left.length} 
             shape={nailDesign.left.shape} />
