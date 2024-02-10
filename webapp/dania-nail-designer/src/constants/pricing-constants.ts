@@ -57,7 +57,7 @@ export const NailServiceRates: TNailServiceRates = {
   },
   refill: {
     rate: 25,
-    maniRate: 15,
+    maniRate: 20,
     base: {
       AcryGel: 5,
       BaseGel: null,
@@ -77,7 +77,7 @@ export const NailServiceRates: TNailServiceRates = {
   },
   rebalance: {
     rate: 30,
-    maniRate: 15,
+    maniRate: 20,
     base: {
       AcryGel: 0,
       BaseGel: null,
