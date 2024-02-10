@@ -32,6 +32,7 @@ export const ServicePrices: NailServicePrice = {
 }
 
 // Manicure
+<<<<<<< HEAD
 // export const NailServiceRates: TNailServiceRates = {
 //   manicure: {
 //     rate: 20,
@@ -134,6 +135,97 @@ export const ServicePrices: NailServicePrice = {
 //     }
 //   },
 // } as const;
+=======
+export const NailServiceRates: TNailServiceRates = {
+  manicure: {
+    rate: 20,
+    maniRate: null, // not possible
+    base: {
+      BaseGel: 5,
+      AcryGel: null, // not possible
+      HardGel: null, // not possible
+      PolyGel: null, // not possible
+    },
+    length: null,
+    platform: null
+  },
+  take_down: {
+    rate: 10,
+    maniRate: 20, 
+    base: {
+      BaseGel: 5,
+      AcryGel: null, // not possible
+      HardGel: null, // not possible
+      PolyGel: null, // not possible
+    },
+    length: null,
+    platform: null
+  },
+  refill: {
+    rate: 25,
+    maniRate: 15,
+    base: {
+      AcryGel: 5,
+      BaseGel: null,
+      HardGel: -13,
+      PolyGel: 0,
+    },
+    length: {
+      natural: 0,
+      x_short: 0,
+      short: 0,
+      medium: 0,
+      long: 5,
+      x_long: 10,
+      xx_long: 15,
+    }, 
+    platform: null,
+  },
+  rebalance: {
+    rate: 30,
+    maniRate: 15,
+    base: {
+      AcryGel: 0,
+      BaseGel: null,
+      HardGel: -18,
+      PolyGel: -5,
+    }, 
+    length: {
+      natural: 0,
+      x_short: 0,
+      short: 0,
+      medium: 0,
+      long: 5,
+      x_long: 10,
+      xx_long: 15,
+    },
+    platform: null,
+  },
+  new_set: {
+    rate: 35,
+    maniRate: 18,
+    base: {
+      AcryGel: 0,
+      BaseGel: null,
+      HardGel: -20,
+      PolyGel: -5,
+    },
+    length: {
+      natural: 0,
+      x_short: 0,
+      short: 0,
+      medium: 0,
+      long: 5,
+      x_long: 10,
+      xx_long: 15,
+    },
+    platform: {
+      non_sculpted: 5,
+      sculpted: 0,
+    }
+  },
+} as const;
+>>>>>>> 2bb8943 (add-on mani price change)
 
 export const BasePrice: NailBasePrice = {
   builder_base: -2,
