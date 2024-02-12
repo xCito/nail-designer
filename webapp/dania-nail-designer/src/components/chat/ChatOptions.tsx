@@ -1,9 +1,10 @@
 import classNames from "classnames";
+import { ChatOption } from "./Chat";
 
 interface Props {
-  options: string[],
+  options: ChatOption[],
   selected: string | undefined,
-  onOptionClick: (option: string) => void; 
+  onOptionClick: (option: ChatOption) => void; 
 }
 export function ChatOptions(p: Props) {
   const { options, selected, onOptionClick } = p;
@@ -11,10 +12,10 @@ export function ChatOptions(p: Props) {
   return <div className="options">
     {options.map((opt) => 
       <button 
-        key={opt}
-        className={classNames({'outline': selected !== opt}, 'px-3 py-2')} 
+        key={opt.label}
+        className={classNames({'outline': selected !== opt.label}, 'px-3 py-2')} 
         onClick={() => onOptionClick(opt)}
-        children={opt} />
+        children={opt.label} />
     )}
   </div>
 }
