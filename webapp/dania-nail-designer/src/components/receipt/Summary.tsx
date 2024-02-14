@@ -1,6 +1,5 @@
 import { getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
 import { ConsultationValue } from "@/types/other-types";
-import classNames from "classnames";
 import { Fragment, useEffect, useState } from "react";
 import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "../../constants/design-constants";
 import { BASE_COLOR_PRICE, DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NO_CHARGE, NailServiceRates, OrnamentPrices, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
@@ -20,13 +19,6 @@ function getDesignById(id: NailDesignElemId) {
   return getNailDesignElementsAsList().find(design => design.id == id)!;
 }
 
-// function getBasePrice(svcId: NailServiceId | null, baseId: NailBaseId | null) {
-//   if (svcId === 'refill' || baseId == null || svcId == null) {
-//     return NO_CHARGE;
-//   } else {
-//     return BasePrice[baseId];
-//   }
-// }
 
 function getShapeDiff(val1: NailShapeId | null, val2: NailShapeId | null) {
   if (!val1 || !val2) return 0;
@@ -37,17 +29,6 @@ function getLengthDiff(val1: NailLengthId | null, val2: NailLengthId | null) {
   if (!val1 || !val2) return 0;
   return NailLengths[val1].size - NailLengths[val2].size;
 }
-
-// function getLengthFeePrice(svcId: NailServiceId | null, sLen: NailLengthId | null, cLen: NailLengthId | null) {
-//   let price = 0;
-//   if (svcId === 'new_set') return price;
-
-//   if (sLen && cLen) {
-//     const isReduction = NailLengths[sLen].size >= NailLengths[cLen].size;
-//     price = isReduction ? NO_CHARGE : LENGTH_EXTENSION_FEE;
-//   }
-//   return price;
-// }
 
 
 function getShapeFeePrice(svcId: NailServiceId | null, sShp: NailShapeId | null, cShp: NailShapeId | null) {
@@ -63,23 +44,6 @@ function getShapeFeePrice(svcId: NailServiceId | null, sShp: NailShapeId | null,
   return price;
 }
 
-// function getNailServicePrice(svcId: NailServiceId | null) {
-//   switch (svcId) {
-//     case null: return 0;
-//     case 'manicure': return BASE_MANICURE_PRICE;
-//     default: return ServicePrices[svcId];
-//   }
-// }
-
-// function getManicurePrice(svcId: NailServiceId | null, maniApplied: boolean | null) {
-//   if (svcId === null) return 0;
-
-//   if (svcId in ServicePrices && maniApplied) {
-//     return BASE_MANICURE_PRICE;
-//   } else {
-//     return 0;
-//   }
-// }
 
 const PRE_SERVICE_INDEX = 0;
 const SERVICE_INDEX = 1;
@@ -172,22 +136,18 @@ function getSummaryDetails(args: DetailArgs) {
 
 interface Props {
   nailDesign: Design;
-  consultionData: ConsultationValue,
-  selectedServiceId: NailServiceId | null;
-  startLength: NailLengthId | null;
-  startShape: NailShapeId | null;
-  isManiApplied: boolean | null;
+  consultionData: ConsultationValue
 }
-export function Summary({ nailDesign, consultionData }: Props) {
-  const {base, length, shape} = nailDesign.left;
+export function Summary(p: Props) {
+  const {base, length, shape} = p.nailDesign.left;
   const [isOpen, setOpen] = useState<'close' | 'open' | 'full'>('close');
 
   const summaryDetails = getSummaryDetails({
-    consult: consultionData, 
+    consult: p.consultionData, 
     base, 
     length, 
     shape, 
-    designCounts: getAppliedDesignElementCounts(nailDesign)
+    designCounts: getAppliedDesignElementCounts(p.nailDesign)
   });
   
 
@@ -216,29 +176,8 @@ export function Summary({ nailDesign, consultionData }: Props) {
     }
   }, [isOpen]);
  
-  const onHeaderClick = () => {
-    if (isOpen === 'close')
-      setOpen('open');
-  }
- 
-  const onFullClick = () => {
-    setOpen('full');
-  }
- 
-  const onMiniClick = () => {
-    setOpen('close');
-  }
-  return <div className={classNames("summary-drawer text-black", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}>
-    <div className="header px-3 py-3" role='button' onClick={onHeaderClick}>
-      <h3 className="title m-0">Summary</h3>
-      <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
-      <div className="btn-group">
-        <button onClick={onFullClick}>^</button>
-        <button onClick={onMiniClick}>^</button>
-      </div>
-    </div>
 
-    <div id="summary-d" className="summary-table pb-2 px-3">
+  return <div id="summary-d" className="summary-table p-3">
       <table className="w-100">
         <thead>
           <tr>
@@ -269,9 +208,5 @@ export function Summary({ nailDesign, consultionData }: Props) {
           </tr>
         </tfoot>
       </table>
-    </div>
-   
-
-   
-</div>
+    </div>;
 }

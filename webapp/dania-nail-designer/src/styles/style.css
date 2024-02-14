@@ -355,8 +355,10 @@ label:has(> input[type="checkbox"]) {
   }
 
   .price.open {
-    height: 80%;
+    /* height: 50%; */
+    height: auto;
     transition: height 0.1s;
+    opacity: 80%;
   }
 }
 
@@ -748,4 +750,14 @@ tr:hover {
 .nail-svg {
   -webkit-transition: d 0.3s;
   transition: d 0.3s;
+}
+
+/* ===================== Utility CSS */
+
+html:has(.no-scroll) {
+  overscroll-behavior: none;
+}
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
 }

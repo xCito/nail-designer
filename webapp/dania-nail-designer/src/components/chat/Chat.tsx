@@ -242,7 +242,7 @@ export function Chat() {
         block: 'end',
         behavior: 'smooth'
       });
-    }, 50);
+    }, 0);
   }, [chatConvo]);
 
   return <div className="chat pe-2" ref={chatContainerRef}>
