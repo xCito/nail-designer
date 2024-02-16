@@ -351,14 +351,12 @@ label:has(> input[type="checkbox"]) {
     border-radius: var(--radius);
     text-align: center;
     border: 1px solid black;
-    transition: height 0.1s;
+    transition: height 0.3s;
   }
-
+  
   .price.open {
-    /* height: 50%; */
-    height: auto;
+    height: 50%;
     transition: height 0.1s;
-    opacity: 80%;
   }
 }
 
