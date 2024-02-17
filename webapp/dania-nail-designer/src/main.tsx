@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap-utilities.min.css';
-import App from './App.tsx'
-import './index.css'
+import App from './App.tsx';
 import '@/styles/style.css';
 
 history.scrollRestoration = "manual";

@@ -24,6 +24,7 @@
 html, body {
   height: 100dvh;
   background-color: var(--bg-1-color);
+  margin: 0;
 }
 #root {
   scroll-behavior: smooth;
@@ -757,5 +758,4 @@ html:has(.no-scroll) {
 }
 .no-scroll {
   overflow: hidden;
-  position: fixed;
 }

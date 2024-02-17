@@ -1,11 +1,11 @@
 import { useRef, useLayoutEffect, useReducer } from "react";
 import { ChatOptions } from "./ChatOptions";
-import { CONVERSATION, ChatItem, ChatOption, QuestionId, chatReducer } from "./chat-reducer";
+import { CONVERSATION, ChatItem, ChatOption, chatReducer } from "./chat-reducer";
 
 
+const START_INDEX = 0;
+const DefaultConvo: ChatItem[] = [CONVERSATION[START_INDEX]];
 
-const START: QuestionId = 'removal';
-const DefaultConvo: ChatItem[] = [CONVERSATION[START]];
 export function Chat() {
   const [chatConvo, dispatch] = useReducer(chatReducer, DefaultConvo);
   const chatContainerRef = useRef<HTMLDivElement>(null);

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ChatOption } from "./Chat";
+import { ChatOption } from "./chat-reducer";
 
 interface Props {
   options: ChatOption[],
