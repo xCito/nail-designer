@@ -1,14 +1,15 @@
-import { DesignBuilder } from './components/DesignBuilder';
 import { Layout } from './components/layout/Layout';
 import { DesignProvider } from './contexts/DesignContext';
+import { NailServiceProvider } from './contexts/NailServiceContext';
 
 function App() {
 
   return (
-    <DesignProvider>
-      {/* <DesignBuilder /> */}
-      <Layout />
-    </DesignProvider>
+    <NailServiceProvider>
+      <DesignProvider>
+        <Layout />
+      </DesignProvider>
+    </NailServiceProvider>
   )
 }
 

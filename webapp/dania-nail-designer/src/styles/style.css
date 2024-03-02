@@ -20,6 +20,7 @@
 
 * {
   color: var(--text-color);
+  font-family: Helvetica, sans-serif;
 }
 html, body {
   height: 100dvh;
@@ -195,6 +196,7 @@ label:has(> input[type="checkbox"]) {
   max-width: 600px;
   
   .header-panel {
+    
     h1 { 
       font-size: 1.7em;
       margin: 0.1em 0 0 0; 
@@ -490,8 +492,9 @@ label:has(> input[type="checkbox"]) {
     height: 50px;
 }
 
-.fancy-font {
-  font-family: Optima;
+.fancy-font, .fancy-font * {
+  font-family: Optima, Cambria !important;
+  font-weight: 100;
 }
 .page-title {
   font-size: 1.8em;

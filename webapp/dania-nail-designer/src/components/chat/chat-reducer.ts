@@ -195,5 +195,7 @@ export function chatReducer(chatHistory: ChatItem[], args: ChatArg): ChatItem[] 
   // Insert next question and delete everything after inserted index
   updatedChat.splice(args.questionIndex + 1, updatedChat.length, CONVERSATION[nextQuestionIndex]);
     
+  // TODO: switch statement to update options for next question 
+
   return updatedChat;
 }

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ServiceSectionRadio } from "./ServiceSectionRadio";
 import { ServiceSectionToggle } from "./ServiceSectionToggle";
+import { NailServiceContext } from "@/contexts/NailServiceContext";
 
 export function ServiceDetails() {
+  const { nailService } = useContext(NailServiceContext);
   const [selected, setSelected] = useState<string>('');
   const [selected2, setSelected2] = useState<string[]>([]);
   
@@ -10,11 +12,13 @@ export function ServiceDetails() {
     setSelected(option);
   }
 
+  console.debug(nailService);
+
   return <div className="service-details pe-2 w-100">
     <ServiceSectionRadio 
       title='Service' 
-      options={['Option 1','Option 2','Option 3','Option 4']} 
-      selected={selected}
+      options={['Basic Manicure','Takedown','Gel Manicure','Enhancement/Extension']} 
+      selected={nailService.type}
       onChange={onChange} />
     <ServiceSectionRadio 
       title='Base' 

@@ -13,7 +13,7 @@ export function ServiceSectionRadio(p: Props) {
   return <TitledGridContainer title={title} columns={2}>
     {options.map(option => {
       const isChecked = selected === option;
-
+      console.log(selected, option)
       return <label key={option}>
           <input
             type="radio" 
