@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ServiceSectionRadio } from "./ServiceSectionRadio";
 import { NailServiceContext } from "@/contexts/NailServiceContext";
-import { NailBaseId, NailBases, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes, getNailServiceById } from "@/constants/design-constants";
+import { NailBaseId, NailBases, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "@/constants/design-constants";
 import { TitledGridContainer } from "./TitledGridContainer";
 
 export function ServiceDetails() {

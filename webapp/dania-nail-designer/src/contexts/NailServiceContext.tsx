@@ -1,7 +1,7 @@
 import { CONVERSATION, ChatArg, ChatState, chatReducer } from '@/components/chat/chat-reducer';
 import { NailBaseId, NailLengthId, NailServiceId, NailShapeId } from '@/constants/design-constants';
 import { chatHistoryToNailServiceUpdate } from '@/service/helpers';
-import React, { PropsWithChildren, createContext, useEffect, useReducer, useState } from 'react';
+import { PropsWithChildren, createContext, useEffect, useReducer, useState } from 'react';
 
 export interface NailSvc {
   type: NailServiceId | undefined;

@@ -1,8 +1,7 @@
 import { Design, DesignElements, NailBases, NailDesignElemId, NailLengths, NailShapes, NailServices } from "@/constants/design-constants";
 import { FingerIndices } from "../constants/other-constants";
-import { ChatArg, ChatState } from "@/components/chat/chat-reducer";
+import { ChatState } from "@/components/chat/chat-reducer";
 import { NailSvc, defaultNailService } from "@/contexts/NailServiceContext";
-import { Dispatch } from "react";
 
 
 
