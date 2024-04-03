@@ -1,67 +1,42 @@
-// export type ChatItem = typeof CONVERSATION[number];
-export type QuestionId =
-| 'whatService'
-| 'needPreManiRemoval'
-| 'needPreEnhanceRemoval'
-| 'wantManiService'
-| 'whatManiLength'
-| 'whatManiShape'
-| 'wantChangeShape'
-| 'wantChangeLength'
-| 'whatCurrentMaintainLength'
-| 'whatCurrentMaintainShape'
-| 'desiredEnhanceLength'
-| 'desiredEnhanceShape'
-| 'desiredBase'
-| 'done';
 
-export interface ChatItem {
-  id: QuestionId;
-  question: string;
-  options: Array<ChatOption> | null;
-  selected?: string;
-}
-export interface ChatOption {
-  label: string;
-  nextId: QuestionId;
-}
-export const CONVERSATION: ChatItem[] = [
+
+export const CONVERSATION = [
   {
     id: 'whatService',
     question: 'What service do you want?', 
     options: [
-       { label: 'Basic Manicure', nextId: 'needPreManiRemoval' }, 
-       { label: 'Gel Manicure', nextId: 'needPreManiRemoval' },
-       { label: 'Takedown', nextId: 'wantManiService' },
-       { label: 'Enhancement/Extension', nextId: 'needPreEnhanceRemoval' },
+      { label: 'Basic Manicure',         nextId: 'needPreManiRemoval',      entityId: 'manicure',   }, 
+      { label: 'Gel Manicure',           nextId: 'needPreManiRemoval',      entityId: 'g_manicure', },
+      { label: 'Takedown',               nextId: 'wantManiService',         entityId: 'take_down',  },
+      { label: 'Enhancement/Extension',  nextId: 'needPreEnhanceRemoval',   entityId: 'enhan_ext',  },
     ]
   },
   {
     id: 'wantManiService',
-    question: 'Would you like a manicure service afterwards?', 
+    question: 'Would you like a manicure service afterwards?',
     options: [
-       { label: 'No', nextId: 'done' }, 
-       { label: 'Gel Manicure', nextId: 'whatManiLength' },
-       { label: 'Basic Manicure', nextId: 'done' },
-    ]
+      { label: 'No',                    nextId: 'done',                 entityId: undefined }, 
+      { label: 'Gel Manicure',          nextId: 'whatManiLength',       entityId: 'g_manicure' },
+      { label: 'Basic Manicure',        nextId: 'done',                 entityId: 'manicure' },
+    ] 
   },
   {
     id: 'whatManiLength',
     question: 'How long do you want?', 
     options: [
-       { label: 'Natural', nextId: 'whatManiShape' }, 
-       { label: 'X-Short', nextId: 'whatManiShape' },
-       { label: 'Short', nextId: 'whatManiShape' },
-       { label: 'Medium', nextId: 'whatManiShape' },
+      { label: 'Natural', nextId: 'whatManiShape', entityId: 'natural' }, 
+      { label: 'X-Short', nextId: 'whatManiShape', entityId: 'x_short' },
+      { label: 'Short', nextId: 'whatManiShape', entityId: 'short' },
+      { label: 'Medium', nextId: 'whatManiShape', entityId: 'medium' },
     ]
   },
   {
     id: 'whatManiShape',
     question: 'What shape are you interested in?', 
     options: [
-      { label: 'Oval', nextId: 'done' }, 
-      { label: 'Round', nextId: 'done' }, 
-      { label: 'Square', nextId: 'done' }, 
+      { label: 'Oval', nextId: 'done', entityId: 'oval' }, 
+      { label: 'Round', nextId: 'done', entityId: 'round' }, 
+      { label: 'Square', nextId: 'done', entityId: 'square' }, 
     ]
   },
   {
@@ -86,36 +61,36 @@ export const CONVERSATION: ChatItem[] = [
     id: 'desiredEnhanceLength',
     question: 'What\'s your desired length?', 
     options: [
-      { label: 'Natural', nextId: 'desiredEnhanceShape' }, 
-      { label: 'X-Short', nextId: 'desiredEnhanceShape' },
-      { label: 'Short', nextId: 'desiredEnhanceShape' },
-      { label: 'Medium', nextId: 'desiredEnhanceShape' },
-      { label: 'Long', nextId: 'desiredEnhanceShape' },
-      { label: 'X Long', nextId: 'desiredEnhanceShape' },
-      { label: '2xl Long', nextId: 'desiredEnhanceShape' },
+      { label: 'Natural', nextId: 'desiredEnhanceShape', entityId: 'natural' }, 
+      { label: 'X-Short', nextId: 'desiredEnhanceShape', entityId: 'x_short' },
+      { label: 'Short', nextId: 'desiredEnhanceShape', entityId: 'short' },
+      { label: 'Medium', nextId: 'desiredEnhanceShape', entityId: 'medium' },
+      { label: 'Long', nextId: 'desiredEnhanceShape', entityId: 'long' },
+      { label: 'X Long', nextId: 'desiredEnhanceShape', entityId: 'x_long' },
+      { label: '2xl Long', nextId: 'desiredEnhanceShape', entityId: 'xx_long' },
     ],
   },
   {
     id: 'desiredEnhanceShape',
     question: 'What\'s your desired shape?', 
     options: [
-      { label: 'Oval', nextId: 'desiredBase' },
-      { label: 'Round', nextId: 'desiredBase' },
-      { label: 'Square', nextId: 'desiredBase' },
-      { label: 'Stiletto', nextId: 'desiredBase' },
-      { label: 'Ballerina', nextId: 'desiredBase' },
-      { label: 'Almond', nextId: 'desiredBase' },
-      { label: 'Coffin', nextId: 'desiredBase' },
+      { label: 'Oval', nextId: 'desiredBase', entityId: 'oval' },
+      { label: 'Round', nextId: 'desiredBase', entityId: 'round' },
+      { label: 'Square', nextId: 'desiredBase', entityId: 'square' },
+      { label: 'Stiletto', nextId: 'desiredBase', entityId: 'stiletto' },
+      { label: 'Ballerina', nextId: 'desiredBase', entityId: 'ballerina' },
+      { label: 'Almond', nextId: 'desiredBase', entityId: 'almond' },
+      { label: 'Coffin', nextId: 'desiredBase', entityId: 'coffin' },
     ],
   },
   {
     id: 'desiredBase',
     question: 'Choose a base.', 
     options: [
-      { label: 'Base Gel', nextId: 'done' },
-      { label: 'Poly Gel', nextId: 'done' },
-      { label: 'Hard Gel', nextId: 'done' },
-      { label: 'Acry Gel', nextId: 'done' },
+      { label: 'Base Gel', nextId: 'done', entityId: 'base_gel' },
+      { label: 'Poly Gel', nextId: 'done', entityId: 'poly_gel' },
+      { label: 'Hard Gel', nextId: 'done', entityId: 'hard_gel' },
+      { label: 'Acry Gel', nextId: 'done', entityId: 'acry_gel' },
     ],
   },
   {
@@ -135,67 +110,79 @@ export const CONVERSATION: ChatItem[] = [
     id: 'whatCurrentMaintainLength',
     question: 'Want to change your current length?', 
     options: [
-      { label: 'Natural', nextId: 'wantChangeLength' },
-      { label: 'X-Short', nextId: 'wantChangeLength' },
-      { label: 'Short', nextId: 'wantChangeLength' },
-      { label: 'Medium', nextId: 'wantChangeLength' },
-      { label: 'Long', nextId: 'wantChangeLength' },
-      { label: 'X Long', nextId: 'wantChangeLength' },
-      { label: '2xl Long', nextId: 'wantChangeLength' },
+      { label: 'Natural', nextId: 'wantChangeLength',     entityId: 'natural' },
+      { label: 'X-Short', nextId: 'wantChangeLength',     entityId: 'x_short' },
+      { label: 'Short', nextId: 'wantChangeLength',       entityId: 'short' },
+      { label: 'Medium', nextId: 'wantChangeLength',      entityId: 'medium' },
+      { label: 'Long', nextId: 'wantChangeLength',        entityId: 'long' },
+      { label: 'X Long', nextId: 'wantChangeLength',      entityId: 'x_long' },
+      { label: '2xl Long', nextId: 'wantChangeLength',    entityId: 'xx_long' },
     ],
   },
   {
     id: 'wantChangeShape',
     question: 'Want to change your current shape?', 
     options: [
-      { label: 'No, Same shape', nextId: 'desiredBase' },
-      { label: 'Oval', nextId: 'desiredBase' },
-      { label: 'Round', nextId: 'desiredBase' },
-      { label: 'Square', nextId: 'desiredBase' },
-      { label: 'Stiletto', nextId: 'desiredBase' },
-      { label: 'Ballerina', nextId: 'desiredBase' },
-      { label: 'Almond', nextId: 'desiredBase' },
-      { label: 'Coffin', nextId: 'desiredBase' },
+      { label: 'No, Same shape', nextId: 'desiredBase', entityId: undefined },
+      { label: 'Oval', nextId: 'desiredBase',           entityId: 'oval' },
+      { label: 'Round', nextId: 'desiredBase',          entityId: 'round' },
+      { label: 'Square', nextId: 'desiredBase',         entityId: 'square' },
+      { label: 'Stiletto', nextId: 'desiredBase',       entityId: 'stiletto' },
+      { label: 'Ballerina', nextId: 'desiredBase',      entityId: 'ballerina' },
+      { label: 'Almond', nextId: 'desiredBase',         entityId: 'almond' },
+      { label: 'Coffin', nextId: 'desiredBase',         entityId: 'coffin' },
     ],
   },
   {
     id: 'whatCurrentMaintainShape',
     question: 'Want to change your current shape?', 
     options: [
-      { label: 'Oval', nextId: 'wantChangeShape' },
-      { label: 'Round', nextId: 'wantChangeShape' },
-      { label: 'Square', nextId: 'wantChangeShape' },
-      { label: 'Stiletto', nextId: 'wantChangeShape' },
-      { label: 'Ballerina', nextId: 'wantChangeShape' },
-      { label: 'Almond', nextId: 'wantChangeShape' },
-      { label: 'Coffin', nextId: 'wantChangeShape' },
+      { label: 'Oval', nextId: 'wantChangeShape', entityId: 'oval' },
+      { label: 'Round', nextId: 'wantChangeShape', entityId: 'round' },
+      { label: 'Square', nextId: 'wantChangeShape', entityId: 'square' },
+      { label: 'Stiletto', nextId: 'wantChangeShape', entityId: 'stiletto' },
+      { label: 'Ballerina', nextId: 'wantChangeShape', entityId: 'ballerina' },
+      { label: 'Almond', nextId: 'wantChangeShape', entityId: 'almond' },
+      { label: 'Coffin', nextId: 'wantChangeShape', entityId: 'coffin' },
     ],
   },
   {
     id: 'done',
     question: 'Thanks for chatting with me, double check the details in the next tab above', 
-    options: null
+    options: []
   },
-];
+] as const;
+
+
+export type QuestionId = typeof CONVERSATION[number]['id'];
+export type ChatItem = typeof CONVERSATION[number];
+export type ChatOption = typeof CONVERSATION[number]['options'][number];
+export type ChatState = { messages: Array<ChatItem>, selectedList: Array<SelectedChatOption> };
+export type SelectedChatOption = { qId: string, option: ChatOption };
 
 
 export type ChatArg = {
-  selected: string;
+  selected: ChatOption;
   questionIndex: number;
 };
-export function chatReducer(chatHistory: ChatItem[], args: ChatArg): ChatItem[] {
-  const updatedChat = structuredClone(chatHistory);
-  const curQuestion: ChatItem = updatedChat[args.questionIndex];
+export function chatReducer(chat: ChatState, args: ChatArg): ChatState {
+  const chatMessages = structuredClone(chat.messages);
+  const selectedList = structuredClone(chat.selectedList);
+
+  const curQuestion: ChatItem = chatMessages[args.questionIndex];
+  
 
   // Set the selected option in chat
-  curQuestion.selected = args.selected;
-  const selectedOption = curQuestion.options?.find(op => op.label === args.selected)!;
-  let nextQuestionIndex = CONVERSATION.findIndex(chat => chat.id === selectedOption.nextId);
+  const remainingSelected = selectedList
+    .filter(o => chatMessages.some(m => m.id === o.qId) && o.qId !== curQuestion.id);
+  remainingSelected.push({ qId: curQuestion.id, option: args.selected });
 
   // Insert next question and delete everything after inserted index
-  updatedChat.splice(args.questionIndex + 1, updatedChat.length, CONVERSATION[nextQuestionIndex]);
-    
-  // TODO: switch statement to update options for next question 
-
-  return updatedChat;
+  let nextQuestionIndex = CONVERSATION.findIndex(chat => chat.id === args.selected.nextId);
+  chatMessages.splice(args.questionIndex + 1, chatMessages.length, CONVERSATION[nextQuestionIndex]);
+  
+  return {
+    messages: [...chatMessages],
+    selectedList: remainingSelected
+  };
 }

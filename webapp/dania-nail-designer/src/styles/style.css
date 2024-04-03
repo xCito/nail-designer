@@ -91,7 +91,7 @@ label:has(> input[type="radio"]) {
   font-size: 1em;
   position: relative;
   display: inline-block;
-  padding: 0.7em var(--pad-x) 0.8em calc(var(--pad-x) * 3.8);
+  padding: 0.4em var(--pad-x) 0.4em calc(var(--pad-x) * 3.8);
   border-radius: var(--radius);
   border: 1px solid var(--primary-color);
 
@@ -138,7 +138,8 @@ label:has(> input[type="checkbox"]) {
 
   font-size: 1em;
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;;
   padding: 0 0 0 2.4em;
 
   input[type="checkbox"] {
@@ -150,12 +151,13 @@ label:has(> input[type="checkbox"]) {
     content: '';
     position: absolute;
     left: 0;
-    top: 2px;
+    top: 50%;
     border: var(--chbx-border) solid var(--primary-color);
     border-radius: 10px;
     width: calc(var(--chbx-size) * 1.7);
     height: var(--chbx-size);
     transition: all 0.2s;
+    transform: translateY(-50%);
   }
   &:has(input[type="checkbox"]:checked)::before {
     background-color: var(--secondary-color);
@@ -170,7 +172,7 @@ label:has(> input[type="checkbox"]) {
 
     content: '';
     position: absolute;
-    top: 12px;
+    top: 50%;
     left: 0;
     border-radius: 50%;
     background-color: var(--primary-color);

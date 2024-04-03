@@ -1,26 +1,26 @@
 import { TitledGridContainer } from "./TitledGridContainer";
 
 
-interface Props {
+interface Props<T extends string> {
   title: string;
-  options: string[];
-  selected: string | undefined;
-  onChange: (option: string, isChecked: boolean) => void;
+  options: ReadonlyArray<{id: T, label: string}>;
+  selectedId: T | undefined;
+  onChange: (optionId: T, isChecked: boolean) => void;
 }
-export function ServiceSectionRadio(p: Props) {
-  const { title, options, selected, onChange } = p;
+export function ServiceSectionRadio<T extends string>(p: Props<T>) {
+  const { title, options, selectedId, onChange } = p;
 
   return <TitledGridContainer title={title} columns={2}>
     {options.map(option => {
-      const isChecked = selected === option;
-      console.log(selected, option)
-      return <label key={option}>
+      const isChecked = selectedId === option.id;
+      
+      return <label key={option.id}>
           <input
             type="radio" 
             name={title}
-            onChange={e => onChange(option, e.target.checked)}
+            onChange={e => onChange(option.id, e.target.checked)}
             checked={isChecked} />
-          {option}
+          {option.label}
         </label>
     })}
   </TitledGridContainer>

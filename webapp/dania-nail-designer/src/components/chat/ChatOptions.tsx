@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { ChatOption } from "./chat-reducer";
+import { ChatOption, SelectedChatOption } from "./chat-reducer";
 
 interface Props {
-  options: ChatOption[],
-  selected: string | undefined,
+  options: readonly ChatOption[],
+  selected: SelectedChatOption | undefined,
   onOptionClick: (option: ChatOption) => void; 
 }
 export function ChatOptions(p: Props) {
@@ -13,7 +13,7 @@ export function ChatOptions(p: Props) {
     {options.map((opt) => 
       <button 
         key={opt.label}
-        className={classNames({'outline': selected !== opt.label}, 'px-3 py-2')} 
+        className={classNames({'outline': selected?.option.label !== opt.label}, 'px-3 py-2')} 
         onClick={() => onOptionClick(opt)}
         children={opt.label} />
     )}
