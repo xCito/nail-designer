@@ -2,38 +2,45 @@
 export const NailServices = [
   { id: 'manicure',   label: 'Basic Manicure',        },
   { id: 'g_manicure', label: 'Gel Manicure',          },
-  { id: 'enhan_ext',  label: 'Extension', },
-  { id: 'take_down',  label: 'Take Down',             },
+  { id: 'enhan_ext',  label: 'Extension',             },
+  { id: 'take_down',  label: 'Remove Extensions',     },
 ] as const;
 
 export const NailShapes = [
-  { id: 'stiletto',   label: 'Stiletto',    type: 'Pointy',     size: 0 },
-  { id: 'almondetto', label: 'Almondetto',  type: 'Pointy',     size: 1 },
-  { id: 'almond',     label: 'Almond',      type: 'Pointy',     size: 2 },
-  { id: 'ballerina',  label: 'Ballerina',   type: 'Tapered',    size: 3 },
-  { id: 'coffin',     label: 'Coffin',      type: 'Tapered',    size: 4 },
-  { id: 'oval',       label: 'Oval',        type: 'Rounded',    size: 5 },
-  { id: 'round',      label: 'Round',       type: 'Rounded',    size: 6 },
-  { id: 'square',     label: 'Square',      type: 'Square',     size: 7 },
+  { id: 'stiletto',   label: 'Stiletto',        type: 'Pointy',     size: 0,    minLength: 1, maxLength: 100 },
+  { id: 'almondetto', label: 'Almondetto',      type: 'Pointy',     size: 1,    minLength: 3, maxLength: 100  },
+  { id: 'almond',     label: 'Almond',          type: 'Pointy',     size: 2,    minLength: 1, maxLength: 2  },
+  { id: 'ballerina',  label: 'Ballerina',       type: 'Tapered',    size: 3,    minLength: 3, maxLength: 100  },
+  { id: 'coffin',     label: 'Coffin',          type: 'Tapered',    size: 4,    minLength: 2, maxLength: 3  },
+  { id: 'oval',       label: 'Oval',            type: 'Rounded',    size: 5,    minLength: 0, maxLength: 3  },
+  { id: 'round',      label: 'Round',           type: 'Rounded',    size: 6,    minLength: 0, maxLength: 100  },
+  { id: 'square',     label: 'Square',          type: 'Square',     size: 7,    minLength: 0, maxLength: 100  },
 ] as const;
 
 
 export const NailBases = [
-  { id: 'base_gel',   label: 'Base Gel' },
-  { id: 'hard_gel',   label: 'Hard Gel' },
-  { id: 'poly_gel',   label: 'PolyGel' },
-  { id: 'acry_gel',   label: 'AcryGel' },
+  { id: 'hard_gel',   label: 'HardGel',    },
+  { id: 'base_gel',   label: 'Base Gel',   },
+  { id: 'poly_gel',   label: 'PolyGel',    },
+  { id: 'acrylic_base',   label: 'Arcylic',    },
+  { id: 'builder_base',   label: 'BuilderGel',   },
+  { id: 'gel_x_base',   label: 'Gel-X',    },
 ] as const;
 
 
 export const NailLengths = [
-  { id: 'natural',    label: 'Natural',     type: 'Natural',    size: 0 },
-  { id: 'x_short',    label: 'X Short',     type: 'Extension',  size: 1 },
-  { id: 'short',      label: 'Short',       type: 'Extension',  size: 2 },
-  { id: 'medium',     label: 'Medium',      type: 'Extension',  size: 3 },
-  { id: 'long',       label: 'Long',        type: 'Extension',  size: 4 },
-  { id: 'x_long',     label: 'X Long',      type: 'Extension',  size: 5 },
-  { id: 'xx_long',    label: '2X Long',     type: 'Extension',  size: 6 },
+  { id: 'short',    label: 'Short',     type: 'Extension',    size: 0 }, // short
+  { id: 'med',     label: 'Medium',      type: 'Extension',  size: 1 }, // med - long
+  { id: 'long',     label: 'Long',      type: 'Extension',  size: 2 }, // med - long
+  { id: 'x_long',     label: 'Single XL',      type: 'Extension',  size: 3 }, // XL long
+  { id: 'xx_long',    label: 'Double XL',     type: 'Extension',  size: 4 }, // 2XL long
+  // { id: 'natural',    label: 'Natural',     type: 'Natural',    size: 0 }, // short
+  // { id: 'x_short',    label: 'X Short',     type: 'Extension',  size: 1 },
+  // { id: 'short',      label: 'Short',       type: 'Extension',  size: 2 },
+  // { id: 'medium',     label: 'Medium',      type: 'Extension',  size: 3 }, // med - long
+  // { id: 'long',       label: 'Long',        type: 'Extension',  size: 4 },
+  // { id: 'x_long',     label: 'X Long',      type: 'Extension',  size: 5 }, // XL long
+  // { id: 'xx_long',    label: '2X Long',     type: 'Extension',  size: 6 }, // 2XL long
 ] as const;
 
 export const ComplexityScore = {
@@ -80,7 +87,7 @@ export function getDefaultDesign(): Design {
     left: {
       base: null,
       shape: 'round',
-      length: 'natural',
+      length: 'short',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),
@@ -115,7 +122,7 @@ export function getDefaultDesign(): Design {
     right: {
       base: null,
       shape: 'round',
-      length: 'natural',
+      length: 'short',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),
@@ -204,7 +211,7 @@ export function getNailBaseById(id: NailBaseId | string): NailBase | undefined {
   return NailBases.find(s => s.id === id);
 }
 
-export function getNailShape(id: NailShapeId | string): NailShape | undefined {
+export function getNailShapeById(id: NailShapeId | string): NailShape | undefined {
   return NailShapes.find(s => s.id === id);
 }
 

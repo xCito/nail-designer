@@ -3,6 +3,7 @@ import { ChatOptions } from "./ChatOptions";
 import { ChatOption } from "./chat-reducer";
 import { useScrollIntoView } from "@/hooks/useScrollIntoView";
 import { NailServiceContext } from "@/contexts/NailServiceContext";
+import { filterOutOptions } from "@/service/helpers";
 
 
 export function Chat() {
@@ -13,6 +14,7 @@ export function Chat() {
     dispatch({questionIndex: qIndex, selected: selectedOption});
   }
 
+  console.log(chat);
 
   useScrollIntoView(chatContainerRef, [chat]);
   
@@ -22,7 +24,7 @@ export function Chat() {
         <p className="bubble">{chatItem.question}</p>
 
         {chatItem.options && <ChatOptions 
-          options={chatItem.options} 
+          options={filterOutOptions(chatItem, chat).filter(item => item.visible)} 
           selected={chat.selectedList.find(s => s.qId === chatItem.id)} 
           onOptionClick={(opt) => onOptionClick(qIndex, opt)} />}
       </div>

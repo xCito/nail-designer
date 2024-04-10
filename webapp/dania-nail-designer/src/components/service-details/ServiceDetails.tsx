@@ -1,11 +1,12 @@
-import { useContext } from "react";
+import { ChangeEvent, FormEvent, useContext } from "react";
 import { ServiceSectionRadio } from "./ServiceSectionRadio";
 import { NailServiceContext } from "@/contexts/NailServiceContext";
 import { NailBaseId, NailBases, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "@/constants/design-constants";
 import { TitledGridContainer } from "./TitledGridContainer";
+import { applyOptionVisibility } from "@/service/helpers";
 
 export function ServiceDetails() {
-  const { nailService, setNailService } = useContext(NailServiceContext);
+  const { chat, nailService, setNailService } = useContext(NailServiceContext);
   
 
   const onServiceChange = (optionId: NailServiceId | undefined) => {
@@ -14,12 +15,33 @@ export function ServiceDetails() {
   const onBaseChange = (optionId: NailBaseId | undefined) => {
     setNailService({...nailService, desiredBase: optionId})
   }
-  const onLengthChange = (optionId: NailLengthId | undefined) => {
-    setNailService({...nailService, desiredLength: optionId})
+  const onLengthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNailService({...nailService, desiredLength: e.currentTarget.value as NailLengthId})
   }
-  const onShapeChange = (optionId: NailShapeId | undefined) => {
-    setNailService({...nailService, desiredShape: optionId})
+  const onCurLengthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNailService({...nailService, currentLength: e.currentTarget.value as NailLengthId})
   }
+  const onShapeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNailService({...nailService, desiredShape: e.currentTarget.value as NailShapeId})
+  }
+  const onCurShapeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNailService({...nailService, currentShape: e.currentTarget.value as NailShapeId})
+  }
+  const onExtRemovalChange = (e: FormEvent<HTMLInputElement>) => {
+    setNailService({
+      ...nailService, 
+      extensionRemoval: e.currentTarget.checked,
+      gelPolishRemoval: nailService.gelPolishRemoval && false
+    });
+  }
+  const onGelRemovalChange = (e: FormEvent<HTMLInputElement>) => {
+    setNailService({
+      ...nailService, 
+      gelPolishRemoval: e.currentTarget.checked,
+      extensionRemoval: nailService.extensionRemoval && false
+    });
+  }
+
 
   const onAdditionalServiceChange = (valueId: NailServiceId, checked: boolean) => {
     setNailService({
@@ -41,37 +63,54 @@ export function ServiceDetails() {
       options={NailBases} 
       selectedId={nailService.desiredBase}
       onChange={onBaseChange} />
-    <ServiceSectionRadio 
-      title='Length' 
-      options={NailLengths} 
-      selectedId={nailService.desiredLength}
-      onChange={onLengthChange} />
-    <ServiceSectionRadio 
-      title='Shape' 
-      options={NailShapes} 
-      selectedId={nailService.desiredShape}
-      onChange={onShapeChange} />
+
+    <div className="d-flex gap-2">
+      <TitledGridContainer title={'Length'} columns={1} className="flex-grow-1 w-50">
+        <select defaultValue={nailService.desiredLength ?? -1} onChange={onLengthChange}>
+          <option disabled value={-1}>Choose a length</option>
+          {NailLengths.map(len => 
+            <option key={len.id} value={len.id}>{len.label}</option>
+          )}
+        </select>
+      </TitledGridContainer>  
+      <TitledGridContainer title={'Current Length'} columns={1} className="flex-grow-1 w-50">
+        <select defaultValue={nailService.currentLength ?? -1} onChange={onCurLengthChange}>
+          <option disabled value={-1}>Choose a length</option>
+          {NailLengths.map(len => <option key={len.id} value={len.id}>{len.label}</option>)}
+        </select>
+      </TitledGridContainer>  
+    </div>
+
+    <div className="d-flex gap-2">
+      <TitledGridContainer title={'Shape'} columns={1} className="flex-grow-1 w-50">
+        <select defaultValue={nailService.desiredShape ?? -1} onChange={onShapeChange}>
+          <option disabled value={-1}>Choose a shape</option>
+          {NailShapes.map(len =>
+            <option key={len.id} value={len.id}>{len.label}</option>
+          )}
+        </select>
+      </TitledGridContainer>  
+      <TitledGridContainer title={'Current Shape'} columns={1} className="flex-grow-1 w-50">
+        <select defaultValue={nailService.currentShape ?? -1} onChange={onCurShapeChange}>
+          <option disabled value={-1}>Choose a shape</option>
+          {NailShapes.map(len => <option key={len.id} value={len.id}>{len.label}</option>)}
+        </select>
+      </TitledGridContainer>  
+    </div>
 
     <TitledGridContainer title={"Add-ons"} columns={1} gap={2}>
       <label>
         Extension Removal
         <input type="checkbox" 
-          onChange={e => setNailService({...nailService, extensionRemoval: e.currentTarget.checked})}
+          onChange={onExtRemovalChange}
           checked={nailService.extensionRemoval} />
       </label>
      
       <label>
         Gel Removal
         <input type="checkbox" 
-          onChange={e => setNailService({...nailService, gelPolishRemoval: e.currentTarget.checked})}
+          onChange={onGelRemovalChange}
           checked={nailService.gelPolishRemoval} />
-      </label>
-     
-      <label>
-        Design Removal
-        <input type="checkbox" 
-          onChange={e => setNailService({...nailService, designRemoval: e.currentTarget.checked})}
-          checked={nailService.designRemoval} />
       </label>
      
       <label>

@@ -12,9 +12,10 @@ export interface NailSvc {
   desiredLength: NailLengthId | undefined;
   desiredShape: NailShapeId | undefined;
 
-  designRemoval: boolean;
   gelPolishRemoval: boolean;
   extensionRemoval: boolean;
+
+  // Extras
   massage: boolean;
 }
 interface ContextVal {
@@ -36,7 +37,6 @@ export const defaultNailService = (): NailSvc => ({
   desiredBase: undefined,
   desiredLength: undefined,
   desiredShape: undefined,
-  designRemoval: false,
   gelPolishRemoval: false,
   extensionRemoval: false,
   massage: true,

@@ -32,7 +32,7 @@ export function Layout() {
 }
 
 export function HeaderPanel(p: PropsWithChildren) {
-  return <header className="header-panel fancy-font pt-2 pb-3 px-2">
+  return <header className="header-panel fancy-font px-2">
     {p.children}
   </header>
 }

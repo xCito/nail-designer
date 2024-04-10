@@ -1,19 +1,57 @@
 import classNames from "classnames";
-import { useState, PointerEvent, TouchEvent, useRef, useContext } from "react";
+import { useState, PointerEvent, TouchEvent, useRef, useContext, useEffect } from "react";
 import { Summary } from "../receipt/Summary";
-import { DesignContext } from "@/contexts/DesignContext";
+import { NailServiceContext } from "@/contexts/NailServiceContext";
+import { getSummaryDetails } from "@/service/helpers";
 
 const MIN_SWIPE_THRESHOLD = 20;
+const MIN_HEIGHT = 60;
+const MAX_OPACITY = 0.5;
 
 
 let holdTransition: string;
 export function PriceFooter() {
-  const { nailDesign, consultData } = useContext(DesignContext);
   const [isOpen, setOpen] = useState<boolean>(false);
   const startPos = useRef<number>(-10);
   const startH = useRef<number>(0);
   const lastPos = useRef<number>(-10);
   const footerDiv = useRef<HTMLDivElement>(null);
+  const bgOverlay = useRef<HTMLDivElement>(null);
+
+  const { nailService } = useContext(NailServiceContext);
+  const summaryDetails = getSummaryDetails(nailService);
+  
+
+  const total = summaryDetails.reduce((sum, section) => {
+    return sum + section.items.reduce((subTotal, item) => {
+      return subTotal + item.price + (item.sub || []).reduce((sum, subItem) => sum + subItem.price, 0);
+    }, 0);
+  }, 0);
+ 
+  useEffect(() => {
+    function docClick(e: MouseEvent) {
+      if (!isOpen) return;
+      if (!footerDiv.current) return;
+      const x = e.clientX, y = e.clientY;
+      const t = footerDiv.current.offsetTop;
+      const l = footerDiv.current.offsetLeft;
+      const w = footerDiv.current.offsetWidth;
+      const h = footerDiv.current.offsetHeight;
+      
+      if (!(t <= y && t+h >= y && l <= x && l+w >= x)) {
+        e.stopPropagation();
+        setOpen(false);
+      }
+
+    }
+
+    isOpen && document.addEventListener('click', docClick, { capture: true });
+    return () => {
+      console.log('unlisten', isOpen);
+      document.removeEventListener('click', docClick, { capture: true });
+
+    }
+  }, [isOpen, footerDiv.current]);
 
   const onClick = (e: PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === 'mouse') {
@@ -39,8 +77,15 @@ export function PriceFooter() {
     lastPos.current = e.touches[0].clientY;
     const d = startPos.current - lastPos.current;
 
-    if (footerDiv.current){
-      footerDiv.current.style.height = `${startH.current + d}px`;
+    const rootElem = document.getElementById('root');
+    const calcHeight = Math.max(startH.current + d, MIN_HEIGHT);
+    const calcOpacity = Math.min(calcHeight / (rootElem?.clientHeight ?? 500), MAX_OPACITY);
+
+    if (footerDiv.current) {
+      footerDiv.current.style.height = `${calcHeight}px`;
+    }
+    if (bgOverlay.current) {
+      bgOverlay.current.style.opacity = `${calcOpacity}`;
     }
   }
   
@@ -55,6 +100,8 @@ export function PriceFooter() {
       footerDiv.current.style.transition = holdTransition;
       footerDiv.current.style.height = '';
     }
+    if (bgOverlay.current) bgOverlay.current.style.opacity = '';
+
     if ((lastPos.current < 0 && startPos.current < 0) || footerDiv.current == null) {
       return;
     }
@@ -62,35 +109,42 @@ export function PriceFooter() {
     if (MIN_SWIPE_THRESHOLD > Math.abs(diff)) return;
 
     if (diff > 0 && !isOpen) { // swipe up
-      footerDiv.current.classList.add('open');
       startPos.current = -10;
       lastPos.current = -10;
       setOpen(true);
     }
     if (diff < 0 && isOpen) { // swipe down
-      footerDiv.current.classList.remove('open');
       startPos.current = -10;
       lastPos.current = -10;
       setOpen(false);
     }
   }
 
-  return <div 
-    ref={footerDiv}
-    onPointerUp={onClick}
-    onTouchMove={onTouchMove}
-    onTouchStart={onTouchStart}
-    onTouchEnd={onTouchEnd}
-    className={classNames(
-      "price",
-      {open: isOpen}
-    )}>
-    {!isOpen && <div className="h-100 d-flex align-items-center justify-content-center">Total $10.00</div>}
+  return <div>
+    <div ref={bgOverlay} className={classNames("price-bg-overlay", {open: isOpen})} />
+    <div 
+      ref={footerDiv}
+      onPointerUp={onClick}
+      // onTouchMove={onTouchMove}
+      // onTouchStart={onTouchStart}
+      // onTouchEnd={onTouchEnd}
+      className={classNames(
+        "price",
+        {open: isOpen}
+      )}>
+      {/* Drag handle */}
+      <div 
+        className={classNames("price-drag-handle", {open: isOpen})}
+        onTouchMove={onTouchMove}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd} />
+      {!isOpen && <div className="h-100 d-flex align-items-center justify-content-center">Total ${total.toFixed(2)}</div>}
 
-    {isOpen && 
-      <Summary 
-        consultionData={consultData} 
-        nailDesign={nailDesign}/>
-    }
+
+      {/* Price Summary Contents */}
+      {isOpen && <>
+        <Summary summaryDetails={summaryDetails} total={total} />
+      </>}
+    </div>
   </div>
 }
