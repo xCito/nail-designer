@@ -50,7 +50,6 @@ export function PriceFooter() {
 
     isOpen && document.addEventListener('click', onOutsideClick, { capture: true });
     return () => {
-      console.log('unlisten', isOpen);
       document.removeEventListener('click', onOutsideClick, { capture: true });
 
     }

@@ -504,35 +504,54 @@ export function isLengthApplicable(svc: NailSvc, length: NailLengthId): boolean 
 
 export function isShapeApplicable(svc: NailSvc, shape: NailShapeId): boolean {
   let missingType: never; // for exhaustive TS check
+  let isApplicable = true;
+
+  const shapeObj = getNailShapeById(shape);
+  const lengthObj = getNailLengthById(svc.desiredLength ?? '');
+  
+  if (shapeObj && lengthObj) {
+    isApplicable = shapeObj.minLength <= lengthObj.size && shapeObj.maxLength >= lengthObj.size;
+  }
+
 
   switch(shape) {
     case 'square': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'coffin': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'ballerina': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'round': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'oval': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'almond': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'almondetto': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     case 'stiletto': {
-      return svc.type !== 'take_down';
+      isApplicable &&= svc.type !== 'take_down';
+      break;
     }
     default: {
       missingType = shape;
       return missingType;
     }
   }
+
+  return isApplicable;
 }

@@ -68,7 +68,10 @@ export function ServiceDetails() {
     <div className="d-flex gap-2">
       <TitledGridContainer title={''} columns={1} className="flex-grow-1 w-50 gap-0">
         <h4 className="ps-1 fw-normal">Desired Length</h4>
-        <select defaultValue={nailService.desiredLength ?? -1} onChange={onLengthChange}>
+        <select 
+          disabled={NailLengths.every(len => !isLengthApplicable(nailService, len.id))}
+          defaultValue={nailService.desiredLength ?? -1} 
+          onChange={onLengthChange}>
           <option disabled value={-1}>Choose a length</option>
           {NailLengths.map(len => 
             <option 
@@ -82,7 +85,10 @@ export function ServiceDetails() {
         </select>
         
         <h4 className="mt-3 ps-1 fw-normal">Current Length</h4>
-        <select defaultValue={nailService.currentLength ?? -1} onChange={onCurLengthChange}>
+        <select 
+          disabled={NailLengths.every(len => !isLengthApplicable(nailService, len.id))}
+          defaultValue={nailService.currentLength ?? -1} 
+          onChange={onCurLengthChange}>
           <option disabled value={-1}>Choose a length</option>
           {NailLengths.map(len => <option key={len.id} value={len.id}>{len.label}</option>)}
         </select>
@@ -90,7 +96,10 @@ export function ServiceDetails() {
 
       <TitledGridContainer title={''} columns={1} className="flex-grow-1 w-50 gap-0">
         <h4 className="ps-1 fw-normal">Desired Shape</h4>
-        <select defaultValue={nailService.desiredShape ?? -1} onChange={onShapeChange}>
+        <select 
+          disabled={NailShapes.every(shape => !isShapeApplicable(nailService, shape.id))}
+          defaultValue={nailService.desiredShape ?? -1} 
+          onChange={onShapeChange}>
           <option disabled value={-1}>Choose a shape</option>
           {NailShapes.map(shape =>
             <option 
@@ -104,9 +113,12 @@ export function ServiceDetails() {
         </select>
 
         <h4 className="mt-3 ps-1 fw-normal">Current Shape</h4>
-        <select defaultValue={nailService.currentShape ?? -1} onChange={onCurShapeChange}>
+        <select 
+          disabled={NailShapes.every(shape => !isShapeApplicable(nailService, shape.id))}
+          defaultValue={nailService.currentShape ?? -1} 
+          onChange={onCurShapeChange}>
           <option disabled value={-1}>Choose a shape</option>
-          {NailShapes.map(len => <option key={len.id} value={len.id}>{len.label}</option>)}
+          {NailShapes.map(shape => <option key={shape.id} value={shape.id}>{shape.label}</option>)}
         </select>
       </TitledGridContainer>  
     </div>
@@ -116,6 +128,7 @@ export function ServiceDetails() {
       <label>
         Extension Removal
         <input type="checkbox" 
+          disabled={nailService.type === 'take_down'}
           onChange={onExtRemovalChange}
           checked={nailService.extensionRemoval} />
       </label>
@@ -123,6 +136,7 @@ export function ServiceDetails() {
       <label>
         Gel Removal
         <input type="checkbox" 
+          disabled={nailService.type === 'take_down'}          
           onChange={onGelRemovalChange}
           checked={nailService.gelPolishRemoval} />
       </label>
@@ -130,6 +144,7 @@ export function ServiceDetails() {
       <label>
         After - Manicure
         <input type="checkbox" 
+          disabled={nailService.type === 'manicure' || nailService.type === 'g_manicure'}
           onChange={e => onAdditionalServiceChange('manicure', e.currentTarget.checked)}
           checked={nailService.additional.includes('manicure')} />
       </label>
@@ -137,6 +152,7 @@ export function ServiceDetails() {
       <label>
         After - Gel Manicure
         <input type="checkbox" 
+          disabled={nailService.type === 'manicure' || nailService.type === 'g_manicure'}
           onChange={e => onAdditionalServiceChange('g_manicure', e.currentTarget.checked)}
           checked={nailService.additional.includes('g_manicure')} />
       </label>

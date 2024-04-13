@@ -14,8 +14,6 @@ export function Chat() {
     dispatch({questionIndex: qIndex, selected: selectedOption});
   }
 
-  console.log(chat);
-
   useScrollIntoView(chatContainerRef, [chat]);
   
   return <div className="chat pe-2" ref={chatContainerRef}>
