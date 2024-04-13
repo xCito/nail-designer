@@ -12,7 +12,7 @@ interface Props {
 export function ChatOptions(p: Props) {
   const { options, selected, onOptionClick } = p;
 
-  return <div className="options">
+  return <div className="options two">
     {options.map((opt) => 
       <OptionButton key={opt.label} opt={opt} onOptionClick={onOptionClick} selected={selected} />
     )}

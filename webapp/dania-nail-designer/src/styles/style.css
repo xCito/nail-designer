@@ -306,19 +306,21 @@ select {
     margin-bottom: 1em;
   }
   .options {
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.4em;
 
-    max-width: 85%;
+    max-width: 90%;
     width: fit-content;
     margin-left: auto;
-    text-align: right;
+    direction: rtl;
 
+    &.one { grid-template-columns: fit-content; }
+    &.two { grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr); }
     > * {
-      min-width: 37%;
       text-align: center;
+      text-overflow: ellipsis;
+      direction: ltr;
+      
     }
   }
 
