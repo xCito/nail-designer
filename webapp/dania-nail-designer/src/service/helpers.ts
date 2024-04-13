@@ -1,8 +1,8 @@
-import { Design, DesignElements, NailBases, NailDesignElemId, NailLengths, NailShapes, NailServices, getNailServiceById, NailService, NailLengthId, getNailLengthById, getNailShapeById } from "@/constants/design-constants";
+import { Design, DesignElements, NailBases, NailDesignElemId, NailLengths, NailShapes, NailServices, getNailServiceById, NailService, NailLengthId, getNailLengthById, getNailShapeById, NailBaseId, NailShapeId } from "@/constants/design-constants";
 import { FingerIndices } from "../constants/other-constants";
 import { ChatItem, ChatOption, ChatState } from "@/components/chat/chat-reducer";
 import { NailSvc, defaultNailService } from "@/contexts/NailServiceContext";
-import { EXT_NAIL_REMOVAL_PRICE, ServicePrices, HAND_MASSAGE_PRICE, GEL_REMOVAL_PRICE } from "@/constants/pricing-constants";
+import { EXT_NAIL_REMOVAL_PRICE, ServicePrices, HAND_MASSAGE_PRICE, GEL_REMOVAL_PRICE, SHAPE_EXPANSION_SMALL_FEE, LENGTH_EXTENSION_FEE, NO_CHARGE } from "@/constants/pricing-constants";
 
 
 
@@ -259,6 +259,7 @@ export function applyOptionVisibility<T extends {id: string}>(options: ReadonlyA
 export type ChatOptionVisibilty = ChatOption & { visible: boolean };
 export function filterOutOptions(curQuestion: ChatItem, chat: ChatState): ChatOptionVisibilty[] {
   
+  // Filter out lengths
   if(curQuestion.id === 'wantChangeLength') {
     const prevAnswer = chat.selectedList.find(choice => choice.qId === 'whatCurrentMaintainLength');
     if (prevAnswer) { // Filter out already selected length
@@ -268,6 +269,7 @@ export function filterOutOptions(curQuestion: ChatItem, chat: ChatState): ChatOp
     }
   }
 
+  // Filter out shapes
   if(curQuestion.id === 'wantChangeShape') {
     const curShapeAnswer = chat.selectedList.find(choice => choice.qId === 'whatCurrentMaintainShape');
     const curLengthAnswer = chat.selectedList.find(choice => choice.qId === 'whatCurrentMaintainLength');
@@ -299,6 +301,7 @@ export function filterOutOptions(curQuestion: ChatItem, chat: ChatState): ChatOp
     return filteredOptions;
   }
  
+  // Filter out shapes
   if(curQuestion.id === 'desiredEnhanceShape') {
     const prevAnswer = chat.selectedList.find(choice => choice.qId === 'desiredEnhanceLength')
     if (prevAnswer) {
@@ -307,12 +310,13 @@ export function filterOutOptions(curQuestion: ChatItem, chat: ChatState): ChatOp
     }
   } 
 
+  // Filter out bases
   if (curQuestion.id === 'desiredBase') {
     const extSubAnswer = chat.selectedList.find(choice => choice.qId === 'needPreEnhanceRemoval');
     let filteredOptions = curQuestion.options.map(o => ({ ...o, visible: true }));
-    if (extSubAnswer?.option.id === 1) {
+    if (extSubAnswer?.option.id === 1) { // is maintainance
       filteredOptions = filteredOptions.map(o => ({ ...o, visible: ![1, 6].includes(o.id) }));
-    } else if (extSubAnswer?.option.id === 2 || extSubAnswer?.option.id === 3) {
+    } else if (extSubAnswer?.option.id === 2 || extSubAnswer?.option.id === 3) { // new sets
       filteredOptions = filteredOptions.map(o => ({ ...o, visible: [2,4,6].includes(o.id) }));
     }
 
@@ -373,7 +377,54 @@ export function getSummaryDetails(nailSvc: NailSvc) {
     addToSummarySection(summaryDetails, 'After-Service', entry);
   }
 
+  // Length changes
+  if (nailSvc.currentLength && nailSvc.desiredLength) {
+    const curLen = getNailLengthById(nailSvc.currentLength);
+    const desLen = getNailLengthById(nailSvc.desiredLength);
+    let title, price;
 
+    if (curLen && desLen) {
+      const diff = curLen.size - desLen.size;
+      if (diff < 0) { // desired is larger, so extended
+        title = 'Length Change (extended)';
+        price = LENGTH_EXTENSION_FEE;
+      } else if (diff > 0) { // current is larger, so reduction
+        title = 'Length Change (shortened)';
+        price = NO_CHARGE;
+      } else { // same
+        title = 'Same Length';
+        price = NO_CHARGE;
+      }
+
+      addToSummarySection(summaryDetails, 'Service', { title, price });
+    }
+  }
+  
+  // Shape Changes
+  if (nailSvc.currentShape && nailSvc.desiredShape) {
+    const curShp = getNailShapeById(nailSvc.currentShape);
+    const desShp = getNailShapeById(nailSvc.desiredShape);
+    let title, price;
+    
+    if (curShp && desShp) {
+      const diff = curShp.size - desShp.size;
+      if (diff < 0) { // desired is larger, so extended
+        title = 'Shape Change (expanded)';
+        price = SHAPE_EXPANSION_SMALL_FEE;
+      } else if (diff > 0) { // current is larger, so reduction
+        title = 'Shape Change (reduced)';
+        price = NO_CHARGE;
+      } else { // same
+        title = 'Same Shape';
+        price = NO_CHARGE;
+      }
+
+      addToSummarySection(summaryDetails, 'Service', { title, price });
+    }
+  }
+  
+  // Replace Gel manicure service with regular manicure
+  // and sub section for gel
   summaryDetails.forEach(detail => {
     detail.items.forEach(item => {
       if (item.title.match(/Gel Manicure/gi)){
@@ -387,3 +438,101 @@ export function getSummaryDetails(nailSvc: NailSvc) {
   return summaryDetails;
 }
 
+export function isBaseApplicable(svc: NailSvc, base: NailBaseId): boolean {
+  let missingType: never; // for exhaustive TS check
+
+  switch(base) {
+    case 'base_gel': {
+      return svc.type !== 'manicure'
+        && svc.type !== 'take_down';
+    }
+    case 'acrylic_base': {
+      return svc.type !== 'manicure' 
+        && svc.type !== 'g_manicure'
+        && svc.type !== 'take_down';
+    }
+    case 'builder_base': {
+      return svc.type !== 'manicure'
+        && svc.type !== 'take_down';
+    }
+    case 'gel_x_base': {
+      return svc.type !== 'manicure' 
+        && svc.type !== 'take_down'
+        && svc.type !== 'g_manicure'
+    }
+    case 'hard_gel': {
+      return svc.type !== 'manicure'
+        && svc.type !== 'take_down';
+    }
+    case 'poly_gel': {
+      return svc.type !== 'manicure'
+        && svc.type !== 'g_manicure'
+        && svc.type !== 'take_down';
+    }
+    default: {
+      missingType = base;
+      return missingType;
+    }
+  }
+}
+
+export function isLengthApplicable(svc: NailSvc, length: NailLengthId): boolean {
+  let missingType: never; // for exhaustive TS check
+
+  switch(length) {
+    case 'short': {
+      return svc.type !== 'take_down';
+    }
+    case 'med': {
+      return svc.type !== 'take_down';
+    }
+    case 'long': {
+      return svc.type !== 'take_down';
+    }
+    case 'x_long': {
+      return svc.type !== 'take_down';
+    }
+    case 'xx_long': {
+      return svc.type !== 'take_down';
+    }
+    default: {
+      missingType = length;
+      return missingType;
+    }
+  }
+}
+
+export function isShapeApplicable(svc: NailSvc, shape: NailShapeId): boolean {
+  let missingType: never; // for exhaustive TS check
+
+  switch(shape) {
+    case 'square': {
+      return svc.type !== 'take_down';
+    }
+    case 'coffin': {
+      return svc.type !== 'take_down';
+    }
+    case 'ballerina': {
+      return svc.type !== 'take_down';
+    }
+    case 'round': {
+      return svc.type !== 'take_down';
+    }
+    case 'oval': {
+      return svc.type !== 'take_down';
+    }
+    case 'almond': {
+      return svc.type !== 'take_down';
+    }
+    case 'almondetto': {
+      return svc.type !== 'take_down';
+    }
+    case 'stiletto': {
+      return svc.type !== 'take_down';
+    }
+    default: {
+      missingType = shape;
+      return missingType;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chat } from "../chat/Chat";
 import { ServiceDetails } from "../service-details/ServiceDetails";
 import { Designs } from "../designs/Designs";
@@ -14,6 +14,16 @@ type Tab = typeof TABS[keyof typeof TABS];
 export function Tabs() {
   const tabTitles = [TABS.CHAT, TABS.DETAIL, TABS.DESIGN];
   const [activeTab, setActiveTab] = useState<Tab>(tabTitles[0]);
+  
+  const onTabClick = (tab: Tab) => {
+    setActiveTab(tab);
+    sessionStorage.setItem('activeTab', tab);
+  }
+
+  useEffect(() => {
+    const activeT = sessionStorage.getItem('activeTab');
+    if (activeT) setActiveTab(activeT as Tab);
+  },[]);
 
   return <>
     <nav>
@@ -21,7 +31,7 @@ export function Tabs() {
         {tabTitles.map(tab => 
           <li key={tab} 
             className={classNames("tab", {active: activeTab === tab})} 
-            onClick={() => setActiveTab(tab)}>{tab}</li>
+            onClick={() => onTabClick(tab)}>{tab}</li>
         )}
       </ol>
     </nav>

@@ -22,7 +22,7 @@ export const NailBases = [
   { id: 'hard_gel',   label: 'HardGel',    },
   { id: 'base_gel',   label: 'Base Gel',   },
   { id: 'poly_gel',   label: 'PolyGel',    },
-  { id: 'acrylic_base',   label: 'Arcylic',    },
+  { id: 'acrylic_base',   label: 'Acrylic',    },
   { id: 'builder_base',   label: 'BuilderGel',   },
   { id: 'gel_x_base',   label: 'Gel-X',    },
 ] as const;

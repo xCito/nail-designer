@@ -166,8 +166,8 @@ export function Summary(p: Props) {
   return <>
     <button className="copy-btn secondary p-1" onClick={copyToClipboard}>Copy</button>
 
-    <div id="summary-d" className="summary-table p-3 pt-4">
-      <table className="w-100">
+    <div id="summary-d" className="summary-table px-1 p-2 pt-2">
+      <table className="w-100 mb-5 pb-5">
         <thead>
           <tr>
             <th className="text-start pb-3">Details</th>
