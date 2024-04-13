@@ -28,7 +28,7 @@ interface OptButtonProps {
 function OptionButton({opt, onOptionClick, selected}: OptButtonProps) {
   const [isOpen, setOpen] = useState(false);
   
-  const onInfoClick = (e: MouseEvent) => {
+  const onInfoClick = (_: MouseEvent) => {
     // e.stopPropagation();
     setOpen(!isOpen);
   } 
@@ -40,7 +40,9 @@ function OptionButton({opt, onOptionClick, selected}: OptButtonProps) {
         {opt.label} 
         {opt.info && <>
           <GoInfo data-tooltip-id={opt.id + opt.label} size={24} onClick={onInfoClick} className="ms-3"/>
-          <Tooltip id={opt.id + opt.label} openOnClick>
+          <Tooltip id={opt.id + opt.label} 
+             
+            openOnClick >
             <pre className="text-start m-0">{opt.info}</pre>
           </Tooltip>
         </>}

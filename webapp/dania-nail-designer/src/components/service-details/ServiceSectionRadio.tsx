@@ -3,7 +3,7 @@ import { TitledGridContainer } from "./TitledGridContainer";
 
 interface Props<T extends string> {
   title: string;
-  options: ReadonlyArray<{id: T, label: string}>;
+  options: ReadonlyArray<{id: T, label: string, disabled?: boolean}>;
   selectedId: T | undefined;
   onChange: (optionId: T, isChecked: boolean) => void;
 }
@@ -18,6 +18,7 @@ export function ServiceSectionRadio<T extends string>(p: Props<T>) {
           <input
             type="radio" 
             name={title}
+            disabled={option.disabled}
             onChange={e => onChange(option.id, e.target.checked)}
             checked={isChecked} />
           {option.label}

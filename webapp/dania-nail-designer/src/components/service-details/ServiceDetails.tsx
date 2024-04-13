@@ -3,7 +3,7 @@ import { ServiceSectionRadio } from "./ServiceSectionRadio";
 import { NailServiceContext } from "@/contexts/NailServiceContext";
 import { NailBaseId, NailBases, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "@/constants/design-constants";
 import { TitledGridContainer } from "./TitledGridContainer";
-import { applyOptionVisibility } from "@/service/helpers";
+import { isBaseApplicable, isLengthApplicable, isShapeApplicable } from "@/service/helpers";
 
 export function ServiceDetails() {
   const { chat, nailService, setNailService } = useContext(NailServiceContext);
@@ -58,45 +58,59 @@ export function ServiceDetails() {
       options={NailServices} 
       selectedId={nailService.type}
       onChange={onServiceChange} />
+
     <ServiceSectionRadio 
       title='Base' 
-      options={NailBases} 
+      options={NailBases.map(svc => ({...svc, disabled: !isBaseApplicable(nailService, svc.id)}))} 
       selectedId={nailService.desiredBase}
       onChange={onBaseChange} />
 
     <div className="d-flex gap-2">
-      <TitledGridContainer title={'Length'} columns={1} className="flex-grow-1 w-50">
+      <TitledGridContainer title={''} columns={1} className="flex-grow-1 w-50 gap-0">
+        <h4 className="ps-1 fw-normal">Desired Length</h4>
         <select defaultValue={nailService.desiredLength ?? -1} onChange={onLengthChange}>
           <option disabled value={-1}>Choose a length</option>
           {NailLengths.map(len => 
-            <option key={len.id} value={len.id}>{len.label}</option>
+            <option 
+              key={len.id}
+              value={len.id} 
+              disabled={!isLengthApplicable(nailService, len.id)}
+              >
+                {len.label}
+            </option>
           )}
         </select>
-      </TitledGridContainer>  
-      <TitledGridContainer title={'Current Length'} columns={1} className="flex-grow-1 w-50">
+        
+        <h4 className="mt-3 ps-1 fw-normal">Current Length</h4>
         <select defaultValue={nailService.currentLength ?? -1} onChange={onCurLengthChange}>
           <option disabled value={-1}>Choose a length</option>
           {NailLengths.map(len => <option key={len.id} value={len.id}>{len.label}</option>)}
         </select>
       </TitledGridContainer>  
-    </div>
 
-    <div className="d-flex gap-2">
-      <TitledGridContainer title={'Shape'} columns={1} className="flex-grow-1 w-50">
+      <TitledGridContainer title={''} columns={1} className="flex-grow-1 w-50 gap-0">
+        <h4 className="ps-1 fw-normal">Desired Shape</h4>
         <select defaultValue={nailService.desiredShape ?? -1} onChange={onShapeChange}>
           <option disabled value={-1}>Choose a shape</option>
-          {NailShapes.map(len =>
-            <option key={len.id} value={len.id}>{len.label}</option>
-          )}
+          {NailShapes.map(shape =>
+            <option 
+              key={shape.id} 
+              value={shape.id}
+              disabled={!isShapeApplicable(nailService, shape.id)}
+              >
+                {shape.label}
+              </option>
+            )}
         </select>
-      </TitledGridContainer>  
-      <TitledGridContainer title={'Current Shape'} columns={1} className="flex-grow-1 w-50">
+
+        <h4 className="mt-3 ps-1 fw-normal">Current Shape</h4>
         <select defaultValue={nailService.currentShape ?? -1} onChange={onCurShapeChange}>
           <option disabled value={-1}>Choose a shape</option>
           {NailShapes.map(len => <option key={len.id} value={len.id}>{len.label}</option>)}
         </select>
       </TitledGridContainer>  
     </div>
+
 
     <TitledGridContainer title={"Add-ons"} columns={1} gap={2}>
       <label>

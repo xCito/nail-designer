@@ -13,6 +13,7 @@
 
   --text-color: #EAEAEA;
   --text-muted-color: #BFBFBF;
+  --text-disabled-color: #919191;
 
 
   --radius: 10px;
@@ -133,6 +134,11 @@ label:has(> input[type="radio"]) {
     width: calc(var(--chbx-size) * 0.7);
     height: calc(var(--chbx-size) * 0.7);
   }
+
+  &:has(input[type="radio"]:disabled) {
+    opacity: 70%;
+    color: var(--text-disabled-color);
+  }
 }
 
 
@@ -190,7 +196,10 @@ label:has(> input[type="checkbox"]) {
     transform: translate(calc((var(--full) - 4px)/4), -50%);
   }
 
-  
+  &:has(input[type="checkbox"]:disabled) {
+    opacity: 70%;
+    color: var(--text-disabled-color);
+  }
 }
 select {
   background-color: var(--bg-1-color);
@@ -306,21 +315,19 @@ select {
     margin-bottom: 1em;
   }
   .options {
-    display: grid;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
     gap: 0.4em;
 
-    max-width: 90%;
+    max-width: 85%;
     width: fit-content;
     margin-left: auto;
-    direction: rtl;
+    text-align: right;
 
-    &.one { grid-template-columns: fit-content; }
-    &.two { grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr); }
     > * {
       text-align: center;
-      text-overflow: ellipsis;
-      direction: ltr;
-      
+      min-width: 37%;
     }
   }
 
@@ -694,7 +701,7 @@ select {
 
 
 td:last-child, th:last-child {
-  width: 75px;
+  width: min-content;
 }
 td {
   /* color: #666; */
