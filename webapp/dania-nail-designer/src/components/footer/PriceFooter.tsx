@@ -17,6 +17,7 @@ export function PriceFooter() {
   const lastPos = useRef<number>(-10);
   const footerDiv = useRef<HTMLDivElement>(null);
   const bgOverlay = useRef<HTMLDivElement>(null);
+  const touchActive = useRef<boolean>(false);
 
   const { nailService } = useContext(NailServiceContext);
   const summaryDetails = getSummaryDetails(nailService);
@@ -28,8 +29,10 @@ export function PriceFooter() {
     }, 0);
   }, 0);
  
+
+  // Listen for outside-of-footer, click events
   useEffect(() => {
-    function docClick(e: MouseEvent) {
+    function onOutsideClick(e: MouseEvent) {
       if (!isOpen) return;
       if (!footerDiv.current) return;
       const x = e.clientX, y = e.clientY;
@@ -45,13 +48,23 @@ export function PriceFooter() {
 
     }
 
-    isOpen && document.addEventListener('click', docClick, { capture: true });
+    isOpen && document.addEventListener('click', onOutsideClick, { capture: true });
     return () => {
       console.log('unlisten', isOpen);
-      document.removeEventListener('click', docClick, { capture: true });
+      document.removeEventListener('click', onOutsideClick, { capture: true });
 
     }
   }, [isOpen, footerDiv.current]);
+
+  // Prevent Browser swipe down to refresh
+  useEffect(() => {
+    const root = document.getElementsByTagName('body')[0];
+    if (isOpen || touchActive.current) {
+      root.classList.add('no-scroll');
+    } else {
+      root.classList.remove('no-scroll');
+    }
+  }, [isOpen]);
 
   const onClick = (e: PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === 'mouse') {
@@ -67,10 +80,8 @@ export function PriceFooter() {
       holdTransition = footerDiv.current.style.transition;
       footerDiv.current.style.transition = 'none';
     }
-    const root = document.getElementsByTagName('body')[0];
-    if (root) {
-      root.classList.add('no-scroll');
-    }
+
+    touchActive.current = true;
   }
   
   const onTouchMove = (e: TouchEvent) => {
@@ -92,10 +103,12 @@ export function PriceFooter() {
   const onTouchEnd = () => {
     
     const diff = startPos.current - lastPos.current;
-    const root = document.getElementsByTagName('body')[0];
-    if (root) {
-      root.classList.remove('no-scroll');
-    }
+
+    touchActive.current = false;
+    // const root = document.getElementsByTagName('body')[0];
+    // if (root) {
+    //   root.classList.remove('no-scroll');
+    // }
     if (footerDiv.current) {
       footerDiv.current.style.transition = holdTransition;
       footerDiv.current.style.height = '';
