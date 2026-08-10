@@ -8,10 +8,10 @@ interface Props {
   shape: NailShapeId | null,
   length: NailLengthId | null;
 }
-export function Finger({shape, length = 'natural'}: Props) {
+export function Finger({shape, length = 'none'}: Props) {
   const shapeVal = shape ?? 'round';
-  const lengthVal = length ?? 'natural';
-  const heightVal = NailSvgHeight['xx_long'];
+  const lengthVal = length ?? 'none';
+  const heightVal = NailSvgHeight['x_long'];
 
   return <svg className={'finger'} width={heightVal * 1.5} viewBox={`-${heightVal} -0 ${heightVal} 1`} xmlns="http://www.w3.org/2000/svg">
     <g transform="rotate(90)">

@@ -9,25 +9,28 @@ export const NailShapes = {
   oval:       { label: 'Oval',        type: 'Rounded', size: 5 },
   round:      { label: 'Round',       type: 'Rounded', size: 6 },
   square:     { label: 'Square',      type: 'Square',  size: 7 },
+  duck:       { label: 'Duck',        type: 'Square',  size: 8 },
 } as const;
 
 
 export const NailBases = {
+  NoBase: 'No Base',
   BaseGel: 'Base Gel',
   HardGel: 'Hard Gel',
   PolyGel: 'PolyGel',
   AcryGel: 'AcryGel',
+  NoCare: 'I Don\'t Care',
 } as const;
 
 
 export const NailLengths = {
-  natural: { label: 'Natural', type: 'Natural',   size: 0},
-  x_short: { label: 'X Short', type: 'Extension', size: 1},
+  none:    { label: 'None',    type: 'Natural',   size: 0},
+  // x_short: { label: 'X Short', type: 'Extension', size: 1},
   short:   { label: 'Short',   type: 'Extension', size: 2},
   medium:  { label: 'Medium',  type: 'Extension', size: 3},
   long:    { label: 'Long',    type: 'Extension', size: 4},
   x_long:  { label: 'X Long',  type: 'Extension', size: 5},
-  xx_long: { label: '2X Long', type: 'Extension', size: 6},
+  // xx_long: { label: '2X Long', type: 'Extension', size: 6},
 } as const;
 
 export const ComplexityScore = {
@@ -40,35 +43,44 @@ export const ComplexityScore = {
 } as const;
 
 export const DesignElements = {
-  french:       { name: "French",           complexity: "F", type: 'art' },
-  marble:       { name: "Marble",           complexity: "E", type: 'art' },
-  gradient:     { name: "Gradient",         complexity: "D", type: 'art' },
-  glitter_grad: { name: "Glitter Gradient", complexity: "E", type: 'art' },
-  glitter_top:  { name: "Glitter Topper",   complexity: "C", type: 'art' },
-  dots:         { name: "Dots",             complexity: "C", type: 'art' },
-  jelly:        { name: "Jelly",            complexity: "D", type: 'art' },
-  sticker:      { name: "Sticker",          complexity: "D", type: 'art' },
-  gem:          { name: "Gem",              complexity: "C", type: 'item'},
-  gem_cluster:  { name: "Gem Cluster",      complexity: "D", type: 'item'},
-  charm_sm:     { name: "Charm SM",         complexity: "D", type: 'item'},
-  sugaring:     { name: "Sugaring",         complexity: "D", type: 'art' },
-  foil:         { name: "Foil",             complexity: "D", type: 'art' },
-  chrome:       { name: "Chrome",           complexity: "D", type: 'art' },
-  magnetic:     { name: "Magnetic",         complexity: "E", type: 'art' },
-  striping:     { name: "Striping Tape",    complexity: "D", type: 'art' },
-  small_art:    { name: "Small Art",        complexity: "D", type: 'art' },
-  multiple_art: { name: "Multiple Arts",    complexity: "E", type: 'art' },
-  inlay:        { name: "Inlay",            complexity: "E", type: 'art' },
-  base_color:   { name: "Gel Color",        complexity: "A", type: 'base'},
-  charm_lg:     { name: "Charm LG",         complexity: "E", type: 'item'},
+  french:       { name: "French",            category: 'overlay',   complexity: "F", type: 'art' },
+  marble:       { name: "Marble",            category: 'overlay',   complexity: "E", type: 'art' },
+  gradient:     { name: "Gradient",          category: 'overlay',   complexity: "D", type: 'art' },
+  glitter_grad: { name: "Glitter Gradient",  category: 'overlay',   complexity: "E", type: 'art' },
+  glitter_top:  { name: "Glitter Topper",    category: 'overlay',   complexity: "C", type: 'art' },
+  dots:         { name: "Dots",              category: 'overlay',   complexity: "C", type: 'art' },
+  jelly:        { name: "Jelly",             category: 'overlay',   complexity: "D", type: 'art' },
+  sticker:      { name: "Sticker",           category: 'overlay',   complexity: "D", type: 'art' },
+  gem:          { name: "Gem",               category: 'accessory', complexity: "C", type: 'item' },
+  gem_cluster:  { name: "Gem Cluster",       category: 'accessory', complexity: "D", type: 'item' },
+  charm_sm:     { name: "Charm SM",          category: 'accessory', complexity: "D", type: 'item' },
+  charm_lg:     { name: "Charm LG",          category: 'accessory', complexity: "E", type: 'item' },
+  sugaring:     { name: "Sugaring",          category: 'overlay',   complexity: "D", type: 'art' },
+  foil:         { name: "Foil",              category: 'overlay',   complexity: "D", type: 'art' },
+  chrome:       { name: "Chrome",            category: 'overlay',   complexity: "D", type: 'art' },
+  magnetic:     { name: "Magnetic",          category: 'overlay',   complexity: "E", type: 'art' },
+  striping:     { name: "Striping Tape",     category: 'overlay',   complexity: "D", type: 'art' },
+  small_art:    { name: "Small Art",         category: 'overlay',   complexity: "D", type: 'art' },
+  multiple_art: { name: "Multiple Arts",     category: 'overlay',   complexity: "E", type: 'art' },
+  inlay:        { name: "Inlay",             category: 'inlay',     complexity: "E", type: 'art' },
+  base_color:   { name: "Gel Color",         category: 'overlay',   complexity: "A", type: 'base' },
+  base_color_polish:   { name: "Polish Color",      category: 'overlay',   complexity: "A", type: 'base' },
 } as const
 
 export const NailServices = {
-  manicure:   { name: 'Basic Manicure', type: 'pre-service'},
-  refill:     { name: 'Refill',         type: 'ext-service' },
-  rebalance:  { name: 'Rebalance',      type: 'ext-service'},
+  manicure:   { name: 'Manicure', type: 'pre-service'},
+  pedicure:   { name: 'Pedicure', type: 'pre-service'},
   new_set:    { name: 'New Set',        type: 'ext-service'},
-  take_down:  { name: 'Take Down',      type: 'pre-service'},
+  rebalance:  { name: 'Rebalance',      type: 'ext-service'},
+  take_down:  { name: 'Removal',        type: 'pre-service'},
+  // refill:     { name: 'Refill',         type: 'ext-service' },
+} as const;
+
+export const AddOnServices = {
+  hydration:     { name: 'Hydration',      type: 'add-on'},
+  massage:       { name: 'Massage',        type: 'add-on'},
+  length_change: { name: 'Length Change',  type: 'add-on'},
+  shape_change:  { name: 'Shape Change',   type: 'add-on'},
 } as const;
 
 export const NailBuildingPlatforms = {
@@ -81,7 +93,7 @@ export function getDefaultDesign(): Design {
     left: {
       base: null,
       shape: 'round',
-      length: 'natural',
+      length: 'none',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),
@@ -116,7 +128,7 @@ export function getDefaultDesign(): Design {
     right: {
       base: null,
       shape: 'round',
-      length: 'natural',
+      length: 'none',
       f1: {
         name: 'Thumb',
         ornaments: new Set(),
@@ -180,6 +192,7 @@ export interface Finger {
 
 export type NailServiceId = keyof typeof NailServices;
 export type NailPlatformId = keyof typeof NailBuildingPlatforms;
+export type AddOnServiceId = keyof typeof AddOnServices;
 export type NailBaseId = keyof typeof NailBases;
 export type NailShapeId = keyof typeof NailShapes;
 export type NailLengthId = keyof typeof NailLengths;

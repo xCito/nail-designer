@@ -1,13 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap-utilities.min.css';
-import App from './App.tsx'
 import './index.css'
 import '@/styles/style.css';
+import { DesignProvider } from './contexts/DesignContext.tsx';
+import { DesignBuilder } from './components/DesignBuilder.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <DesignProvider>
+      <DesignBuilder />
+    </DesignProvider>
   </React.StrictMode>,
 )
 
