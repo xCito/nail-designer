@@ -1,4 +1,4 @@
-import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId, Design, NailServiceId } from "@/constants/design-constants"
+import { NailBaseId, NailShapeId, NailLengthId, NailDesignElemId, Design, NailServiceId, AddOnServiceId } from "@/constants/design-constants"
 
 
 export type DesignAction = {
@@ -45,6 +45,7 @@ export interface ConsultationValue {
   service: NailServiceId | null;
   startLen: NailLengthId | null;
   startShape: NailShapeId | null;
+  addOns: Array<AddOnServiceId>;
   isManiApplied: boolean | null;
   isDesignRemoval: boolean | null;
   isEnhancementRemoval: boolean | null;

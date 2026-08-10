@@ -11,6 +11,7 @@ const consultDataDefault: ConsultationValue = {
   startLen: null,
   startShape: null,
   service: null,
+  addOns: []
 }
 
 const contextDefault: DesignProviderValue = {

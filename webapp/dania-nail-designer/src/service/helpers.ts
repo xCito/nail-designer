@@ -1,4 +1,4 @@
-import { Design, DesignElements, NailBases, NailDesignElemId, NailLengths, NailShapes, NailServices } from "@/constants/design-constants";
+import { Design, DesignElements, NailBases, NailDesignElemId, NailLengths, NailShapes, NailServices, AddOnServices } from "@/constants/design-constants";
 import { FingerIndices } from "../constants/other-constants";
 
 
@@ -13,6 +13,7 @@ export function getNailBasesAsList() {  return getObjAsList(NailBases); }
 export function getNailLengthsAsList() {  return getObjAsList(NailLengths); }
 export function getNailShapesAsList() {  return getObjAsList(NailShapes); }
 export function getNailDesignElementsAsList() {  return getObjAsList(DesignElements); }
+export function getAddOnServicesAsList() {  return getObjAsList(AddOnServices); }
 
 export function getAppliedBases(nailDesign: Design) {
   return nailDesign.left.base;

@@ -1,9 +1,12 @@
-import { getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
+import { getAddOnServicesAsList, getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
 import { ConsultationValue } from "@/types/other-types";
 import classNames from "classnames";
 import { Fragment, useEffect, useState } from "react";
-import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId, NailShapes } from "../../constants/design-constants";
-import { BASE_COLOR_PRICE, DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NO_CHARGE, NailServiceRates, OrnamentPrices, SHAPE_EXPANSION_BIG_FEE, SHAPE_EXPANSION_SMALL_FEE } from "../../constants/pricing-constants";
+import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId } from "../../constants/design-constants";
+import { AddOnPrices, BASE_COLOR_PRICE, DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NailServiceRates, OrnamentPrices } from "../../constants/pricing-constants";
+import { ExpandIcon } from "../ExpandIcon";
+import { CloseIcon } from "../CloseIcon";
+import { CollapseIcon } from "../CollapseIcon";
 
 
 function getDesignPrice(designId: NailDesignElemId, count: number): number {
@@ -28,15 +31,15 @@ function getDesignById(id: NailDesignElemId) {
 //   }
 // }
 
-function getShapeDiff(val1: NailShapeId | null, val2: NailShapeId | null) {
-  if (!val1 || !val2) return 0;
-  return NailShapes[val1].size - NailShapes[val2].size;
-}
+// function getShapeDiff(val1: NailShapeId | null, val2: NailShapeId | null) {
+//   if (!val1 || !val2) return 0;
+//   return NailShapes[val1].size - NailShapes[val2].size;
+// }
 
-function getLengthDiff(val1: NailLengthId | null, val2: NailLengthId | null) {
-  if (!val1 || !val2) return 0;
-  return NailLengths[val1].size - NailLengths[val2].size;
-}
+// function getLengthDiff(val1: NailLengthId | null, val2: NailLengthId | null) {
+//   if (!val1 || !val2) return 0;
+//   return NailLengths[val1].size - NailLengths[val2].size;
+// }
 
 // function getLengthFeePrice(svcId: NailServiceId | null, sLen: NailLengthId | null, cLen: NailLengthId | null) {
 //   let price = 0;
@@ -50,18 +53,18 @@ function getLengthDiff(val1: NailLengthId | null, val2: NailLengthId | null) {
 // }
 
 
-function getShapeFeePrice(svcId: NailServiceId | null, sShp: NailShapeId | null, cShp: NailShapeId | null) {
-  let price = 0;
-  if (svcId === 'new_set') return price;
+// function getShapeFeePrice(svcId: NailServiceId | null, sShp: NailShapeId | null, cShp: NailShapeId | null) {
+//   let price = 0;
+//   if (svcId === 'new_set') return price;
 
-  if (sShp && cShp) {
-    const shapeDiff = getShapeDiff(sShp, cShp);
-    price = shapeDiff === 0 
-            ? NO_CHARGE
-            : Math.abs(shapeDiff) >= 2 ? SHAPE_EXPANSION_BIG_FEE : SHAPE_EXPANSION_SMALL_FEE;
-  }
-  return price;
-}
+//   if (sShp && cShp) {
+//     const shapeDiff = getShapeDiff(sShp, cShp);
+//     price = shapeDiff === 0 
+//             ? NO_CHARGE
+//             : Math.abs(shapeDiff) >= 2 ? SHAPE_EXPANSION_BIG_FEE : SHAPE_EXPANSION_SMALL_FEE;
+//   }
+//   return price;
+// }
 
 // function getNailServicePrice(svcId: NailServiceId | null) {
 //   switch (svcId) {
@@ -91,7 +94,7 @@ function getDefaultDetails(): Array<Detail> {
     {section: 'Pre-Service', items: []},
     {section: 'Service', items: []},
     {section: 'Ext-Service', items: []},
-    {section: 'Add-On', items: []},
+    {section: 'Add-Ons', items: []},
     {section: 'Color & Design', items: []},
   ];
 }
@@ -105,12 +108,12 @@ interface DetailArgs {
 }
 function getSummaryDetails(args: DetailArgs) {
   const summaryDetails: Array<Detail> = getDefaultDetails();
-  const { consult, base, shape, length, designCounts } = args;
-  const {service: svcId, startShape, startLen, isDesignRemoval, isEnhancementRemoval, isManiApplied } = consult;
+  const { consult, base, length, designCounts } = args;
+  const {service: svcId, isDesignRemoval, isEnhancementRemoval, addOns } = consult;
   
   
-   // Design & color
-   if (designCounts.size > 0) {
+  // Design & color
+  if (designCounts.size > 0) {
     Array.from(designCounts.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
     .forEach(([id, count]) => {
@@ -130,41 +133,77 @@ function getSummaryDetails(args: DetailArgs) {
     summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Design Removal', price: DESIGN_REMOVAL_PRICE});
   if (isEnhancementRemoval)
     summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Enhancement Removal', price: NAIL_REMOVAL_PRICE});
-  if (isManiApplied && serviceRates.maniRate)
-    summaryDetails[PRE_SERVICE_INDEX].items.push({title: 'Manicure', price: serviceRates.maniRate});
 
-  // Service
-  if (svcId === 'manicure' || svcId === 'take_down') {
-    summaryDetails[SERVICE_INDEX].items.push({title: NailServices[svcId].name, price: serviceRates.rate});
 
-    // TODO: handle base selection here
-  }
+  switch (svcId) {
+    // Pre-Service
+    case 'manicure': {
+      const serviceName = NailServices[svcId].name;
+      const baseName = base ? NailBases[base] : '';
+      const basePrice = base !== null ? serviceRates.base?.[base] ?? -99999 : 0;
+      const maniName = `${baseName} ${serviceName}`;
+      const maniPrice = serviceRates.rate + basePrice;
+      summaryDetails[SERVICE_INDEX].items.push({title: maniName, price: maniPrice});
+      break;
+    }
+    // Pre-Service
+    case 'pedicure': {
+      const serviceName = NailServices[svcId].name;
+      const baseName = base ? NailBases[base] : '';
+      const basePrice = base !== null ? serviceRates.base?.[base] ?? -99999 : 0;
+      const pedName = `${baseName} ${serviceName}`;
+      const pedPrice = serviceRates.rate + basePrice;
+      summaryDetails[SERVICE_INDEX].items.push({title: pedName, price: pedPrice});
+      break;
+    }
+    // Pre-Service
+    case 'take_down': {
+      summaryDetails[SERVICE_INDEX].items.push({title: NailServices[svcId].name, price: serviceRates.rate});
+      break;
+    }
+    // Extension Service
+    case 'rebalance':
+    case 'new_set': {
+      const serviceName = NailServices[svcId].name;
+      let baseId = base as NailBaseId;
 
-  // Extension Service
-  if (svcId === 'refill' || svcId === 'rebalance' || svcId === 'new_set') {
-    const serviceName = NailServices[svcId].name;
-    const baseName = base ? NailBases[base] : '';
-    const basePrice = base !== null ? serviceRates.base?.[base] ?? -99999 : 0;
-    const extName = `${baseName} ${serviceName}`;  
-    const extPrice = serviceRates.rate + basePrice;
-    summaryDetails[EXT_SERVICE_INDEX].items.push({title: extName, price: extPrice});
-    
-    
-    if (length && serviceRates.length) {
-      const diff = getLengthDiff(startLen, length);
-      const lengthLabel = diff === 0 ? 'Same' : diff > 0 ? 'Shorted' : 'Extended';
+      // IDC defaults to PolyGel
+      if (base === 'NoCare') { baseId = 'PolyGel' }
+
+      const baseName = baseId ? NailBases[baseId] : '';
+      const basePrice = baseId !== null ? serviceRates.base?.[baseId] ?? -99999 : 0;
+      const extName = `${baseName} ${serviceName}`;  
+      const extPrice = serviceRates.rate + basePrice;
+      summaryDetails[EXT_SERVICE_INDEX].items.push({title: extName, price: extPrice});
+      
+      
+      if (length && serviceRates.length) {
+        summaryDetails[EXT_SERVICE_INDEX].items.push({
+          title: `${NailLengths[length].label} Length`, 
+          price: serviceRates.length[length] 
+        });
+      }
+
       summaryDetails[EXT_SERVICE_INDEX].items.push({
-        title: `${NailLengths[length].label} Length (${lengthLabel})`, 
-        price: serviceRates.length[length] 
+        title: `Manicure`, 
+        price: 0
       });
+      break;
+    }
+    default: {
+      throw new Error(`Unknown service id: ${svcId}`);
     }
   }
-  // Add-On
-  if (shape !== startShape) {/* Shape change, Gel removal, skin buffing */ 
-    const shapeChangeFee = getShapeFeePrice(svcId, startShape, shape);
-    const shapeLabel = getShapeDiff(startShape, shape) > 0 ? 'Slimming' : 'Expansion';
-    summaryDetails[ADD_ON_INDEX].items.push({title: `Shape Change (${shapeLabel})`, price: shapeChangeFee});
-  }
+
+
+  // Add-Ons  /* Shape change, Gel removal, skin buffing */ 
+  addOns.forEach(addOnId => {
+    const addOn = getAddOnServicesAsList().find(addOn => addOn.id === addOnId);
+    if (addOn) {
+      const price = AddOnPrices[addOnId] ?? 0;
+      summaryDetails[ADD_ON_INDEX].items.push({title: addOn.value.name, price: price});
+    }
+  });
 
 
   return summaryDetails;
@@ -222,56 +261,94 @@ export function Summary({ nailDesign, consultionData }: Props) {
   }
  
   const onFullClick = () => {
-    setOpen('full');
+    if (isOpen === 'open')
+      setOpen('full');
+    else if (isOpen === 'full')
+      setOpen('open');
   }
  
   const onMiniClick = () => {
     setOpen('close');
   }
-  return <div className={classNames("summary-drawer text-black", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}>
-    <div className="header px-3 py-3" role='button' onClick={onHeaderClick}>
-      <h3 className="title m-0">Summary</h3>
-      <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
-      <div className="btn-group">
-        <button onClick={onFullClick}>^</button>
-        <button onClick={onMiniClick}>^</button>
+
+  const onBackdropClick = () => {
+    setOpen('close');
+  }
+
+  const onCopyClick = () => {
+    let text = "";
+
+    for (const sumDetail of summaryDetails) {
+      const row = sumDetail.section.toUpperCase();
+
+      if (sumDetail.items.length === 0) {
+        continue;
+      }
+      text += `\n[ ${row} ]\n`
+      for (const item of sumDetail.items) {
+        const amt = ` $${item.price.toString().padStart(3, " ")}`
+        text += `${amt} - ${item.title} ${item.price === 0 ? '(Included)' : ''}\n`
+      }
+    }
+
+    if (text !== "") {
+      text += `${"-".repeat(30)}\nTotal: $${total.toFixed(2)}`.padStart(38, ' ')
+    }
+
+    navigator.clipboard.writeText(text);
+  }
+
+  return <>
+    {isOpen !== 'close' ? <div className="summary-backdrop" onClick={onBackdropClick} /> : null}
+    <div className={classNames("summary-drawer", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}>
+
+      <div className="header px-3 py-3" role='button' onClick={onHeaderClick}>
+        <h3 className="title m-0">Summary</h3>
+        <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
+        <div className="btn-group">
+          <button className="" onClick={onFullClick}>
+            {isOpen === 'full' ? <CollapseIcon /> : <ExpandIcon />}
+          </button>
+          <button className="" onClick={onMiniClick}>
+            <CloseIcon />
+          </button>
+        </div>
       </div>
-    </div>
 
-    <div id="summary-d" className="summary-table pb-2 px-3">
-      <table className="w-100">
-        <thead>
-          <tr>
-            <th className="text-start">Service</th>
-            <th className="text-start">Prices</th>
-          </tr>
-        </thead>
+      <div id="summary-d" className="summary-table pb-2 px-3">
+        <table className="w-100">
+          <thead>
+            <tr>
+              <th className="text-start">Service</th>
+              <th className="text-start">Prices</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {summaryDetails.map((sumDetail) => <Fragment key={sumDetail.section}>
-            {sumDetail.items.map((item, index) => <Fragment key={item.title}>
-              {index === 0 && <tr>
-                {<td>{sumDetail.section}</td>}
-                <td />
-              </tr>}
-              <tr>
-                <td className="fst-italic ps-5">+ {item.title}</td>
-                <td>${item.price.toFixed(2)}</td>    
-              </tr>
+          <tbody>
+            {summaryDetails.map((sumDetail) => <Fragment key={sumDetail.section}>
+              {sumDetail.items.map((item, index) => <Fragment key={item.title}>
+                {index === 0 && <tr>
+                  {<td>{sumDetail.section}</td>}
+                  <td />
+                </tr>}
+                <tr>
+                  <td className="fst-italic ps-5">+ {item.title}</td>
+                  <td>{item.price === 0 ? 'Included' : `$${item.price.toFixed(2)}`}</td>    
+                </tr>
+              </Fragment>)}
             </Fragment>)}
-          </Fragment>)}
-        </tbody>
+          </tbody>
 
-        <tfoot>
-          <tr>
-            <td className="text-start fw-bold fst-italic pt-4">Total</td>
-            <td className="text-start fw-bold fst-italic pt-4">${total.toFixed(2)}</td>
-          </tr>
-        </tfoot>
-      </table>
+          <tfoot>
+            <tr>
+              <td className="text-start fw-bold fst-italic pt-4">Total</td>
+              <td className="text-start fw-bold fst-italic pt-4">${total.toFixed(2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+        <button className="" onClick={onCopyClick} >Copy Table Details</button>
+      </div>
+    
     </div>
-   
-
-   
-</div>
+  </>
 }

@@ -1,4 +1,4 @@
-import { NailBaseId, NailDesignElemId, NailLengthId, NailShapeId } from "@/constants/design-constants";
+import { AddOnServiceId, NailBaseId, NailDesignElemId, NailLengthId, NailShapeId } from "@/constants/design-constants";
 import { ConsultationValue } from "@/types/other-types";
 import { useContext, useState } from "react";
 import { DesignContext } from "../contexts/DesignContext";
@@ -6,11 +6,11 @@ import { getAppliedBases, getAppliedDesignElementCounts } from "../service/helpe
 import { DesignSection } from "./DesignSection";
 import { Finger } from "./hand/Finger";
 import { Summary } from "./receipt/Summary";
-import { BaseMenu } from "./selection-menu/BaseMenu";
-import { ConsultationMenu } from "./selection-menu/ConsultationMenu";
+import { BaseOptions } from "./selection-menu/BaseOptions";
 import { DesignElementMenu } from "./selection-menu/DesignElementMenu";
-import { LengthMenu } from "./selection-menu/LengthMenu";
-import { ShapeMenu } from "./selection-menu/ShapeMenu";
+import { ShapeOptions } from "./selection-menu/ShapeOptions";
+import { ServiceOptions } from "./selection-menu/ServiceOptions";
+import { AddOnOptions } from "./selection-menu/AddOnOptions";
 
 
 export function DesignBuilder() {
@@ -46,6 +46,23 @@ export function DesignBuilder() {
     dispatch({type: 'SET_LENGTH', lengthId: length});
   }
 
+  const onAddOnToggle = (addOnId: AddOnServiceId, isChecked: boolean) => {
+    const newAddOns = isChecked 
+      ? [...consultData.addOns, addOnId] 
+      : consultData.addOns.filter(a => a !== addOnId);
+    setConsultData({addOns: newAddOns});
+  }
+
+  const onShapeChangeToggle = (isChecked: boolean) => {
+    console.log('shape change toggle', isChecked);
+    onAddOnToggle('shape_change', isChecked);
+  }
+
+  const onLengthChangeToggle = (isChecked: boolean) => {
+    console.log('length change toggle', isChecked);
+    onAddOnToggle('length_change', isChecked);
+  }
+
   const onDesignElemRemoval = () => {
     console.log('clear all');
     dispatch({type: 'REMOVE_ALL'});
@@ -77,39 +94,30 @@ export function DesignBuilder() {
         title='Consultation' 
         isExpanded={openSection === 'Consultation'}
         onHeaderClick={() => onHeaderClick('Consultation')}>
-          <ConsultationMenu 
+          <ServiceOptions 
             service={consultData.service}
-            startLen={consultData.startLen}
-            startShape={consultData.startShape}
-            manicureApplied={consultData.isManiApplied}
-            designRemoval={consultData.isDesignRemoval}
-            enhancementRemoval={consultData.isEnhancementRemoval}
             dispatch={dispatch}
-            onConsultChange={(v: Partial<ConsultationValue>) => setConsultData(v) }  />
-      </DesignSection>
-
-      <DesignSection 
-        title='Foundation' 
-        isExpanded={openSection === 'Foundation'}
-        onHeaderClick={() => onHeaderClick('Foundation')}>
-          <BaseMenu 
+            onConsultChange={(v: Partial<ConsultationValue>) => setConsultData(v) } />
+          
+          <ShapeOptions 
+            selectedShape={nailDesign.left.shape} 
+            selectedLength={nailDesign.left.length}
+            consultData={consultData}
+            onLengthSelection={onLengthSelection}
+            onShapeSelection={onShapeSelection} 
+            onShapeChangeToggle={onShapeChangeToggle}
+            onLengthChangeToggle={onLengthChangeToggle}
+            />
+          
+          <BaseOptions 
             selected={getAppliedBases(nailDesign)} 
             consultData={consultData}
             onSelection={onBaseSelection} />
-        
-          <br/>
-        
-          <ShapeMenu 
-            selected={nailDesign.left.shape} 
+
+          <AddOnOptions
             consultData={consultData}
-            onSelection={onShapeSelection} />
-          
-          <br/>
-          
-          <LengthMenu 
-            consultData={consultData}
-            selected={nailDesign.left.length} 
-            onSelection={onLengthSelection} />
+            onAddOnToggle={onAddOnToggle} />
+     
       </DesignSection>
 
       <DesignSection 
@@ -120,7 +128,7 @@ export function DesignBuilder() {
             hand={nailDesign.left}
             selectedCountMap={getAppliedDesignElementCounts(nailDesign)} 
             onSelection={onDesignElementCountChange} 
-            onClear={onDesignElemRemoval}/>
+            onReset={onDesignElemRemoval}/>
       </DesignSection>
     </div>
 
