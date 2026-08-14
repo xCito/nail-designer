@@ -25,7 +25,7 @@ export function DesignBuilder() {
 
   const onHeaderClick = (section: string) => {
     if (openSection === section) {
-      setOpenSection(null);
+      // setOpenSection(null);
     } else {
       setOpenSection(section);
     }

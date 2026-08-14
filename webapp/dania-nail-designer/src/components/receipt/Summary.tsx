@@ -316,7 +316,7 @@ export function Summary({ nailDesign, consultionData }: Props) {
       </div>
 
       <div id="summary-d" className="summary-table pb-2 px-3">
-        <table className="w-100">
+        <table className="w-100 mb-3">
           <thead>
             <tr>
               <th className="text-start">Service</th>
@@ -346,7 +346,7 @@ export function Summary({ nailDesign, consultionData }: Props) {
             </tr>
           </tfoot>
         </table>
-        <button className="" onClick={onCopyClick} >Copy Table Details</button>
+        <button className="copy-btn" onClick={onCopyClick} >Copy Table Details</button>
       </div>
     
     </div>
