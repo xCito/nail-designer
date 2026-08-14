@@ -1,32 +1,59 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
 
+  --dark-bg-color: #10171b;
+  --dark-text-color: #dbdbdb;
+  --dark-container-bg-color: #1a272d;
+  --dark-accent-color: #9d69a1;
+  --dark-main-color: #648ab6;
+  --dark-secondary-color: #6a9fdb;
 
-  /* color-scheme: light dark; */
-  /* color: rgba(255, 255, 255, 0.87); */
-  /* background-color: #242424; */
+  --light-bg-color: #f3fdff;
+  --light-text-color: #000000;
+  --light-container-bg-color: #e3f0f9;
+  --light-accent-color: #d8a7ea;
+  --light-main-color: #78bdea;
+  --light-secondary-color: #c8e9fd;
 
-  /* font-synthesis: none; */
-  /* text-rendering: optimizeLegibility; */
-  /* -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
+  --bg-color: light-dark(var(--light-bg-color), var(--dark-bg-color));
+  --text-color: light-dark(var(--light-text-color), var(--dark-text-color));
+  --text-invert-color: contrast-color(var(--text-color));
+  --container-bg-color: light-dark(var(--light-container-bg-color), var(--dark-container-bg-color));
+  --accent-color: light-dark(var(--light-accent-color), var(--dark-accent-color));
+  --main-color: light-dark(var(--light-main-color), var(--dark-main-color));
+  --secondary-color: light-dark(var(--light-secondary-color), var(--dark-secondary-color));
+
+  --btn-color-light: hsl(from var(--light-main-color) h 45% 70%);
+  --btn-color-dark: hsl(from var(--dark-main-color) h 42% 28%);
+  --btn-color: light-dark(var(--btn-color-light), var(--btn-color-dark));
+
+  --btn-hover-color-light: hsl(from var(--light-accent-color) h 30% 60%);
+  --btn-hover-color-dark: hsl(from var(--dark-accent-color) h 36% 42%);
+  --btn-hover-color: light-dark(var(--btn-hover-color-light), var(--btn-hover-color-dark));
+
+  --btn-active-color-light: hsl(from var(--light-main-color) h 80% 70%);
+  --btn-active-color-dark: hsl(from var(--dark-main-color) h 45% 46%);
+  --btn-active-color: light-dark(var(--btn-active-color-light), var(--btn-active-color-dark));
+
+  --btn-disabled-color-light: hsl(from var(--light-main-color) h 5% 80%);
+  --btn-disabled-color-dark: hsl(from var(--dark-main-color) h 10% 24%);
+  --btn-disabled-color: light-dark(var(--btn-disabled-color-light), var(--btn-disabled-color-dark));
+
+  --text-disabled-color-light: hsl(from var(--light-text-color) h 0% 60%);
+  --text-disabled-color-dark: hsl(from var(--dark-text-color) h 0% 62%);
+  --text-disabled-color: light-dark(var(--text-disabled-color-light), var(--text-disabled-color-dark));
+
+  --third-color-light: hsl(from var(--light-main-color) h 70% 90%);
+  --third-color-dark: hsl(from var(--dark-main-color) h 30% 32%);
+  --third-color: light-dark(var(--third-color-light), var(--third-color-dark));
+  
+
+  --skin-color: light-dark(#e6bc98, #ae9178);
+  --nail-bed-color: light-dark(#f3d4da, #d0aeb5);
+
 }
-
-/* a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-} */
-
-/* a:hover {
-  color: #535bf2;
-} */
 
 body {
   margin: 0;
-  /* display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh; */
-
 }

@@ -2,15 +2,15 @@
   box-sizing: border-box;
 }
 
-[data-theme="1"] {
+/* [data-theme="1"] {
   --main-color: #e484f9;
-  --second-color: #990751;
+  --secondary-color: #990751;
   --accent-color: #f5345a;
   --text-color: #f3d4fd;
-  --text-dark-color: #000;
+  --text-invert-color: #000;
   --bg-color: #17011e;
   
-  --bg-main-color: hsl(from var(--main-color) h 40% 15%);
+  --container-bg-color: hsl(from var(--main-color) h 40% 15%);
   --third-color: hsl(from var(--main-color) h 70% 90%);
   
   --btn-color: hsl(from var(--main-color) h 30% 50%);
@@ -22,13 +22,13 @@
 
 [data-theme="2"] {
   --main-color: #95f50d;
-  --second-color: #7ff97a;
+  --secondary-color: #7ff97a;
   --accent-color: #51f860;
   --text-color: #152001;
-  --text-dark-color: #fff;
+  --text-invert-color: #fff;
   --bg-color: #fafef3;
   
-  --bg-main-color: hsl(from var(--main-color) h s 80%);
+  --container-bg-color: hsl(from var(--main-color) h s 80%);
   --third-color: hsl(from var(--main-color) h 70% 90%);
   
   --btn-color: hsl(from var(--main-color) h 30% 50%);
@@ -41,12 +41,12 @@
 [data-theme="3"] {
   --bg-color: #020303;
   --main-color: #639787;
-  --second-color: #34564c;
+  --secondary-color: #34564c;
   --accent-color: #3ee1b2;
   --text-color: #f0f4f3;
-  --text-dark-color: #020303;
+  --text-invert-color: #020303;
   
-  --bg-main-color: hsl(from var(--main-color) h 20% 20%);
+  --container-bg-color: hsl(from var(--main-color) h 20% 20%);
   --third-color: hsl(from var(--main-color) h 70% 90%);
   
   --btn-color: hsl(from var(--main-color) h 30% 50%);
@@ -60,7 +60,7 @@
   --bg-color: #FFF1DF;
 
   --main-color: #4f3213;
-  --second-color: #92663a;
+  --secondary-color: #92663a;
   --third-color: #E8CDB2;
 
   --accent-color: #ff5f79;
@@ -72,7 +72,7 @@
   --text-color: white;
   --text-disabled-color: #666;
 
-}
+} */
 
 html, body, #root {
   height: 100%;
@@ -96,7 +96,7 @@ html, body, #root {
 
 .design-section {
     color: var(--text-color);
-    background-color: var(--bg-main-color);
+    background-color: var(--container-bg-color);
     border-radius: 10px;
 
     min-height: 50px;
@@ -130,6 +130,8 @@ html, body, #root {
 
 .section-header {
     height: 50px;
+    background-color: var(--main-color);
+    color: var(--text-invert-color);
 }
 
 .fancy-font {
@@ -184,6 +186,18 @@ html, body, #root {
 .finger {
   transform: scale(1) translate(0px, 0px) rotateZ(0deg);
   height: 80px;
+
+  .skin {
+    fill: var(--skin-color);
+  }
+  .nail {
+    fill: var(--nail-bed-color);
+  }
+
+  .nail-ext {
+    -webkit-transition: d 0.3s;
+    transition: d 0.3s;
+  }
 }
 
 
@@ -239,7 +253,7 @@ input[type="text"] {
   padding: .5em;
   border-radius: 8px;
   background-color: white;
-  outline-color:  var(--second-color);
+  outline-color:  var(--secondary-color);
 }
 
 button {
@@ -258,7 +272,7 @@ button {
   }
   &:active, &.active {
     background-color: var(--btn-active-color);
-    color: var(--text-dark-color);
+    color: var(--text-invert-color);
   }
 
   &:disabled {
@@ -268,7 +282,7 @@ button {
   }
 
   &.outline {
-    color: var(--text-dark-color);
+    color: var(--text-invert-color);
     background-color: var(--bg-color);
     border: 2px solid var(--bg-color);
   }
@@ -307,9 +321,9 @@ button {
   box-sizing: border-box;
   padding: 0.65rem 0.75rem;
   border-radius: 8px;
-  background-color: var(--second-color);
+  background-color: var(--secondary-color);
   color: var(--text-color);
-  border: 1px solid var(--second-color);
+  border: 1px solid var(--secondary-color);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -325,7 +339,7 @@ button {
   margin: 0 0 0.35rem;
   font-size: 0.9rem;
   font-weight: 600;
-  color: white;
+  color: var(--text-color);
 }
 
 .info-tooltip p {
@@ -365,7 +379,7 @@ input[type="checkbox"] {
 }
 
 fieldset {
-  border: 1px solid var(--second-color);
+  border: 1px solid var(--secondary-color);
   padding: 0.5em;
   border-radius: 8px;
   margin-bottom: 1em;
@@ -452,7 +466,7 @@ fieldset {
     border: 2px solid var(--main-color);
 
     &.active .option-header {
-      background-color: var(--second-color);
+      background-color: var(--secondary-color);
       color: var(--text-color);
     }
 
@@ -467,10 +481,14 @@ fieldset {
     }
     &.expanded .option-header {
       background-color: var(--main-color);
-      color: var(--text-dark-color);
+      color: var(--text-color);
     }
     &.expanded .option-buttons {
       height: calc(var(--item-size) + var(--gap-r-size) + var(--border-width) * 2);
+    }
+
+    &:not(&.expanded) .option-buttons {
+          padding: 0;
     }
     
     .option-buttons {
@@ -482,7 +500,9 @@ fieldset {
       overflow: hidden;
       transition: height 0.1s;
       background-color: var(--third-color);
-      color: var(--text-dark-color);
+      color: var(--text-color);
+      gap: 2px;
+      padding-top: 2px;
       
       
       button {
@@ -493,6 +513,7 @@ fieldset {
         align-items: center;
         flex: 1 0 30%;
         border: none;
+        background-color: var(--btn-color);
       }
       button:hover {
         background-color: var(--btn-hover-color);
@@ -512,7 +533,7 @@ fieldset {
       right: 5px;
     }
     .option-count {
-      color: var(--text-dark-color);
+      color: var(--text-invert-color);
       background-color: var(--main-color);
       font-weight: bold;
       font-size: 0.85em;
@@ -586,14 +607,14 @@ fieldset {
     height: 100%;
     color: var(--text-color);
     box-shadow: 0 0 100vh 100vh rgba(0,0,0,0.3);
-    background-color: var(--bg-main-color);
+    background-color: var(--container-bg-color);
     transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
 
 
     .header {
       background-color: var(--main-color);
       border-radius: 10px 10px 0 0;
-      color: var(--text-dark-color);
+      color: var(--text-invert-color);
     }
     .title {
       left: 1em;
@@ -622,7 +643,8 @@ fieldset {
         width: 44px;
         border-radius: 8px;
         margin-left: 4px;
-        color: var(--text-dark-color);
+        color: var(--text-color);
+        background-color: var(--btn-color);
       }
     }
   }
@@ -631,13 +653,20 @@ fieldset {
     display: none;
   }
 
+  .copy-btn {
+    color: var(--text-color);
+    display: block;
+    margin: 0 auto;
+    background-color: var(--accent-color);
+  }
+
   .header {
     flex: 0 0;
     cursor: pointer;
     position: relative;
     color: var(--text-color); 
     border-radius: 10px;
-    background-color: var(--bg-main-color);
+    background-color: var(--container-bg-color);
     transition: color 0.4s 0.1s, background-color 0.4s 0.1s;
   }
   
@@ -673,7 +702,3 @@ fieldset {
   }
 }
 
-.nail-svg {
-  -webkit-transition: d 0.3s;
-  transition: d 0.3s;
-}
