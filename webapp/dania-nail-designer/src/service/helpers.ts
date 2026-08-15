@@ -66,3 +66,77 @@ export function getAppliedDesignElementCounts(nailDesign: Design): Map<NailDesig
 export function getByType<T extends { "type": string }>(list: T[], t: string): T[] {
   return list.filter(elem => elem.type === t);
 }
+
+function tokenizePathData(path: string): Array<{ command: string; values: number[] }> {
+  const tokens = path.trim().match(/[A-Za-z]|-?\d*\.?\d+(?:e[-+]?\d+)?/g) ?? [];
+  const segments: Array<{ command: string; values: number[] }> = [];
+  let currentCommand: string | null = null;
+  let currentValues: number[] = [];
+
+  for (const token of tokens) {
+    if (/[A-Za-z]/.test(token)) {
+      if (currentCommand) {
+        segments.push({ command: currentCommand, values: currentValues });
+      }
+      currentCommand = token;
+      currentValues = [];
+      continue;
+    }
+
+    if (currentCommand) {
+      currentValues.push(Number(token));
+    }
+  }
+
+  if (currentCommand) {
+    segments.push({ command: currentCommand, values: currentValues });
+  }
+
+  return segments;
+}
+
+function formatPathNumber(value: number): string {
+  const rounded = Number(value.toFixed(4));
+  return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1');
+}
+
+export function interpolateSvgPath(from: string, to: string, amount: number): string {
+  const progress = Math.min(1, Math.max(0, amount));
+
+  if (!from) return to;
+  if (!to) return from;
+
+  const startSegments = tokenizePathData(from);
+  const endSegments = tokenizePathData(to);
+
+  if (!startSegments.length || !endSegments.length) {
+    return progress >= 0.5 ? to : from;
+  }
+
+  const segmentCount = Math.max(startSegments.length, endSegments.length);
+  const rendered: string[] = [];
+
+  for (let index = 0; index < segmentCount; index += 1) {
+    const currentSegment = startSegments[index];
+    const targetSegment = endSegments[index];
+
+    if (!currentSegment || !targetSegment) {
+      rendered.push(targetSegment ? `${targetSegment.command} ${targetSegment.values.map(formatPathNumber).join(' ')}` : `${currentSegment.command} ${currentSegment.values.map(formatPathNumber).join(' ')}`);
+      continue;
+    }
+
+    if (currentSegment.command !== targetSegment.command || currentSegment.values.length !== targetSegment.values.length) {
+      rendered.push(`${targetSegment.command} ${targetSegment.values.map(formatPathNumber).join(' ')}`);
+      continue;
+    }
+
+    const interpolatedValues = currentSegment.values.map((value, idx) => {
+      const targetValue = targetSegment.values[idx];
+      return value + (targetValue - value) * progress;
+    });
+
+    rendered.push(`${currentSegment.command} ${interpolatedValues.map(formatPathNumber).join(' ')}`);
+  }
+
+  return rendered.join(' ');
+}
