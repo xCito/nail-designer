@@ -33,14 +33,14 @@ export function AddOnOptions(props: Props) {
         
         {addOnOptions.map(option => {
           const isChecked = selectedAddOns.includes(option.id);
-          return <div className="d-flex align-items-center ms-2 mb-2" key={option.id}>
+          return <div className="d-flex align-items-center ms-2 mb-1" key={option.id}>
             <input type="checkbox"
               id={option.id}
               name={option.id}
               checked={isChecked}
               onChange={(e) => onAddOnToggle(option.id, e.target.checked)}
             />
-            <label className="ms-2" htmlFor={option.id}>{option.value.name}</label>
+            <label className="ms-2 flex-grow-1 py-2" htmlFor={option.id}>{option.value.name}</label>
           </div>
         })}
       {/* </fieldset> */}
