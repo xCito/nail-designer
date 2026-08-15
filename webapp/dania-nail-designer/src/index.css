@@ -1,6 +1,6 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color-scheme: light dark;
+  color-scheme: light;
 
   --dark-bg-color: #10171b;
   --dark-text-color: #dbdbdb;
@@ -16,44 +16,65 @@
   --light-main-color: #78bdea;
   --light-secondary-color: #c8e9fd;
 
-  --bg-color: light-dark(var(--light-bg-color), var(--dark-bg-color));
-  --text-color: light-dark(var(--light-text-color), var(--dark-text-color));
-  --text-invert-color: contrast-color(var(--text-color));
-  --container-bg-color: light-dark(var(--light-container-bg-color), var(--dark-container-bg-color));
-  --accent-color: light-dark(var(--light-accent-color), var(--dark-accent-color));
-  --main-color: light-dark(var(--light-main-color), var(--dark-main-color));
-  --secondary-color: light-dark(var(--light-secondary-color), var(--dark-secondary-color));
+  --bg-color: var(--light-bg-color);
+  --text-color: var(--light-text-color);
+  --text-invert-color: #ffffff;
+  --container-bg-color: var(--light-container-bg-color);
+  --accent-color: var(--light-accent-color);
+  --main-color: var(--light-main-color);
+  --secondary-color: var(--light-secondary-color);
 
   --btn-color-light: hsl(from var(--light-main-color) h 45% 70%);
   --btn-color-dark: hsl(from var(--dark-main-color) h 42% 28%);
-  --btn-color: light-dark(var(--btn-color-light), var(--btn-color-dark));
+  --btn-color: var(--btn-color-light);
 
   --btn-hover-color-light: hsl(from var(--light-accent-color) h 30% 60%);
   --btn-hover-color-dark: hsl(from var(--dark-accent-color) h 36% 42%);
-  --btn-hover-color: light-dark(var(--btn-hover-color-light), var(--btn-hover-color-dark));
+  --btn-hover-color: var(--btn-hover-color-light);
 
   --btn-active-color-light: hsl(from var(--light-main-color) h 80% 70%);
   --btn-active-color-dark: hsl(from var(--dark-main-color) h 45% 46%);
-  --btn-active-color: light-dark(var(--btn-active-color-light), var(--btn-active-color-dark));
+  --btn-active-color: var(--btn-active-color-light);
 
   --btn-disabled-color-light: hsl(from var(--light-main-color) h 5% 80%);
   --btn-disabled-color-dark: hsl(from var(--dark-main-color) h 10% 24%);
-  --btn-disabled-color: light-dark(var(--btn-disabled-color-light), var(--btn-disabled-color-dark));
+  --btn-disabled-color: var(--btn-disabled-color-light);
 
   --text-disabled-color-light: hsl(from var(--light-text-color) h 0% 60%);
   --text-disabled-color-dark: hsl(from var(--dark-text-color) h 0% 62%);
-  --text-disabled-color: light-dark(var(--text-disabled-color-light), var(--text-disabled-color-dark));
+  --text-disabled-color: var(--text-disabled-color-light);
 
   --third-color-light: hsl(from var(--light-main-color) h 70% 90%);
   --third-color-dark: hsl(from var(--dark-main-color) h 30% 32%);
-  --third-color: light-dark(var(--third-color-light), var(--third-color-dark));
-  
+  --third-color: var(--third-color-light);
 
-  --skin-color: light-dark(#e6bc98, #ae9178);
-  --nail-bed-color: light-dark(#f3d4da, #d0aeb5);
+  --skin-color: #e6bc98;
+  --nail-bed-color: #f3d4da;
+}
 
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg-color: var(--dark-bg-color);
+  --text-color: var(--dark-text-color);
+  --text-invert-color: #10171b;
+  --container-bg-color: var(--dark-container-bg-color);
+  --accent-color: var(--dark-accent-color);
+  --main-color: var(--dark-main-color);
+  --secondary-color: var(--dark-secondary-color);
+  --btn-color: var(--btn-color-dark);
+  --btn-hover-color: var(--btn-hover-color-dark);
+  --btn-active-color: var(--btn-active-color-dark);
+  --btn-disabled-color: var(--btn-disabled-color-dark);
+  --text-disabled-color: var(--text-disabled-color-dark);
+  --third-color: var(--third-color-dark);
+  --skin-color: #ae9178;
+  --nail-bed-color: #d0aeb5;
 }
 
 body {
   margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

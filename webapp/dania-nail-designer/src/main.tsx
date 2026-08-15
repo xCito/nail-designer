@@ -4,13 +4,16 @@ import 'bootstrap/dist/css/bootstrap-utilities.min.css';
 import './index.css'
 import '@/styles/style.css';
 import { DesignProvider } from './contexts/DesignContext.tsx';
+import { ThemeProvider } from './contexts/ThemeContext.tsx';
 import { DesignBuilder } from './components/DesignBuilder.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <DesignProvider>
-      <DesignBuilder />
-    </DesignProvider>
+    <ThemeProvider>
+      <DesignProvider>
+        <DesignBuilder />
+      </DesignProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 )
 
