@@ -96,6 +96,7 @@ html, body, #root {
   background-color: var(--container-bg-color);
   padding: 3px;
   cursor: pointer;
+  -webkit-transition: background-color 0.2s ease, border-color 0.2s ease;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -123,6 +124,7 @@ html, body, #root {
   border-radius: 50%;
   background-color: var(--main-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -webkit-transition: transform 0.2s ease, background-color 0.2s ease;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
@@ -162,6 +164,7 @@ html, body, #root {
     height: 50px;
     flex-grow: 0;
     flex-basis: 0;
+    -webkit-transition: all 0.3s;
     transition: all 0.3s;
     overflow: hidden;
     /* border: 1.5px solid var(--main-color); */
@@ -170,6 +173,7 @@ html, body, #root {
 .design-section.open {
     height: 100%;
     flex-grow: 1;
+    -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 
@@ -211,6 +215,7 @@ html, body, #root {
     width: 100%;
     border-radius: 8px;
 
+    -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 .base-option.disabled {
@@ -224,6 +229,7 @@ html, body, #root {
     top: 0;
     /* background-color: var(--bg-color); */
     /* box-shadow: 0px 0px 15px 10px antiquewhite; */
+    -webkit-transition: height 0.3s;
     transition: height 0.3s;
     height: 40px;
 }
@@ -263,17 +269,20 @@ html, body, #root {
 .shape-menu {
   display: grid;
   grid-template-rows: min-content 1%;
+  -webkit-transition: grid-template-rows 1s;
   transition: grid-template-rows 1s;
   overflow-x: hidden;
 }
 
 .shape-menu.selected {
   grid-template-rows: min-content calc(100% - 335px);
+  -webkit-transition: grid-template-rows 1s;
   transition: grid-template-rows 1s;
 }
 
 .shape-menu.selected .base-option {
     height: 40px;
+    -webkit-transition: height 0.3s;
     transition: height 0.3s;
 }
 .shape-list {
@@ -385,6 +394,7 @@ button {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  -webkit-transition: opacity 0.2s ease, visibility 0.2s ease;
   transition: opacity 0.2s ease, visibility 0.2s ease;
   z-index: 2000;
   width: min(240px, calc(100vw - 1.5rem));
@@ -440,6 +450,7 @@ input[type="range"] {
   background: var(--accent-color);
   outline: none;
   opacity: 0.7;
+  -webkit-transition: opacity .2s;
   transition: opacity .2s;
 }
 
@@ -569,6 +580,7 @@ fieldset {
       position: relative;
       height: 0;
       overflow: hidden;
+      -webkit-transition: height 0.1s;
       transition: height 0.1s;
       background-color: var(--third-color);
       color: var(--text-color);
@@ -621,6 +633,7 @@ fieldset {
       height: 25px;
       width: 25px;
 
+      -webkit-transition: top 300ms, right 300ms, background-color 0.3s, color 0.3s;
       transition: top 300ms, right 300ms, background-color 0.3s, color 0.3s;
     }
     
@@ -667,6 +680,7 @@ fieldset {
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
   background-color: var(--bg-color);
   
+  -webkit-transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
   transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
   transform: translateX(-50%);
  
@@ -679,6 +693,7 @@ fieldset {
     color: var(--text-color);
     box-shadow: 0 0 100vh 100vh rgba(0,0,0,0.3);
     background-color: var(--container-bg-color);
+    -webkit-transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
     transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
 
 
@@ -690,14 +705,17 @@ fieldset {
     .title {
       left: 1em;
       opacity: 1;
+      -webkit-transition: left -0.3 0.2s, opacity 0.3s 0.2s;
       transition: left -0.3 0.2s, opacity 0.3s 0.2s;
     }
     .price {
       opacity: 0;
+      -webkit-transition: none;
       transition: none;
     }
     .summary-table {
       height: 100%;
+      -webkit-transition: height 0.3s, flex-grow 0.3s;
       transition: height 0.3s, flex-grow 0.3s;
       overflow-y: auto;
       flex-grow: 1;
@@ -738,6 +756,7 @@ fieldset {
     color: var(--text-color); 
     border-radius: 10px;
     background-color: var(--container-bg-color);
+    -webkit-transition: color 0.4s 0.1s, background-color 0.4s 0.1s;
     transition: color 0.4s 0.1s, background-color 0.4s 0.1s;
   }
   
@@ -745,14 +764,17 @@ fieldset {
     position: absolute; 
     left: -1em;
     opacity: 0;
+    -webkit-transition: left 0.3s 0.2s;
     transition: left 0.3s 0.2s;
   }
   .price {
     opacity: 1;
+    -webkit-transition: opacity 0.3s 0.5s;
     transition: opacity 0.3s 0.5s;
   }
 
   .summary-table {
+    -webkit-transition: height 0.3s, flex-grow 0.3;
     transition: height 0.3s, flex-grow 0.3;
     height: 0px;
     overflow: hidden;
