@@ -1,12 +1,15 @@
 import { getAddOnServicesAsList, getAppliedDesignElementCounts, getNailDesignElementsAsList } from "@/service/helpers";
 import { ConsultationValue } from "@/types/other-types";
 import classNames from "classnames";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { ComplexityScore, Design, NailBaseId, NailBases, NailDesignElemId, NailLengthId, NailLengths, NailServiceId, NailServices, NailShapeId } from "../../constants/design-constants";
 import { AddOnPrices, BASE_COLOR_PRICE, DESIGN_REMOVAL_PRICE, NAIL_REMOVAL_PRICE, NailServiceRates, OrnamentPrices } from "../../constants/pricing-constants";
 import { ExpandIcon } from "../ExpandIcon";
 import { CloseIcon } from "../CloseIcon";
 import { CollapseIcon } from "../CollapseIcon";
+
+const SWIPE_DRAG_THRESHOLD = 90;
+type DrawerState = "close" | "open" | "full";
 
 
 function getDesignPrice(designId: NailDesignElemId, count: number): number {
@@ -118,7 +121,7 @@ function getSummaryDetails(args: DetailArgs) {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .forEach(([id, count]) => {
       const design = getDesignById(id).value;
-      const name = `${design.name} x${count}`;
+      const name = design.type !== 'base' ? `${design.name} x${count}` : design.name;
       const price = getDesignPrice(id, count);
       summaryDetails[DESIGN_INDEX].items.push({title: name, price: price});
     });
@@ -219,7 +222,9 @@ interface Props {
 }
 export function Summary({ nailDesign, consultionData }: Props) {
   const {base, length, shape} = nailDesign.left;
-  const [isOpen, setOpen] = useState<'close' | 'open' | 'full'>('close');
+  const [isOpen, setOpen] = useState<DrawerState>('close');
+  const [dragOffset, setDragOffset] = useState(0);
+  const dragState = useRef({ active: false, startY: 0, currentState: 'close' as DrawerState });
 
   const summaryDetails = getSummaryDetails({
     consult: consultionData, 
@@ -233,6 +238,22 @@ export function Summary({ nailDesign, consultionData }: Props) {
   const total = summaryDetails.reduce((sum, section) => {
     return sum + section.items.reduce((subTotal, item) => subTotal + item.price, 0);
   }, 0);
+
+  const resolveDragState = (currentState: DrawerState, deltaY: number): DrawerState => {
+    if (currentState === 'close') {
+      return deltaY < -SWIPE_DRAG_THRESHOLD ? 'open' : 'close';
+    }
+
+    if (currentState === 'open') {
+      if (deltaY > SWIPE_DRAG_THRESHOLD) return 'close';
+      if (deltaY < -SWIPE_DRAG_THRESHOLD) return 'full';
+      return 'open';
+    }
+
+    if (deltaY > SWIPE_DRAG_THRESHOLD) return 'open';
+    if (deltaY < -SWIPE_DRAG_THRESHOLD) return 'full';
+    return 'full';
+  };
 
   useEffect(() => {
     const clickHandler = function (e: MouseEvent) {
@@ -254,7 +275,7 @@ export function Summary({ nailDesign, consultionData }: Props) {
       document.removeEventListener('click', clickHandler);
     }
   }, [isOpen]);
- 
+
   const onHeaderClick = () => {
     if (isOpen === 'close')
       setOpen('open');
@@ -274,6 +295,63 @@ export function Summary({ nailDesign, consultionData }: Props) {
   const onBackdropClick = () => {
     setOpen('close');
   }
+
+  const getDrawerHeight = (state: DrawerState) => {
+    if (typeof window === 'undefined') return 56;
+
+    const viewportHeight = window.innerHeight;
+    const fullHeight = Math.min(viewportHeight - 110, 680);
+
+    switch (state) {
+      case 'close': return 56;
+      case 'open': return Math.min(Math.max(viewportHeight * 0.42, 220), 360);
+      case 'full': return Math.max(Math.min(fullHeight, viewportHeight * 0.8), 360);
+      default: return 56;
+    }
+  };
+
+  const getVisualHeight = () => {
+    if (!dragState.current.active) return getDrawerHeight(isOpen);
+
+    const baseHeight = getDrawerHeight(dragState.current.currentState);
+    return baseHeight - dragOffset;
+  };
+
+  const startDrag = (clientY: number) => {
+    dragState.current = {
+      active: true,
+      startY: clientY,
+      currentState: isOpen,
+    };
+    setDragOffset(0);
+  };
+
+  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    startDrag(event.clientY);
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
+  };
+
+  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return;
+
+    const deltaY = event.clientY - dragState.current.startY;
+
+    if (Math.abs(deltaY) > 8) {
+      setDragOffset(deltaY);
+      event.preventDefault();
+    }
+  };
+
+  const onPointerUp = () => {
+    if (!dragState.current.active) return;
+
+    const nextState = resolveDragState(dragState.current.currentState, dragOffset);
+    setOpen(nextState);
+    setDragOffset(0);
+    dragState.current.active = false;
+  };
 
   const onCopyClick = () => {
     let text = "";
@@ -300,9 +378,24 @@ export function Summary({ nailDesign, consultionData }: Props) {
 
   return <>
     {isOpen !== 'close' ? <div className="summary-backdrop" onClick={onBackdropClick} /> : null}
-    <div className={classNames("summary-drawer", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}>
+    <div
+      className={classNames("summary-drawer", {'open': isOpen === 'open'}, {'open full': isOpen === 'full'})}
+      style={{
+        height: `${getVisualHeight()}px`,
+        transition: dragState.current.active ? 'none' : undefined,
+      }}
+    >
 
-      <div className="header px-3 py-3" role='button' onClick={onHeaderClick}>
+      <div
+        className="header px-3 py-3"
+        role='button'
+        onClick={onHeaderClick}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
         <h3 className="title m-0">Summary</h3>
         <h3 className="text-center price m-0">Total ${total.toFixed(2)}</h3>
         <div className="btn-group">

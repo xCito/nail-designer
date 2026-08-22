@@ -107,7 +107,7 @@ function DesignOption(props: OptionProps) {
   const { label, isSelected, count, onSetCount, designType, isExpanded, setExpanded } = props;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const MIN = 0;
-  const MAX = designType === 'base' ? 1 : 10;
+  const MAX = 10;
   const onLabelClick = () => setExpanded(!isExpanded);
 
   const onSubtractClick = () => onSetCount(count - 1);
@@ -146,12 +146,19 @@ function DesignOption(props: OptionProps) {
     <span className="option-header w-100" onClick={onLabelClick}>{label}</span>
 
     <div className="option-buttons">
-      <button disabled={count === MIN} onClick={onSubtractClick}>-</button>
-      {count === MIN && <button onClick={onAllClick}>All</button>}
-      {count > MIN && <button onClick={onRemoveClick}>None</button>}
-      <button disabled={count === MAX} onClick={onAddClick}>+</button>
+      {designType !== 'base' && <>
+        <button disabled={count === MIN} onClick={onSubtractClick}>-</button>
+        {count === MIN && <button onClick={onAllClick}>All</button>}
+        {count > MIN && <button onClick={onRemoveClick}>None</button>}
+        <button disabled={count === MAX} onClick={onAddClick}>+</button>
+      </>}
+      {designType === 'base' && <>
+        <button disabled={count === MAX} onClick={onAllClick}>On</button>
+        <button disabled={count === MIN} onClick={onRemoveClick}>Off</button>
+      </>}
     </div>
 
-    {count > MIN && <span className="option-count">{count}</span>}
+    {designType !== 'base' && count > MIN &&  <span className="option-count">{count}</span>}
+    {designType === 'base' && count === MAX && <span className="option-count toggle">ON</span>}
   </div>
 }

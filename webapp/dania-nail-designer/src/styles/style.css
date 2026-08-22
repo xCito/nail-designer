@@ -635,6 +635,11 @@ fieldset {
       -webkit-transition: top 300ms, right 300ms, background-color 0.3s, color 0.3s;
       transition: top 300ms, right 300ms, background-color 0.3s, color 0.3s;
     }
+
+    .option-count.toggle {
+      background-color: var(--accent-color);
+      color: var(--text-invert-color);
+    }
     
     .option-header {
       display: flex;
@@ -657,6 +662,8 @@ fieldset {
   inset: 0;
   z-index: 1500;
   background-color: rgba(0, 0, 0, 0.3);
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 .summary-drawer {
@@ -669,9 +676,12 @@ fieldset {
   
   max-width: 1200px;
   width: calc(500px - 2.5em);
-  max-height: 56px;
+  max-height: calc(100vh - 1em);
   height: 56px;
   overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
   border: 1px solid var(--main-color);
   border-radius: 10px;
@@ -679,8 +689,8 @@ fieldset {
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
   background-color: var(--bg-color);
   
-  -webkit-transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
-  transition: max-height 0.4s, height 0.4s, box-shadow 0.4s, background-color 0.8s 0.2s;
+  -webkit-transition: height 0.25s ease, box-shadow 0.4s, background-color 0.8s 0.2s;
+  transition: height 0.1s ease, box-shadow 0.4s, background-color 0.8s 0.2s;
   transform: translateX(-50%);
  
   &.open { 
@@ -704,18 +714,18 @@ fieldset {
     .title {
       left: 1em;
       opacity: 1;
+      pointer-events: none;
       -webkit-transition: left -0.3 0.2s, opacity 0.3s 0.2s;
       transition: left -0.3 0.2s, opacity 0.3s 0.2s;
     }
     .price {
       opacity: 0;
+      pointer-events: none;
       -webkit-transition: none;
       transition: none;
     }
     .summary-table {
       height: 100%;
-      -webkit-transition: height 0.3s, flex-grow 0.3s;
-      transition: height 0.3s, flex-grow 0.3s;
       overflow-y: auto;
       flex-grow: 1;
     } 
@@ -750,11 +760,15 @@ fieldset {
 
   .header {
     flex: 0 0;
-    cursor: pointer;
+    cursor: grab;
     position: relative;
     color: var(--text-color); 
     border-radius: 10px;
     background-color: var(--container-bg-color);
+    touch-action: none;
+    overscroll-behavior: contain;
+    -webkit-user-select: none;
+    user-select: none;
     -webkit-transition: color 0.4s 0.1s, background-color 0.4s 0.1s;
     transition: color 0.4s 0.1s, background-color 0.4s 0.1s;
   }
@@ -763,18 +777,26 @@ fieldset {
     position: absolute; 
     left: -1em;
     opacity: 0;
+    pointer-events: none;
     -webkit-transition: left 0.3s 0.2s;
     transition: left 0.3s 0.2s;
   }
   .price {
     opacity: 1;
+    pointer-events: none;
     -webkit-transition: opacity 0.3s 0.5s;
     transition: opacity 0.3s 0.5s;
   }
 
+  .btn-group {
+    pointer-events: auto;
+  }
+
+  .btn-group button {
+    pointer-events: auto;
+  }
+
   .summary-table {
-    -webkit-transition: height 0.3s, flex-grow 0.3;
-    transition: height 0.3s, flex-grow 0.3;
     height: 0px;
     overflow: hidden;
     flex-grow: 0;
