@@ -40,8 +40,8 @@ export const NailServiceRates: TNailServiceRates = {
     base: {
       BaseGel: 5,
       AcryGel: null, // not possible
-      HardGel: null, // not possible
-      PolyGel: null,
+      HardGel: 5, 
+      PolyGel: 10,
       NoCare: 0,
       NoBase: 0
     },
@@ -68,9 +68,9 @@ export const NailServiceRates: TNailServiceRates = {
     base: {
       BaseGel: 5,
       AcryGel: null, // not possible
-      HardGel: null, // not possible
-      PolyGel: null, // not possible
-      NoCare: null,
+      HardGel: 5, // not possible
+      PolyGel: 10, // not possible
+      NoCare: 0,
       NoBase: 0
     },
     length: null,

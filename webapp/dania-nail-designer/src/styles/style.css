@@ -158,15 +158,17 @@ html, body, #root {
 .design-section {
     color: var(--text-color);
     background-color: var(--container-bg-color);
-    border-radius: 10px;
+    border-radius: 8px;
 
-    min-height: 50px;
-    height: 50px;
+    min-height: 35px;
+    height: 35px;
     flex-grow: 0;
     flex-basis: 0;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
     overflow: hidden;
+
+    margin-bottom: 0.5em;
     /* border: 1.5px solid var(--main-color); */
 }
 
@@ -177,9 +179,6 @@ html, body, #root {
     transition: all 0.3s;
 }
 
-.design-section + .design-section {
-    margin-top: 0.5em;
-}
 
 
 
@@ -192,7 +191,7 @@ html, body, #root {
 }
 
 .section-header {
-    height: 50px;
+    height: 35px;
     background-color: var(--main-color);
     color: var(--text-invert-color);
 }
@@ -201,7 +200,7 @@ html, body, #root {
   font-family: Optima;
 }
 .page-title {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: lighter;
   color: var(--text-color);
 }
@@ -250,7 +249,7 @@ html, body, #root {
 
 .finger {
   transform: scale(1) translate(0px, 0px) rotateZ(0deg);
-  height: 80px;
+  height: 50px;
 
   .skin {
     fill: var(--skin-color);
