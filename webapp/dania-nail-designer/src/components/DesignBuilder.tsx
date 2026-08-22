@@ -28,7 +28,8 @@ export function DesignBuilder() {
 
   const isDarkMode = themeMode === 'system' ? resolvedTheme === 'dark' : themeMode === 'dark';
 
-  const onThemeToggle = () => {
+  const onThemeToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setThemeMode(isDarkMode ? 'light' : 'dark');
   };
 
@@ -83,28 +84,15 @@ export function DesignBuilder() {
   }
 
 
-  return <div className="h-100 py-3 px-2"> 
+  return <div className="h-100 p-2"> 
     <div className="layout d-flex flex-column mx-auto">
 
-      <div className="d-flex align-items-start justify-content-between gap-1">
-        <div className="mb-2">
-          <div className="d-flex align-items-center gap-2 mb-2">
+      <div className="d-flex align-items-center justify-content-between gap-1 mb-2">
+        <div className="d-flex align-items-center gap-2">
           <img src={isDarkMode ? logoLight : logoDark} alt="Stardust Factory Logo" width="40" />
           <h2 className="page-title fancy-font my-0">
             Stardust Factory
           </h2>
-          </div><div className="d-flex align-items-center gap-2">
-            <span className="theme-toggle-label">{isDarkMode ? 'Dark' : 'Light'}</span>
-            <button
-              type="button"
-              className={`theme-toggle ${isDarkMode ? 'theme-toggle-dark' : 'theme-toggle-light'}`}
-              onClick={onThemeToggle}
-              aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
-              aria-pressed={isDarkMode}
-            >
-              <span className="theme-toggle-knob" />
-            </button>
-          </div>
         </div>
 
      
@@ -118,7 +106,21 @@ export function DesignBuilder() {
       </div>
 
       <DesignSection 
-        title='Consultation' 
+        title={<div className="w-100 d-flex justify-content-between align-items-center">
+          <span>Consultation</span>
+          <span className="d-flex align-items-center gap-2">
+            <span className="theme-toggle-label fw-light">{isDarkMode ? 'Dark' : 'Light'}</span>
+            <button
+              type="button"
+              className={`theme-toggle ${isDarkMode ? 'theme-toggle-dark' : 'theme-toggle-light'}`}
+              onClick={onThemeToggle}
+              aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+              aria-pressed={isDarkMode}
+            >
+              <span className="theme-toggle-knob" />
+            </button>
+          </span>
+        </div>} 
         isExpanded={openSection === 'Consultation'}
         onHeaderClick={() => onHeaderClick('Consultation')}>
           <ServiceOptions 

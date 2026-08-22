@@ -4,7 +4,7 @@ import { getAddOnServicesAsList } from "@/service/helpers";
 import { AddOnServiceId } from "@/constants/design-constants";
 
 const addOnsList = getAddOnServicesAsList();
-
+const EXCLUDED: AddOnServiceId[] = ['length_change', 'shape_change'];
 interface Props {
   onAddOnToggle: (addOnId: AddOnServiceId, isChecked: boolean) => void;
   consultData: ConsultationValue;
@@ -12,7 +12,7 @@ interface Props {
 export function AddOnOptions(props: Props) {
   const { consultData } = props;
   const { addOns: selectedAddOns } = consultData;
-  const addOnOptions = [...addOnsList]
+  const addOnOptions = [...addOnsList].filter(o => !EXCLUDED.includes(o.id));
 
   const onAddOnToggle = (addOnId: AddOnServiceId, isChecked: boolean) => {
     if (isChecked) {

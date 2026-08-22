@@ -60,7 +60,7 @@ export function Finger({shape, length = 'none'}: Props) {
 
   const heightVal = NailSvgHeight['x_long'];
 
-  return <svg className={'finger'} width={heightVal * 1.5} viewBox={`-${heightVal} -0 ${heightVal} 1`} xmlns="http://www.w3.org/2000/svg">
+  return <svg className={'finger'} width={heightVal * 1} viewBox={`-${heightVal} -0 ${heightVal} 1`} xmlns="http://www.w3.org/2000/svg">
     <g transform="rotate(90)">
         
       {/* Finger meat */}
