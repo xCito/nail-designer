@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "nail-designer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "webapp/dania-nail-designer", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}

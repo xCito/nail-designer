@@ -119,7 +119,7 @@ export const NailServiceRates: TNailServiceRates = {
     platform: null,
   },
   new_set: {
-    rate: 45,
+    rate: 65,
     maniRate: 18,
     base: {
       AcryGel: 0,
